@@ -1,6 +1,7 @@
-import 'package:drc/screens/login_page.dart';
 import 'package:flutter/material.dart';
+import 'package:web_socket_channel/io.dart';
 
+import 'faq_page.dart';
 import 'graph_page.dart';
 import 'market_list_page.dart';
 import 'profile_page.dart';
@@ -13,7 +14,15 @@ class HistoryScreen extends StatefulWidget {
   _HistoryScreenState createState() => _HistoryScreenState();
 }
 
-class _HistoryScreenState extends State<HistoryScreen> {
+class _HistoryScreenState extends State<HistoryScreen> { 
+
+  final channel = IOWebSocketChannel.connect(
+      Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
+
+  void getTickStream() {
+    channel.sink.add('{"active_symbols": "full","product_type": "basic"}');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

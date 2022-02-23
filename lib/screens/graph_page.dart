@@ -4,11 +4,6 @@ import 'package:toggle_switch/toggle_switch.dart';
 import '../components/chart.dart';
 import 'package:flutter/services.dart';
 
-import 'history_page.dart';
-import 'login_page.dart';
-import 'market_list_page.dart';
-import 'profile_page.dart';
-
 class GraphScreen extends StatefulWidget {
   const GraphScreen({Key? key, required this.symbolName, required this.symbol})
       : super(key: key);
