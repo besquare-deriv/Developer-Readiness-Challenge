@@ -56,7 +56,6 @@ class _MarketScreenState extends State<MarketScreen> {
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               var price = jsonDecode(snapshot.data);
-              print(price);
               try {
                 for (int i = 0; i <= 76; i++) {
                   MarketNames.add(price['active_symbols'][i]['display_name']);
