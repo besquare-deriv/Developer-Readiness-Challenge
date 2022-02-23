@@ -1,4 +1,7 @@
+import 'package:drc/screens/graph_page.dart';
+import 'package:drc/screens/home_page.dart';
 import 'package:drc/screens/landing_page.dart';
+import 'package:drc/screens/main_nav_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,12 +15,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const LandingScreen(title: 'Flutter Demo Home Page'),
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: NavigationPage());
   }
 }
-

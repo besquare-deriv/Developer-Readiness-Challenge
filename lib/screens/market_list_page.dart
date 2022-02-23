@@ -45,6 +45,8 @@ class _MarketScreenState extends State<MarketScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var symbol;
+    var symbolName;
     TextEditingController selectedSymbol = new TextEditingController();
 
     List<String> MarketNames = [];
@@ -56,14 +58,11 @@ class _MarketScreenState extends State<MarketScreen> {
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               var price = jsonDecode(snapshot.data);
-              print(price);
               try {
                 for (int i = 0; i <= 76; i++) {
                   MarketNames.add(price['active_symbols'][i]['display_name']);
                 }
-              } catch (e) {
-                print(e);
-              }
+              } catch (e) {}
               return Column(
                 children: [
                   Container(
@@ -109,10 +108,14 @@ class _MarketScreenState extends State<MarketScreen> {
                               ),
                             ),
                             onTap: (selectedSymbol) {
+                              print(selectedSymbol);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const MarketScreen(),
+                                  builder: (context) => GraphScreen(
+                                    symbolName: symbolName,
+                                    symbol: symbol,
+                                  ),
                                 ),
                               );
                               setState(
@@ -306,6 +309,10 @@ class _MarketScreenState extends State<MarketScreen> {
                         padding: EdgeInsets.all(0),
                         itemCount: 78,
                         itemBuilder: (BuildContext context, int index) {
+                          // symbol = price['active_symbols'][index]['symbol'];
+                          // symbolName =
+                          //     price['active_symbols'][index]['display_name'];
+
                           if (price['active_symbols'][index]
                                   ['market_display_name'] ==
                               textname) {
@@ -317,7 +324,19 @@ class _MarketScreenState extends State<MarketScreen> {
                               // ),
                               elevation: 5,
                               child: InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => GraphScreen(
+                                        symbolName: price['active_symbols']
+                                            [index]['display_name'],
+                                        symbol: price['active_symbols'][index]
+                                            ['symbol'],
+                                      ),
+                                    ),
+                                  );
+                                },
                                 child: Container(
                                   height: 100,
                                   decoration: BoxDecoration(
@@ -367,65 +386,7 @@ class _MarketScreenState extends State<MarketScreen> {
                 color: Colors.amber,
               ),
             );
-          }
-        ),
-        
-        bottomNavigationBar: BottomAppBar(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(icon: const Icon(Icons.home), 
-                          iconSize: 40,
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()));
-                          }
-                        ),
-              
-              IconButton(icon: Image.asset('assets/icons/explore.png'), 
-                          iconSize: 40,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => GraphScreen()));
-                          }
-                        ),
-                        
-              IconButton(icon: Image.asset('assets/icons/plus.png'), 
-                          iconSize: 70,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MarketScreen()));
-                          }
-                        ),
-        
-              IconButton(icon: Image.asset('assets/icons/history.png'), 
-                          iconSize: 40,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => HistoryScreen()));
-                          }
-                        ),
-
-              IconButton(icon: Image.asset('assets/icons/user.png'), 
-                          iconSize: 40,
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ProfilePage()));
-                          }
-                        ),
-            ],
-          ),
-          shape: CircularNotchedRectangle(),
-          color: Colors.black,
-        ),
+          }),
     );
   }
 }
-
