@@ -5,18 +5,23 @@ import '../components/chart.dart';
 import 'package:flutter/services.dart';
 
 class GraphScreen extends StatefulWidget {
-  const GraphScreen({Key? key}) : super(key: key);
+  const GraphScreen({Key? key, required this.symbolName, required this.symbol})
+      : super(key: key);
+  final String symbolName;
+  final String symbol;
 
   @override
-  _GraphScreenState createState() => _GraphScreenState();
+  _GraphScreenState createState() =>
+      _GraphScreenState(symbolName: symbolName, symbol: symbol);
 }
 
 class _GraphScreenState extends State<GraphScreen> {
+  _GraphScreenState({required this.symbolName, required this.symbol});
   late ChartSeriesController _chartSeriesController;
 
 // For now initializing this data, should get this variables from Maket page
-  String symbolName = "Volatility 50 Index";
-  String symbol = "R_50";
+  String symbolName;
+  String symbol;
 
   @override
   void initState() {
@@ -39,15 +44,15 @@ class _GraphScreenState extends State<GraphScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         backgroundColor: Color(0xFF1F96B0),
-        title: Text( symbolName,
-            style: TextStyle(
+        title: Text(
+          symbolName,
+          style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.white,  
+            color: Colors.white,
           ),
         ),
         centerTitle: true,
       ),
-      
       body: ListView(
         children: [
           SizedBox(
