@@ -4,6 +4,11 @@ import 'package:toggle_switch/toggle_switch.dart';
 import '../components/chart.dart';
 import 'package:flutter/services.dart';
 
+import 'history_page.dart';
+import 'login_page.dart';
+import 'market_list_page.dart';
+import 'profile_page.dart';
+
 class GraphScreen extends StatefulWidget {
   const GraphScreen({Key? key}) : super(key: key);
 
@@ -34,18 +39,20 @@ class _GraphScreenState extends State<GraphScreen> {
     var _inputAmount = 1000;
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 80,
-        backgroundColor: const Color.fromRGBO(8, 217, 217, 100),
-        title: Center(
-          child: Text(
-            symbolName,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        backgroundColor: Color(0xFF1F96B0),
+        title: Text( symbolName,
             style: TextStyle(
-              fontSize: 30,
-              color: Colors.black,
-            ),
+            fontWeight: FontWeight.bold,
+            color: Colors.white,  
           ),
         ),
+        centerTitle: true,
       ),
+      
       body: ListView(
         children: [
           SizedBox(
@@ -202,6 +209,62 @@ class _GraphScreenState extends State<GraphScreen> {
             ),
           ),
         ],
+      ),
+
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(icon: const Icon(Icons.home), 
+                        iconSize: 40,
+                        color: Colors.white,
+                        onPressed: () {
+                          Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginScreen()));
+                        }
+                      ),
+            
+            IconButton(icon: Image.asset('assets/icons/explore.png'), 
+                        iconSize: 40,
+                        onPressed: () {
+                          Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => GraphScreen()));
+                        }
+                      ),
+                      
+            IconButton(icon: Image.asset('assets/icons/plus.png'), 
+                        iconSize: 70,
+                        onPressed: () {
+                          Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MarketScreen()));
+                        }
+                      ),
+      
+            IconButton(icon: Image.asset('assets/icons/history.png'), 
+                        iconSize: 40,
+                        onPressed: () {
+                          Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => HistoryScreen()));
+                        }
+                      ),
+
+            IconButton(icon: Image.asset('assets/icons/user.png'), 
+                        iconSize: 40,
+                        color: Colors.white,
+                        onPressed: () {
+                          Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ProfilePage()));
+                        }
+                      ),
+          ],
+        ),
+        shape: CircularNotchedRectangle(),
+        color: Colors.black,
       ),
     );
   }

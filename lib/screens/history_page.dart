@@ -14,8 +14,6 @@ class HistoryScreen extends StatefulWidget {
   _HistoryScreenState createState() => _HistoryScreenState();
 }
 
-
-
 class _HistoryScreenState extends State<HistoryScreen> { 
 
   @override
