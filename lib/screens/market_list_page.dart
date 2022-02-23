@@ -6,6 +6,7 @@ import 'package:web_socket_channel/io.dart';
 import 'graph_page.dart';
 import 'history_page.dart';
 import 'login_page.dart';
+import 'profile_page.dart';
 
 class MarketScreen extends StatefulWidget {
   const MarketScreen({Key? key}) : super(key: key);
@@ -397,7 +398,7 @@ class _MarketScreenState extends State<MarketScreen> {
                           onPressed: () {
                             Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()));
+                            MaterialPageRoute(builder: (context) => MarketScreen()));
                           }
                         ),
         
@@ -416,7 +417,7 @@ class _MarketScreenState extends State<MarketScreen> {
                           onPressed: () {
                             Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()));
+                            MaterialPageRoute(builder: (context) => ProfilePage()));
                           }
                         ),
             ],

@@ -1,6 +1,10 @@
 import 'package:drc/screens/login_page.dart';
 import 'package:flutter/material.dart';
 
+import 'graph_page.dart';
+import 'market_list_page.dart';
+import 'profile_page.dart';
+
 class HistoryScreen extends StatefulWidget {
 
   // PostPage({required this.postchannel,Key? key}) : super(key: key);
@@ -146,7 +150,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           onPressed: () {
                             Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()));
+                            MaterialPageRoute(builder: (context) => GraphScreen()));
                           }
                         ),
                         
@@ -155,7 +159,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           onPressed: () {
                             Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()));
+                            MaterialPageRoute(builder: (context) => MarketScreen()));
                           }
                         ),
         
@@ -164,7 +168,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           onPressed: () {
                             Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()));
+                            MaterialPageRoute(builder: (context) => HistoryScreen()));
                           }
                         ),
 
@@ -174,7 +178,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           onPressed: () {
                             Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()));
+                            MaterialPageRoute(builder: (context) => ProfilePage()));
                           }
                         ),
             ],

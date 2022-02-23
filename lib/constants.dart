@@ -39,3 +39,21 @@ class ShapePainter2 extends CustomPainter {
     return false;
   }
 }
+
+class User {
+  final String imagePath;
+  final String name;
+  final String email;
+  final String accbalance;
+  final String token;
+  final bool isDarkMode;
+
+  const User({
+    required this.imagePath,
+    required this.name,
+    required this.email,
+    required this.accbalance,
+    required this.token,
+    required this.isDarkMode,
+  });
+}
