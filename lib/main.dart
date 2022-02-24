@@ -1,3 +1,4 @@
+import 'package:drc/screens/history_page.dart';
 import 'package:drc/screens/landing_page.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LandingScreen(title: 'Flutter Demo Home Page'),
+      home: HistoryScreen(),
+      // home: const LandingScreen(title: 'Flutter Demo Home Page'),
     );
   }
 }

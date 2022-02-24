@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 
@@ -18,10 +20,40 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> { 
 
   final channel = IOWebSocketChannel.connect(
-      Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
+      Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089')
+    );
+  
+  void sendMessageAuthorize() {
+    channel.sink.add('{"authorize": "5dRHsXj0xsjBEJC"}');
+  }
 
-  void getTickStream() {
-    channel.sink.add('{"active_symbols": "full","product_type": "basic"}');
+   dynamic sendMessageStatement() {
+    channel.sink.add('{"statement": 1, "description": 1, "limit": 100, "offset": 25}');
+  }
+
+  void getAuthorize() {
+    channel.stream.listen((event) {
+      final decodedMessage = jsonDecode(event);
+      print(decodedMessage);
+      if (decodedMessage['msg_type'] == 'authorize') {
+         sendMessageStatement();
+       } else {
+         HistoryScreen();
+       }
+    });
+  }
+
+  @override
+  void initState() {
+    sendMessageAuthorize();
+    sendMessageStatement();
+    getAuthorize();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
