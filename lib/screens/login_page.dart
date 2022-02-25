@@ -212,3 +212,15 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
+
+/*{
+  "proposal": 1,
+  "amount": 100,
+  "basis": "payout",
+  "contract_type": "CALL",
+  "currency": "USD",
+  "duration": 60,
+  "duration_unit": "m",
+  "symbol": "R_100"
+}*/

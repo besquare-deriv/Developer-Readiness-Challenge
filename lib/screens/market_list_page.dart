@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:web_socket_channel/io.dart';
+import 'graph_page.dart';
 
 class MarketScreen extends StatefulWidget {
   const MarketScreen({Key? key}) : super(key: key);
@@ -381,8 +382,7 @@ class _MarketScreenState extends State<MarketScreen> {
                 color: Colors.amber,
               ),
             );
-          }
-        ),
+          }),
     );
   }
 }
