@@ -3,14 +3,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:drc/Authorization/auth_helper.dart';
 import 'package:drc/screens/Signup_page.dart';
-import 'package:drc/screens/landing_page.dart';
-import 'package:drc/screens/main_nav_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import '../constants.dart';
-import 'graph_page.dart';
-import 'history_page.dart';
-import 'market_list_page.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
