@@ -1,4 +1,6 @@
+import 'package:drc/screens/faq_page.dart';
 import 'package:drc/Authorization/auth_helper.dart';
+
 import 'package:flutter/material.dart';
 
 import '../components/button_widget.dart';
@@ -53,7 +55,9 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             // SizesWidget(),
             const SizedBox(height: 30),
-            Center(child: buildBalanceAcc(user)),
+            Center(
+              child: buildBalanceAcc(user),
+            ),
 
             const SizedBox(height: 20),
             Row(
@@ -122,7 +126,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 32, vertical: 12),
                     minimumSize: const Size(200.0, 50.0)),
-                onPressed: () {}),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MyFAQsPage(),
+                    ),
+                  );
+                }),
 
             const SizedBox(height: 25),
             ElevatedButton(

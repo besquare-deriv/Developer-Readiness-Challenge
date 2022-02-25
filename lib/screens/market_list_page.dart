@@ -3,6 +3,7 @@ import 'package:drc/Authorization/auth_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:web_socket_channel/io.dart';
+import 'graph_page.dart';
 
 import 'graph_page.dart';
 
