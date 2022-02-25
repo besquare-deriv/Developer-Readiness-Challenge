@@ -8,7 +8,6 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:intl/intl.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-// import 'package:syncfusion_flutter_charts/charts.dart';
 
 class chartBuilder extends StatefulWidget {
   chartBuilder(
@@ -46,7 +45,7 @@ class _chartBuilderState extends State<chartBuilder> {
     channel.sink.add(request1);
   }
 
-
+void getTickStream(){
     String request2 = '{"ticks": "$symbol","subscribe": 1}';
     channel2.sink.add(request2);
   }

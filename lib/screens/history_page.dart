@@ -1,13 +1,9 @@
 import 'dart:convert';
 
+import 'package:drc/screens/contract_page.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:intl/intl.dart';
-
-import 'faq_page.dart';
-import 'graph_page.dart';
-import 'market_list_page.dart';
-import 'profile_page.dart';
 
 class HistoryScreen extends StatefulWidget {
   // PostPage({required this.postchannel,Key? key}) : super(key: key);
@@ -144,7 +140,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   shrinkWrap: true,
                   itemCount: dataHistory.length,
                   itemBuilder: (context, index) {
-                    return Center(
+                    return GestureDetector(
+                      onTap: () => {Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ContractPage(data: dataHistory[index])))
+                        },
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                         child: Card(
