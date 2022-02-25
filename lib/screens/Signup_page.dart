@@ -2,9 +2,8 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:drc/Authorization/auth_helper.dart';
-import 'package:drc/screens/Signup_page.dart';
 import 'package:drc/screens/landing_page.dart';
-import 'package:drc/screens/main_nav_screen.dart';
+import 'package:drc/screens/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import '../constants.dart';
@@ -12,14 +11,25 @@ import 'graph_page.dart';
 import 'history_page.dart';
 import 'market_list_page.dart';
 
-class LoginScreen extends StatefulWidget {
+class SignupScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignupScreenScreenState createState() => _SignupScreenScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  var _error;
+class _SignupScreenScreenState extends State<SignupScreen> {
+  String? _error;
   bool visible_text = true;
+  TextEditingController? email_Input;
+  TextEditingController? password_Input;
+  TextEditingController? _confirmPasswordController;
+
+  @override
+  void initState() {
+    super.initState();
+    email_Input = TextEditingController(text: "");
+    password_Input = TextEditingController(text: "");
+    _confirmPasswordController = TextEditingController(text: "");
+  }
 
   Widget showAlert() {
     if (_error != null) {
@@ -35,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             Expanded(
               child: AutoSizeText(
-                _error,
+                _error!,
                 maxLines: 3,
               ),
             ),
@@ -58,7 +68,6 @@ class _LoginScreenState extends State<LoginScreen> {
       height: 0,
     );
   }
-
 
   //TextEditing controller
   final TextEditingController _emailController = TextEditingController();
@@ -85,9 +94,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   clipBehavior: Clip.none,
                   alignment: Alignment.center,
                   children: <Widget>[
-                    const SizedBox(height: 100),
-                    Image.asset("assets/images/BeRad.png",
-                        width: 280, height: 280),
+                    const SizedBox(height: 120),
+                    Image.asset(
+                        "assets/images/robot_forex_terbaik_di_quickpro_apps.png",
+                        width: 280,
+                        height: 180),
                   ],
                 ),
               ),
@@ -97,6 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   key: validkey,
                   child: Card(
                     color: Colors.white,
+                    shadowColor: Colors.black,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0)),
                     elevation: 10.0,
@@ -108,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                           width: 300.0,
                           child: TextFormField(
-                              controller: _emailController,
+                              controller: email_Input,
                               decoration: InputDecoration(
                                 filled: true,
                                 //fillColor: Colors.amber,
@@ -127,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                           width: 300.0,
                           child: TextFormField(
-                              controller: _passwordController,
+                              controller: password_Input,
                               decoration: InputDecoration(
                                 filled: true,
                                 //fillColor: Colors.amber,
@@ -153,21 +165,49 @@ class _LoginScreenState extends State<LoginScreen> {
                                 RequiredValidator(errorText: "REQUIRED"),
                               ])),
                         ),
-                        Text(
-                          "Forgot Password ?",
-                          textAlign: TextAlign.left,
-
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14),
+                        Container(
+                          margin: EdgeInsets.only(bottom: 5, top: 10),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                          width: 300.0,
+                          child: TextFormField(
+                            controller: _confirmPasswordController,
+                            decoration: InputDecoration(
+                              filled: true,
+                              //fillColor: Colors.amber,
+                              border: OutlineInputBorder(),
+                              hintText: 'Confirm Password',
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    visible_text = !visible_text;
+                                  });
+                                },
+                                child: Icon(
+                                  visible_text
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.black87,
+                                  size: 24.0,
+                                ),
+                              ),
+                            ),
+                            obscureText: visible_text,
+                            validator: (confirmation) {
+                              return confirmation!.isEmpty
+                                  ? 'Confirm password cant be empty'
+                                  : chkpass(confirmation, password_Input!.text)
+                                      ? null
+                                      : 'Confirm password and password does not match';
+                            },
+                          ),
                         ),
                         SizedBox(
                           height: 6,
                         ),
                         ElevatedButton(
                           child: const Text(
-                            'Login',
+                            'SUBMIT',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500,
@@ -175,15 +215,25 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           onPressed: () async {
                             if (validkey.currentState!.validate()) {
-                              // validation purpose
                               try {
-                                await AuthHelper.signInWithEmail(
-                                    // the variable being assign to auth helper variable
-                                    email: _emailController.text,
-                                    password: _passwordController.text);
+                                await AuthHelper.signupWithEmail(
+                                    email: email_Input!.text,
+                                    password: password_Input!.text);
+
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(
+                                      "Account have been cretead succesfully"),
+                                  duration: const Duration(seconds: 2),
+                                ));
+
+                                Navigator.of(context).pop();
+
+                                return;
                               } catch (e) {
                                 setState(() {
-                                  // _showDialog(errorMessage);
+                                  print(e);
+
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -200,20 +250,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                       );
                                     },
                                   );
-
                                 });
                               }
                             } else {
-                              //////////////////dDOWN VALIDATION
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
-                                content: Text("ERROR IN SIGN IN"),
-                                // duration: const Duration(seconds: 2),
+                                content: Text("Error occurred"),
                               ));
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                              primary: Colors.blueAccent,
+                              primary: Color.fromARGB(255, 0, 94, 255),
                               fixedSize: const Size(270, 50),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10))),
@@ -230,7 +277,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: Colors.black,
                               ),
                             ),
-                            Text("Or Log In with"),
+                            Text("Or signup with"),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10.0),
                               child: Container(
@@ -263,6 +310,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   await AuthHelper.signInWithGoogle();
                                 } catch (e) {
                                   print(e);
+                                  // _error = e.message;
                                 }
                               },
                               child: ClipRRect(
@@ -272,28 +320,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                             InkWell(
-                              onTap: () async {
-                                try {
-                                  await AuthHelper.signInWithGoogle();
-                                } catch (e) {
-                                  print(e);
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: new Text(e.toString()),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            child: new Text("OK"),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                }
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => GraphScreen()));
                               },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20.0),
@@ -312,7 +343,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    'New user ?',
+                    'Already have an account',
                     style: TextStyle(fontFamily: 'Montserrat'),
                   ),
                   SizedBox(width: 5.0),
@@ -321,11 +352,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => SignupScreen(),
+                            builder: (_) => LoginScreen(),
                           ));
                     },
                     child: Text(
-                      'Register',
+                      'Login',
                       style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'Montserrat',
@@ -334,12 +365,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ],
-
               ),
             ],
           ),
         ),
       ),
     );
+  }
+}
+
+bool chkpass(String currentValue, String checkValue) {
+  if (currentValue == checkValue) {
+    return true;
+  } else {
+    return false;
   }
 }
