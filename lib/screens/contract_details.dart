@@ -1,3 +1,4 @@
+import 'package:drc/screens/explorer_page.dart';
 import 'package:flutter/material.dart';
 
 import 'graph_page.dart';
@@ -349,7 +350,7 @@ class ContractDetails extends StatelessWidget {
                           onPressed: () {
                             Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => GraphScreen()));
+                            MaterialPageRoute(builder: (context) => ExplorePage()));
                           }
                         ),
                         

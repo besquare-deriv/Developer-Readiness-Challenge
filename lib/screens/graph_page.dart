@@ -4,24 +4,24 @@ import 'package:toggle_switch/toggle_switch.dart';
 import '../components/chart.dart';
 import 'package:flutter/services.dart';
 
-import 'history_page.dart';
-import 'login_page.dart';
-import 'market_list_page.dart';
-import 'profile_page.dart';
-
 class GraphScreen extends StatefulWidget {
-  const GraphScreen({Key? key}) : super(key: key);
+  const GraphScreen({Key? key, required this.symbolName, required this.symbol})
+      : super(key: key);
+  final String symbolName;
+  final String symbol;
 
   @override
-  _GraphScreenState createState() => _GraphScreenState();
+  _GraphScreenState createState() =>
+      _GraphScreenState(symbolName: symbolName, symbol: symbol);
 }
 
 class _GraphScreenState extends State<GraphScreen> {
+  _GraphScreenState({required this.symbolName, required this.symbol});
   late ChartSeriesController _chartSeriesController;
 
 // For now initializing this data, should get this variables from Maket page
-  String symbolName = "Volatility 50 Index";
-  String symbol = "R_50";
+  String symbolName;
+  String symbol;
 
   @override
   void initState() {
@@ -44,15 +44,15 @@ class _GraphScreenState extends State<GraphScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         backgroundColor: Color(0xFF1F96B0),
-        title: Text( symbolName,
-            style: TextStyle(
+        title: Text(
+          symbolName,
+          style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.white,  
+            color: Colors.white,
           ),
         ),
         centerTitle: true,
       ),
-      
       body: ListView(
         children: [
           SizedBox(
@@ -209,62 +209,6 @@ class _GraphScreenState extends State<GraphScreen> {
             ),
           ),
         ],
-      ),
-
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(icon: const Icon(Icons.home), 
-                        iconSize: 40,
-                        color: Colors.white,
-                        onPressed: () {
-                          Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => LoginScreen()));
-                        }
-                      ),
-            
-            IconButton(icon: Image.asset('assets/icons/explore.png'), 
-                        iconSize: 40,
-                        onPressed: () {
-                          Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => GraphScreen()));
-                        }
-                      ),
-                      
-            IconButton(icon: Image.asset('assets/icons/plus.png'), 
-                        iconSize: 70,
-                        onPressed: () {
-                          Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => MarketScreen()));
-                        }
-                      ),
-      
-            IconButton(icon: Image.asset('assets/icons/history.png'), 
-                        iconSize: 40,
-                        onPressed: () {
-                          Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HistoryScreen()));
-                        }
-                      ),
-
-            IconButton(icon: Image.asset('assets/icons/user.png'), 
-                        iconSize: 40,
-                        color: Colors.white,
-                        onPressed: () {
-                          Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ProfilePage()));
-                        }
-                      ),
-          ],
-        ),
-        shape: CircularNotchedRectangle(),
-        color: Colors.black,
       ),
     );
   }

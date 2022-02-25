@@ -1,189 +1,242 @@
-import 'package:drc/screens/login_page.dart';
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:web_socket_channel/io.dart';
+import 'package:intl/intl.dart';
+
+import 'faq_page.dart';
 import 'graph_page.dart';
 import 'market_list_page.dart';
 import 'profile_page.dart';
 
 class HistoryScreen extends StatefulWidget {
-
   // PostPage({required this.postchannel,Key? key}) : super(key: key);
   // final WebSocketChannel postchannel;
-  
+
   @override
   _HistoryScreenState createState() => _HistoryScreenState();
 }
 
 class _HistoryScreenState extends State<HistoryScreen> { 
 
-  @override
-    Widget build(BuildContext context) {
-      return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          backgroundColor: Color(0xFF1F96B0),
-          title: const Text('Transaction History',
-              style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.white,  
-            ),
-          ),
-          centerTitle: true,
-        ),
+  List<transDetails> dataHistory = [];
 
-        body: SafeArea(
-          child: Center(
-            child: Column(
-              children: <Widget> [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      icon: Image.asset('assets/icons/sort.png'),
-                      iconSize: 1,
-                      onPressed: () {},  
-                    ),
+  final channel = IOWebSocketChannel.connect(
+      Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089')
+    );
+  
+  void sendMessageAuthorize() {
+    channel.sink.add('{"authorize": "5dRHsXj0xsjBEJC"}');
+  }
 
-                    IconButton(
-                      icon: Image.asset('assets/icons/filter.png'),
-                      iconSize: 1,
-                      onPressed: () {},  
-                    ),
-                  ]
+   void sendMessageStatement() {
+    channel.sink.add('{"statement": 1, "description": 1, "limit": 100}');
+  }
+
+  void getAuthorize() {
+    channel.stream.listen((event) {
+      final data = jsonDecode(event);
+
+      dataHistory = [];
+      List<dynamic> time = [];
+      List<String> currency = [];
+      List<String> typeCurrency = [];
+    
+      if (data['msg_type'] == 'authorize') {
+         sendMessageStatement();
+         print(data);
+       }
+      
+      if (data['msg_type'] == 'statement') {
+         for (int i = 0; i <= data['statement']['transactions'].length -1; i ++) {
+          //  print(data['statement']['transactions'][i]['transaction_time']);
+
+           time.add(DateTime.fromMillisecondsSinceEpoch(
+            data['statement']['transactions'][i]['transaction_time'] * 1000));
+          
+          String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(time[i]);
+
+          // currency.add(data['statement']['transactions'][i]['shortcode']);
+
+          // if (currency[i].contains('R_')){
+          //   String a = currency[i].split('_')[1];
+          //   String b = currency[i].split('_')[2];
+          //   String output = a + '_' + b;
+          //   typeCurrency.add(output);
+          // } else{
+          //   String output = currency[i].split('_')[1];
+          //   typeCurrency.add(output);
+          // }
+          
+          setState(() {
+            dataHistory.add(
+              transDetails(
+                action: data['statement']['transactions'][i]['action_type'],
+                time: formattedDate,
+                id: data['statement']['transactions'][i]['transaction_id'],
+                amount: data['statement']['transactions'][i]['amount'],
+                balance: data['statement']['transactions'][i]['balance_after'],
+                //crypto: typeCurrency[i],
                 ),
+              );
+            }
+          );
+         };
+         print(dataHistory);
+       }
+    });
+    
+  }
 
-                Expanded(
-                  child: SingleChildScrollView(
-                    // child: ListView.builder(
+  @override
+  void initState() {
+    sendMessageAuthorize();
+    sendMessageStatement();
+    getAuthorize();
+    super.initState();
+  }
 
-                    //   physics: BouncingScrollPhysics(),
-                    //   scrollDirection: Axis.vertical,
-                    //   shrinkWrap: true,
-                    //   itemCount: 10,
-                    //   itemBuilder: (context, index) {
-                    //     return ListTile(
-                          
-                    //     ),
-                    //   },
-                    // ),
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Card(
-                        color: Colors.white70,
-                        shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)),
-                        margin: EdgeInsets.symmetric(horizontal: 5),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0,),
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
-                          child: Row(
-                            children: [
+  @override
+  Widget build(BuildContext context) {
+    
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        backgroundColor: Color(0xFF1F96B0),
+        title: const Text(
+          'Transaction History',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: Center(
+            child: Column(
+          children: <Widget>[
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              IconButton(
+                icon: Image.asset('assets/icons/sort.png'),
+                iconSize: 1,
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: Image.asset('assets/icons/filter.png'),
+                iconSize: 1,
+                onPressed: () {},
+              ),
+            ]),
+            Expanded(
+              child: SingleChildScrollView(
+                child: ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: dataHistory.length,
+                  itemBuilder: (context, index) {
+                    return Center(
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                        child: Card(
+                          color: Colors.white70,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
+                          margin: EdgeInsets.symmetric(horizontal: 5),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 20.0,
+                            ),
+                            child: Row(children: [
                               Container(
                                 height: 60,
                                 width: 60,
                                 child: Image.asset('assets/icons/btc.png'),
                               ),
-
-                              const SizedBox(width:7),
-
+                              const SizedBox(width: 7),
                               Expanded(
                                 child: Row(
                                   children: [
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text("Buy",
-                                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.green)),
-
-                                        Text("BTCAUSD",
-                                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                                        
-                                        Text("TransactionID: 2665366288128",
-                                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                                          
-                                        Text("2022-02-15 07:52:03 GMT",
-                                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                                        Text(dataHistory[index].action,
+                                            style: TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.bold,
+                                                
+                                                color: dataHistory[index].action == 'buy' ? Colors.green : Colors.red)),
+                                        Text('BTCAUSD',
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold)),
+                                        Text('TransactionID: ${dataHistory[index].id}',
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold)),
+                                        Text('${dataHistory[index].time}',
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold)),
                                       ],
                                     ),
                                   ],
                                 ),
                               ),
-
-                              const SizedBox(width: 10,),
-
-                              Text("-&100", 
-                                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.red,),                                  
+                              const SizedBox(
+                                width: 10,
                               ),
-                            ]
+                              Text(
+                                '${dataHistory[index].amount}',
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ]),
                           ),
                         ),
                       ),
-                    ),
-                  ),                 
+                    );
+                  },
                 ),
-              ],
-            )
-          ),
-        ),
+              ),
+            ),
+          ],
+        )),
+      ),
+    );
+  }
+}
 
-        bottomNavigationBar: BottomAppBar(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(icon: const Icon(Icons.home), 
-                          iconSize: 40,
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()));
-                          }
-                        ),
-              
-              IconButton(icon: Image.asset('assets/icons/explore.png'), 
-                          iconSize: 40,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => GraphScreen()));
-                          }
-                        ),
-                        
-              IconButton(icon: Image.asset('assets/icons/plus.png'), 
-                          iconSize: 70,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MarketScreen()));
-                          }
-                        ),
-        
-              IconButton(icon: Image.asset('assets/icons/history.png'), 
-                          iconSize: 40,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => HistoryScreen()));
-                          }
-                        ),
+class transDetails {
+  final String action;
+  final String time;
+  final dynamic id;
+  final dynamic amount;
+  final dynamic balance;
+  // final dynamic crypto;
 
-              IconButton(icon: Image.asset('assets/icons/user.png'), 
-                          iconSize: 40,
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ProfilePage()));
-                          }
-                        ),
-            ],
-          ),
-          shape: CircularNotchedRectangle(),
-          color: Colors.black,
-        ),
-      );
-    }
+  transDetails({
+    required this.action,
+    required this.time,
+    this.id,
+    this.amount,
+    this.balance,
+    // this.crypto,
+  });
+
+  @override
+  String toString() => '[ $action , $time , $id , $amount, $balance ]';
 }
