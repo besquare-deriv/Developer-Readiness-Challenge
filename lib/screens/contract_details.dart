@@ -32,7 +32,7 @@ class ContractDetails extends StatelessWidget {
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child:
-        Stack(
+              Stack(
         alignment: Alignment.topCenter,
         children: <Widget>[
           Container(
@@ -51,17 +51,21 @@ class ContractDetails extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                          IconButton(
-                          icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35,),                                   
-                          onPressed: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => HistoryScreen()));
-                          }, 
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child:
+                            IconButton(
+                              icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35,),                                   
+                              onPressed: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => HistoryScreen()));
+                              }, 
+                            ),
                         ),
                         Container(
                           margin:EdgeInsets.symmetric(horizontal: width*0.1),
-                          //alignment: Alignment.center,
+                          alignment: Alignment.center,
                           child: Text('Contract Details',
                             /* textAlign: TextAlign.center, */
                             style: TextStyle(
@@ -75,15 +79,18 @@ class ContractDetails extends StatelessWidget {
                       ],)
                   ),
 
-                  Text("$currencyType", 
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color:Colors.black, 
-                      fontSize: 36, 
-                      fontWeight: FontWeight.bold, 
-                      fontFamily:'IBM Plex Sans'
-                                ),
-                              ),
+                  Container(
+                    child:
+                      Text("$currencyType", 
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color:Colors.black, 
+                          fontSize: 36, 
+                          fontWeight: FontWeight.bold, 
+                          fontFamily:'IBM Plex Sans'
+                                    ),
+                                  ),
+                  ),
               ]
                     ),),
 
@@ -104,59 +111,59 @@ class ContractDetails extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                padding:  EdgeInsets.symmetric(vertical: 0, horizontal: width*0.05093),
                 child: const Text('Buy ID', 
                             style: TextStyle(
                               color: Color.fromRGBO(126, 117, 117, 1),
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans'))),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: width*0.05093),
                 child:  Text(buyID,
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans')))
             ],),
-            const SizedBox(height: 10),
+             SizedBox(height: height*0.01317),
              Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: width*0.05093),
                 child: const Text('Buy Price', 
                             style: TextStyle(
                               color: Color.fromRGBO(126, 117, 117, 1),
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans'))),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: width*0.05093),
                 child: Text("$buyPrice",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans')))
             ],),
-            const SizedBox(height: 10),
+            SizedBox(height: height*0.01317),
              Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: width*0.05093),
                 child: const Text('Start Time', 
                             style: TextStyle(
                               color: Color.fromRGBO(126, 117, 117, 1),
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans'))),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: width*0.05093),
                 child:  Text(startTime,
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans')))
             ],),
-            const SizedBox(height: 25),
+            SizedBox(height: height*0.03293),
 
             const Divider(
               height: 10,
@@ -166,65 +173,65 @@ class ContractDetails extends StatelessWidget {
               color: Color.fromRGBO(196, 196, 196, 1),
           ),
 
-            const SizedBox(height: 25),
+            SizedBox(height: height*0.03293),
 
              Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: width*0.05093),
                 child: const Text('Sell ID', 
                             style: TextStyle(
                               color: Color.fromRGBO(126, 117, 117, 1),
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans'))),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: width*0.05093),
                 child: Text(sellID,
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans')))
             ],),
-            const SizedBox(height: 10),
+            SizedBox(height: height*0.01317),
              Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: width*0.05093),
                 child: const Text('Sell Price', 
                             style: TextStyle(
                               color: Color.fromRGBO(126, 117, 117, 1),
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans'))),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: width*0.05093),
                 child:  Text("$sellPrice",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans')))
             ],),
-            const SizedBox(height: 10),
+            SizedBox(height: height*0.01317),
              Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: width*0.05093),
                 child: const Text('End Time', 
                             style: TextStyle(
                               color: Color.fromRGBO(126, 117, 117, 1),
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans'))),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: width*0.05093),
                 child:  Text(endTime,
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans')))
             ],),
-            const SizedBox(height: 25),
+            SizedBox(height: height*0.03293),
 
             const Divider(
               height: 10,
@@ -234,39 +241,39 @@ class ContractDetails extends StatelessWidget {
               color: Color.fromRGBO(196, 196, 196, 1),
           ),
 
-            const SizedBox(height: 25),
+            SizedBox(height: height*0.03293),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: width*0.05093),
                 child: const Text('Duration', 
                             style: TextStyle(
                               color: Color.fromRGBO(126, 117, 117, 1),
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans'))),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: width*0.05093),
                 child:  Text(duration,
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans')))
             ],),
-            const SizedBox(height: 10),
+            SizedBox(height: height*0.01317),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: width*0.05093),
                 child: const Text('Payout limit', 
                             style: TextStyle(
                               color: Color.fromRGBO(126, 117, 117, 1),
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans'))),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: width*0.05093),
                 child: Text("$payoutLimit",
                           style: TextStyle(
                               color: Colors.black,
@@ -278,14 +285,14 @@ class ContractDetails extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: width*0.05093),
                 child: const Text('Account balance', 
                             style: TextStyle(
                               color: Color.fromRGBO(126, 117, 117, 1),
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans'))),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: width*0.05093),
                 child:  Text("$accountBalance",
                           style: TextStyle(
                               color: Colors.black,

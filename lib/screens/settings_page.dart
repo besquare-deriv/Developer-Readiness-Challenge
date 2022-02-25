@@ -48,6 +48,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return  Scaffold(
         backgroundColor: const Color.fromRGBO(234, 230, 230, 1) ,
         appBar:
@@ -58,7 +60,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         onPressed: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ProfilePage()));
+                            MaterialPageRoute(builder: (context) => ContractDetails()));
                         }, 
                       ),
               //toolbarHeight: 90,
@@ -101,7 +103,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     title: Row(
                       children: [
                         Container(
-                          width: 150,    
+                          width: width*0.3819,    
                           child:  
                               Text('First Name *', 
                                       textAlign: TextAlign.left,
@@ -116,7 +118,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     subtitle: Row(
                         children: [
                           Container(
-                            width: 150, 
+                            width: width*0.3819, 
                             child: 
                               Text(firstName),
                               ),
@@ -148,8 +150,8 @@ class _SettingsPageState extends State<SettingsPage> {
                             content: /* Padding(
                               padding: const EdgeInsets.all(8.0),  */
                               Container(
-                              width: 300,
-                              height: 85,
+                              width: width*0.7639,
+                              height: height*0.1119,
                               child: Form(
                                 key: _formKey,
                                 child: Column(
@@ -219,8 +221,8 @@ class _SettingsPageState extends State<SettingsPage> {
                             content: /* Padding(
                               padding: const EdgeInsets.all(8.0),  */
                               Container(
-                              width: 300,
-                              height: 170,
+                              width: width*0.7639,
+                              height: height*0.2239,
                               child: Form(
                                 key: _formKey,
                                 child: ListView(
@@ -330,8 +332,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     content: /* Padding(
                       padding: const EdgeInsets.all(8.0),  */
                       Container(
-                      width: 300,
-                      height: 85,
+                      width: width*0.7639,
+                      height: height*0.1119,
                       child: Form(
                         key: _formKey,
                         child: Column(
