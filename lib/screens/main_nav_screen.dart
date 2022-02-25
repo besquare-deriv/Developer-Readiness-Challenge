@@ -18,7 +18,7 @@ class _NavigationPageState extends State<NavigationPage> {
   var _selectedIndex = 0;
   static List<Widget> _pageScreens = <Widget>[
     HomePage(),
-    explorePage(),
+    ExplorePage(),
     MarketScreen(),
     HistoryScreen(),
     ProfilePage()

@@ -31,7 +31,6 @@ class _MarketScreenState extends State<MarketScreen> {
   @override
   void initState() {
     getTickStream();
-    // handShake();
     super.initState();
   }
 
@@ -48,8 +47,6 @@ class _MarketScreenState extends State<MarketScreen> {
 
     List<String> MarketNames = [];
     return Scaffold(
-      // appBar: AppBar(
-      // ),
       body: StreamBuilder(
           stream: channel.stream,
           builder: (context, AsyncSnapshot snapshot) {
