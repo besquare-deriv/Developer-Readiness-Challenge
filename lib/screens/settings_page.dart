@@ -1,6 +1,7 @@
 //import 'dart:html';
 
 import 'package:drc/screens/contract_details.dart';
+import 'package:drc/screens/explorer_page.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:country_pickers/country.dart';
 import 'package:flutter/material.dart';
@@ -42,17 +43,12 @@ class _SettingsPageState extends State<SettingsPage> {
   String phoneNumber = '+601123456789';
   String password = '********';
   String countryName = 'Indonesia';
-  String apiToken = 'XXXXXXXXXXXX';
+  String apiToken = 'XXXXXXXXXXXXXXXX';
   DateTime date = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-      title: 'BeRAD',
-      theme: ThemeData(
-        primaryColor: const Color.fromRGBO(234, 230, 230, 1),
-      ),
-      home: Scaffold(
+    return  Scaffold(
         backgroundColor: const Color.fromRGBO(234, 230, 230, 1) ,
         appBar:
             AppBar( 
@@ -301,12 +297,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   ListTile(
                     leading: IconWidget(icon: Icons.calendar_today),
                     title: Text('Date of Birth*'),
-                    subtitle: Text('${date.day}/${date.month}/${date.year}'),
+                    subtitle: Text('${date.month}/${date.day}/${date.year}'),
                     trailing: IconButton(icon: Icon(Icons.calendar_month), onPressed: () => pickDate(context) ,)   
                   ),
                   //country
                   ListTile(
-                    leading: IconWidget(icon: Icons.circle),
+                    leading: Tab(icon: Image.asset('assets/icons/country.png'), iconMargin: EdgeInsets.only(right: 100) ,),
                     title: Text('Country*'),
                     subtitle: Text(countryName),
                     trailing: CountryPickerDropdown(
@@ -388,7 +384,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
                 ),
              )
-          //)
                 ],
       ),
       ),
@@ -412,7 +407,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           onPressed: () {
                             Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => GraphScreen()));
+                            MaterialPageRoute(builder: (context) => ExplorePage()));
                           }
                         ),
                         
@@ -449,16 +444,15 @@ class _SettingsPageState extends State<SettingsPage> {
           color: Colors.black,
         ),
         
-      )
       );
   }
   pickDate(BuildContext context) async {
-    final initialDate = DateTime.now();
+    final initialDate = DateTime.now().year - 18;
     final newDate = await showDatePicker(
       context: context,
-      initialDate: date ?? initialDate,
+      initialDate: DateTime(initialDate),
       firstDate: DateTime(DateTime.now().year - 100),
-      lastDate: DateTime(DateTime.now().year + 1),
+      lastDate: DateTime(DateTime.now().year - 17,DateTime.now().month - 11, DateTime.now().day - 30),
     );
 
     if (newDate != null && newDate != date) 

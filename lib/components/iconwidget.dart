@@ -9,12 +9,14 @@ class IconWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 45,
+      height: 45,
       padding: const EdgeInsets.all(8),
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
         color: Color(0xFF08D9D6),
       ),
-      child: Icon(icon, color: Colors.black),
+      child: Icon(icon, color: Colors.black, ),
     );
       
   }
