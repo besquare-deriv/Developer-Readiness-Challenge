@@ -40,12 +40,13 @@ class _chartBuilderState extends State<chartBuilder> {
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
 
   void getTickHistory() {
+
     String request1 =
         '{"ticks_history": "$symbol" ,"count": ${countList[counts]},"end": "latest"}';
     channel.sink.add(request1);
   }
 
-  void getTickStream() {
+
     String request2 = '{"ticks": "$symbol","subscribe": 1}';
     channel2.sink.add(request2);
   }
@@ -53,7 +54,7 @@ class _chartBuilderState extends State<chartBuilder> {
   @override
   void initState() {
     getTickHistory();
-    InitialTicks();
+    initialTicks();
     getTickStream();
     tickStream();
     super.initState();
@@ -127,7 +128,7 @@ class _chartBuilderState extends State<chartBuilder> {
     );
   }
 
-  void InitialTicks() {
+  void initialTicks() {
     channel.stream.listen((data) {
       priceTime = [];
       // Decodes the response to JSON format

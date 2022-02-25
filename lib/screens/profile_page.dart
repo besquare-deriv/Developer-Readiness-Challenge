@@ -1,14 +1,12 @@
 import 'package:drc/screens/faq_page.dart';
+import 'package:drc/Authorization/auth_helper.dart';
+
 import 'package:flutter/material.dart';
 
 import '../components/button_widget.dart';
 import '../components/profile_widget.dart';
 import '../constants.dart';
 import '../utils/user_information.dart';
-import 'graph_page.dart';
-import 'history_page.dart';
-import 'login_page.dart';
-import 'market_list_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -24,6 +22,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+
       //appBar: buildAppBar(context),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -148,10 +147,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 32, vertical: 12),
                     minimumSize: const Size(200.0, 50.0)),
-                onPressed: () {}),
+                onPressed: () {
+                  AuthHelper().logOut();
+                }),
           ],
         ),
       ),
+
     );
   }
 

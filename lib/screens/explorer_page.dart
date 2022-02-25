@@ -1,15 +1,14 @@
 // ignore_for_file: avoid_unnecessary_containers, camel_case_types, prefer_const_constructors
-
 import 'package:flutter/material.dart';
 
-class explorePage extends StatefulWidget {
-  const explorePage({Key? key}) : super(key: key);
+class ExplorePage extends StatefulWidget {
+  const ExplorePage({Key? key}) : super(key: key);
 
   @override
-  _explorePageState createState() => _explorePageState();
+  _ExplorePageState createState() => _ExplorePageState();
 }
 
-class _explorePageState extends State<explorePage> {
+class _ExplorePageState extends State<ExplorePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
