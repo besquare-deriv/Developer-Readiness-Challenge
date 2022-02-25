@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:web_socket_channel/io.dart';
 
+import 'graph_page.dart';
+
+
 class MarketScreen extends StatefulWidget {
   const MarketScreen({Key? key}) : super(key: key);
 
@@ -29,7 +32,6 @@ class _MarketScreenState extends State<MarketScreen> {
   @override
   void initState() {
     getTickStream();
-    // handShake();
     super.initState();
   }
 
@@ -46,8 +48,6 @@ class _MarketScreenState extends State<MarketScreen> {
 
     List<String> MarketNames = [];
     return Scaffold(
-      // appBar: AppBar(
-      // ),
       body: StreamBuilder(
           stream: channel.stream,
           builder: (context, AsyncSnapshot snapshot) {
