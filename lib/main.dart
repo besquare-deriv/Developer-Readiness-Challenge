@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drc/Authorization/auth_helper.dart';
 import 'package:drc/screens/Token_test.dart';
 import 'package:drc/screens/Token_view.dart';
+import 'package:drc/screens/home_page.dart';
 import 'package:drc/screens/landing_page.dart';
 import 'package:drc/screens/login_page.dart';
 import 'package:drc/screens/market_list_page.dart';
@@ -57,9 +58,9 @@ class MainScreen extends StatelessWidget {
                   final user = userDoc!.data() as Map;
 
                   if (user['role'] == 'user') {
-                    return MarketScreen();
+                    return HomePage();
                   } else {
-                    return MarketScreen();
+                    return HomePage();
                   }
                 } else {
                   return Material(
@@ -83,4 +84,3 @@ class MainScreen extends StatelessWidget {
         });
   }
 }
-

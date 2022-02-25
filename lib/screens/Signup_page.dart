@@ -292,44 +292,32 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HistoryScreen()));
-                              },
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20.0),
-                                child: Image.asset("assets/icons/apple.png",
-                                    width: 65, height: 65),
-                              ),
-                            ),
-                            InkWell(
                               onTap: () async {
                                 try {
                                   await AuthHelper.signInWithGoogle();
                                 } catch (e) {
-                                  print(e);
-                                  // _error = e.message;
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: new Text(e.toString()),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: new Text("OK"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
                                 }
                               },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20.0),
                                 child: Image.asset("assets/icons/google.png",
                                     width: 70, height: 70),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => GraphScreen()));
-                              },
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20.0),
-                                child: Image.asset("assets/icons/facebook.png",
-                                    width: 55, height: 55),
                               ),
                             ),
                           ],
