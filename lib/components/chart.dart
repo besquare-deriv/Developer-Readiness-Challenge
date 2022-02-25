@@ -1,5 +1,3 @@
-// ignore_for_file: camel_case_types, no_logic_in_create_state, must_be_immutable, prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, unused_label, prefer_typing_uninitialized_variables, unused_import
-
 import 'dart:async';
 import 'dart:convert';
 
