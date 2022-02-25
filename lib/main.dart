@@ -1,8 +1,14 @@
+import 'package:drc/screens/contract_details.dart';
+import 'package:drc/screens/history_page.dart';
 import 'package:drc/screens/landing_page.dart';
+import 'package:drc/screens/login_page.dart';
+import 'package:drc/screens/profile_page.dart';
+import 'package:drc/screens/settings_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
