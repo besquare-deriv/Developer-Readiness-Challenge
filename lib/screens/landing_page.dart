@@ -105,16 +105,16 @@ class _LandingScreenState extends State<LandingScreen> {
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
-                    fontSize: 20),
+                    fontSize: 18),
               ),
               const SizedBox(height: 30),
               ElevatedButton(
                 child: const Text(
-                  'Login',
+                  'Log in',
                   style: TextStyle(
-                      color: Colors.blueAccent,
+                      color: Color(0xFFF305FAD),
                       fontWeight: FontWeight.w500,
-                      fontSize: 20),
+                      fontSize: 18),
                 ),
                 onPressed: () {
                   Navigator.push(context,
@@ -124,7 +124,9 @@ class _LandingScreenState extends State<LandingScreen> {
                 },
                 style: ElevatedButton.styleFrom(
                     primary: Colors.white,
-                    fixedSize: const Size(300, 50),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32, vertical: 12),
+                    fixedSize: Size(300, 50),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10))),
               ),
@@ -135,14 +137,14 @@ class _LandingScreenState extends State<LandingScreen> {
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
-                      fontSize: 20),
+                      fontSize: 18),
                 ),
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar((const SnackBar(
                       content: Text('Please enter your details. '))));
                 },
                 style: ElevatedButton.styleFrom(
-                    primary: Colors.blueAccent,
+                    primary: Color(0xFFF305FAD),
                     fixedSize: const Size(300, 50),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10))),

@@ -2,6 +2,7 @@ import 'package:drc/screens/graph_page.dart';
 import 'package:drc/screens/home_page.dart';
 import 'package:drc/screens/landing_page.dart';
 import 'package:drc/screens/main_nav_screen.dart';
+import 'package:drc/screens/profile_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -20,6 +21,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: NavigationPage());
+        home: ProfilePage());
   }
 }

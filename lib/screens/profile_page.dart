@@ -22,7 +22,7 @@ class _ProfilePageState extends State<ProfilePage> {
     const user = UserInformation.myUser;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color.fromARGB(255, 236, 234, 234),
       //appBar: buildAppBar(context),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -54,10 +54,10 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             // SizesWidget(),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             Center(child: buildBalanceAcc(user)),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 5),
             Row(
               children: <Widget>[
                 const SizedBox(width: 50),
