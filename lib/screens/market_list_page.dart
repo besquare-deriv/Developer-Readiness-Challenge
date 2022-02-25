@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:drc/Authorization/auth_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:web_socket_channel/io.dart';
@@ -49,6 +50,19 @@ class _MarketScreenState extends State<MarketScreen> {
 
     List<String> MarketNames = [];
     return Scaffold(
+      appBar: new AppBar(
+        leading: GestureDetector(
+          onTap: () {
+            AuthHelper().logOut();
+          },
+          child: Icon(
+            Icons.menu, // add custom icons also
+          ),
+        ),
+        centerTitle: true,
+        title: Text("Token"),
+        backgroundColor: Colors.lightBlue,
+      ),
       // appBar: AppBar(
       // ),
       body: StreamBuilder(
@@ -366,65 +380,54 @@ class _MarketScreenState extends State<MarketScreen> {
                 color: Colors.amber,
               ),
             );
-          }
-        ),
-        
-        bottomNavigationBar: BottomAppBar(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(icon: const Icon(Icons.home), 
-                          iconSize: 40,
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()));
-                          }
-                        ),
-              
-              IconButton(icon: Image.asset('assets/icons/explore.png'), 
-                          iconSize: 40,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => GraphScreen()));
-                          }
-                        ),
-                        
-              IconButton(icon: Image.asset('assets/icons/plus.png'), 
-                          iconSize: 70,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MarketScreen()));
-                          }
-                        ),
-        
-              IconButton(icon: Image.asset('assets/icons/history.png'), 
-                          iconSize: 40,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => HistoryScreen()));
-                          }
-                        ),
+          }),
 
-              IconButton(icon: Image.asset('assets/icons/user.png'), 
-                          iconSize: 40,
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ProfilePage()));
-                          }
-                        ),
-            ],
-          ),
-          shape: CircularNotchedRectangle(),
-          color: Colors.black,
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+                icon: const Icon(Icons.home),
+                iconSize: 40,
+                color: Colors.white,
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()));
+                }),
+            IconButton(
+                icon: Image.asset('assets/icons/explore.png'),
+                iconSize: 40,
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => GraphScreen()));
+                }),
+            IconButton(
+                icon: Image.asset('assets/icons/plus.png'),
+                iconSize: 70,
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MarketScreen()));
+                }),
+            IconButton(
+                icon: Image.asset('assets/icons/history.png'),
+                iconSize: 40,
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => HistoryScreen()));
+                }),
+            IconButton(
+                icon: Image.asset('assets/icons/user.png'),
+                iconSize: 40,
+                color: Colors.white,
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ProfilePage()));
+                }),
+          ],
         ),
+        shape: CircularNotchedRectangle(),
+        color: Colors.black,
+      ),
     );
   }
 }
-
