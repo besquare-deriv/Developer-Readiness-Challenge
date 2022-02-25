@@ -4,10 +4,6 @@ import '../components/button_widget.dart';
 import '../components/profile_widget.dart';
 import '../constants.dart';
 import '../utils/user_information.dart';
-import 'graph_page.dart';
-import 'history_page.dart';
-import 'login_page.dart';
-import 'market_list_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);

@@ -31,7 +31,6 @@ class _MarketScreenState extends State<MarketScreen> {
   @override
   void initState() {
     getTickStream();
-    // handShake();
     super.initState();
   }
 
@@ -48,8 +47,6 @@ class _MarketScreenState extends State<MarketScreen> {
 
     List<String> MarketNames = [];
     return Scaffold(
-      // appBar: AppBar(
-      // ),
       body: StreamBuilder(
           stream: channel.stream,
           builder: (context, AsyncSnapshot snapshot) {
@@ -64,20 +61,19 @@ class _MarketScreenState extends State<MarketScreen> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Color.fromRGBO(8, 217, 217, 100),
-                      borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(30.0),
-                        bottomLeft: Radius.circular(30.0),
-                      ),
+                      color: Color(0xFFF1F96B0),
+                      // borderRadius: BorderRadius.only(
+                      //   bottomRight: Radius.circular(20.0),
+                      //   bottomLeft: Radius.circular(20.0),
+                      // ),
                     ),
-                    // color: Color.fromRGBO(8, 217, 217, 100),
-                    height: 200,
+                    height: 150,
                     width: double.infinity,
                     padding: const EdgeInsets.fromLTRB(5, 30, 5, 10),
                     child: Column(
                       children: [
                         SearchField(
-                            marginColor: Colors.purple,
+                            //marginColor: Colors.purple,
                             controller: selectedSymbol,
                             suggestions:
                                 MarketNames.map((e) => SearchFieldListItem(e))
@@ -91,6 +87,8 @@ class _MarketScreenState extends State<MarketScreen> {
                             ),
                             searchInputDecoration: InputDecoration(
                               prefixIcon: Icon(Icons.search),
+                              filled: true,
+                              fillColor: Colors.white,
 
                               // icon: Icon(Icons.search),
                               focusedBorder: OutlineInputBorder(
@@ -134,7 +132,8 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor
-                                                ? Colors.teal
+                                                ? Color.fromARGB(
+                                                    255, 150, 0, 87)
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -161,7 +160,8 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor1
-                                                ? Colors.teal
+                                                ? Color.fromARGB(
+                                                    255, 150, 0, 87)
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -188,7 +188,8 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor2
-                                                ? Colors.teal
+                                                ? Color.fromARGB(
+                                                    255, 150, 0, 87)
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -215,7 +216,8 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor3
-                                                ? Colors.teal
+                                                ? Color.fromARGB(
+                                                    255, 150, 0, 87)
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -242,7 +244,8 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor4
-                                                ? Colors.teal
+                                                ? Color.fromARGB(
+                                                    255, 150, 0, 87)
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -279,29 +282,81 @@ class _MarketScreenState extends State<MarketScreen> {
                       height: 60,
                       decoration: BoxDecoration(
                         color: Colors.amberAccent,
-                        borderRadius: BorderRadius.circular(10),
+                        //borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
-                        child: ListTile(
-                          visualDensity:
-                              VisualDensity(horizontal: 0, vertical: -4),
-                          horizontalTitleGap: 20.0,
-                          leading: Text('Market Name' "         "),
-                          trailing: Text(
-                            'Display Name',
-                            textAlign: TextAlign.center,
-                          ),
-                          title: Text(
-                            '   Price'
-                            " ",
-                            textAlign: TextAlign.start,
-                          ),
-                        ),
+                        // child: ListTile(
+                        //   visualDensity:
+                        //       VisualDensity(horizontal: 0, vertical: -4),
+                        //   horizontalTitleGap: 20.0,
+                        //   leading: Text('Market Name' "         "),
+                        //   trailing: Text(
+                        //     'Display Name',
+                        //     textAlign: TextAlign.center,
+                        //   ),
+                        //   title: Text(
+                        //     '   Price'
+                        //     " ",
+                        //     textAlign: TextAlign.start,
+                        //   ),
+                        // ),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    'Market Name',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                color: Colors.white,
+                                width: 0.2,
+                                height: 22,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    'Price',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                color: Colors.white,
+                                width: 0.2,
+                                height: 22,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    'Display Name',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                            ]),
                       ),
                     ),
                   ),
                   Expanded(
                     child: Container(
+                      height: 60,
+                      // padding: EdgeInsets.all(8),
                       child: ListView.builder(
                         padding: EdgeInsets.all(0),
                         itemCount: 78,
@@ -334,38 +389,88 @@ class _MarketScreenState extends State<MarketScreen> {
                                     ),
                                   );
                                 },
-                                child: Container(
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Center(
-                                    child: ListTile(
-                                      visualDensity: VisualDensity(
-                                          horizontal: 0, vertical: -4),
-                                      horizontalTitleGap: 20.0,
-                                      leading: Text(
-                                          '${price['active_symbols'][index]['market_display_name']}'
-                                          "      "),
-                                      trailing: Text(
-                                        '${price['active_symbols'][index]['display_name']}',
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      title: Text(
-                                        '${price['active_symbols'][index]['quoted_currency_symbol']}'
-                                        " "
-                                        '${price['active_symbols'][index]['spot']}',
-                                        textAlign: TextAlign.start,
-                                      ),
 
-                                      // mainAxisAlignment:
-                                      //     MainAxisAlignment.center,
+                                // child: Container(
+                                //   height: 100,
+                                //   decoration: BoxDecoration(
+                                //     color: Colors.white,
+                                //     borderRadius: BorderRadius.circular(10),
+                                //   ),
+                                //   child: Center(
+                                //     child: ListTile(
+                                //       visualDensity: VisualDensity(
+                                //           horizontal: 0, vertical: -4),
+                                //       horizontalTitleGap: 20.0,
+                                //       leading: Text(
+                                //           '${price['active_symbols'][index]['market_display_name']}'
+                                //           "      ",
+                                //           textAlign: TextAlign.end),
+                                //       trailing: Text(
+                                //         '${price['active_symbols'][index]['display_name']}',
+                                //         textAlign: TextAlign.center,
+                                //       ),
+                                //       title: Text(
+                                //         '${price['active_symbols'][index]['quoted_currency_symbol']}'
+                                //         " "
+                                //         '${price['active_symbols'][index]['spot']}',
+                                //         textAlign: TextAlign.center,
+                                //       ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          '${price['active_symbols'][index]['market_display_name']}'
+                                          "      ",
+                                        ),
+                                      ],
                                     ),
-                                  ),
+                                    Container(
+                                      color: Colors.white,
+                                      width: 0.2,
+                                      height: 80,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                            '${price['active_symbols'][index]['quoted_currency_symbol']}'
+                                            " "
+                                            '${price['active_symbols'][index]['spot']}'),
+                                      ],
+                                    ),
+                                    Container(
+                                      color: Colors.white,
+                                      width: 0.2,
+                                      height: 80,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          '${price['active_symbols'][index]['display_name']}',
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      color: Colors.white,
+                                      width: 0.2,
+                                      height: 80,
+                                    ),
+                                  ],
                                 ),
-                                // priceChangeEvaluator
+
+                                // mainAxisAlignment:
+                                //     MainAxisAlignment.center,
                               ),
+
+                              // priceChangeEvaluator
                             );
                           } else {
                             return SizedBox.shrink();
