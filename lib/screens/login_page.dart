@@ -59,7 +59,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-
   //TextEditing controller
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -156,7 +155,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         Text(
                           "Forgot Password ?",
                           textAlign: TextAlign.left,
-
                           style: TextStyle(
                               color: Colors.red,
                               fontWeight: FontWeight.bold,
@@ -200,7 +198,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                       );
                                     },
                                   );
-
                                 });
                               }
                             } else {
@@ -245,38 +242,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HistoryScreen()));
-                              },
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20.0),
-                                child: Image.asset("assets/icons/apple.png",
-                                    width: 65, height: 65),
-                              ),
-                            ),
-                            InkWell(
                               onTap: () async {
                                 try {
                                   await AuthHelper.signInWithGoogle();
                                 } catch (e) {
-                                  print(e);
-                                }
-                              },
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20.0),
-                                child: Image.asset("assets/icons/google.png",
-                                    width: 70, height: 70),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () async {
-                                try {
-                                  await AuthHelper.signInWithGoogle();
-                                } catch (e) {
-                                  print(e);
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -297,8 +266,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20.0),
-                                child: Image.asset("assets/icons/facebook.png",
-                                    width: 55, height: 55),
+                                child: Image.asset("assets/icons/google.png",
+                                    width: 70, height: 70),
                               ),
                             ),
                           ],
@@ -334,7 +303,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ],
-
               ),
             ],
           ),
