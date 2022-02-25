@@ -5,10 +5,6 @@ import '../components/button_widget.dart';
 import '../components/profile_widget.dart';
 import '../constants.dart';
 import '../utils/user_information.dart';
-import 'graph_page.dart';
-import 'history_page.dart';
-import 'login_page.dart';
-import 'market_list_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -147,52 +143,6 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
 
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-                icon: const Icon(Icons.home),
-                iconSize: 40,
-                color: Colors.white,
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()));
-                }),
-            IconButton(
-                icon: Image.asset('assets/icons/explore.png'),
-                iconSize: 40,
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => GraphScreen()));
-                }),
-            IconButton(
-                icon: Image.asset('assets/icons/plus.png'),
-                iconSize: 70,
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MarketScreen()));
-                }),
-            IconButton(
-                icon: Image.asset('assets/icons/history.png'),
-                iconSize: 40,
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HistoryScreen()));
-                }),
-            IconButton(
-                icon: Image.asset('assets/icons/user.png'),
-                iconSize: 40,
-                color: Colors.white,
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ProfilePage()));
-                }),
-          ],
-        ),
-        shape: CircularNotchedRectangle(),
-        color: Colors.black,
-      ),
     );
   }
 

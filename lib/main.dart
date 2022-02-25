@@ -8,6 +8,10 @@ import 'package:drc/screens/market_list_page.dart';
 import 'package:drc/screens/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:drc/screens/history_page.dart';
+import 'package:drc/screens/landing_page.dart';
+import 'package:drc/screens/main_nav_screen.dart';
+
 import 'package:flutter/material.dart';
 
 Future<void> main() async {
@@ -79,3 +83,4 @@ class MainScreen extends StatelessWidget {
         });
   }
 }
+

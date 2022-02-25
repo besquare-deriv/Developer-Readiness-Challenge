@@ -17,7 +17,7 @@ class _LandingScreenState extends State<LandingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("BeRad"),
       ),
       body: SafeArea(
         child: Container(
@@ -122,8 +122,7 @@ class _LandingScreenState extends State<LandingScreen> {
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginScreen()));
-                  // ScaffoldMessenger.of(context).showSnackBar(
-                  //     (const SnackBar(content: Text('Successful sign in. '))));
+
                 },
                 style: ElevatedButton.styleFrom(
                     primary: Colors.white,
@@ -143,8 +142,7 @@ class _LandingScreenState extends State<LandingScreen> {
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => SignupScreen()));
-                  // ScaffoldMessenger.of(context).showSnackBar(
-                  //     (const SnackBar(content: Text('Successful sign in. '))));
+             
                 },
                 style: ElevatedButton.styleFrom(
                     primary: Colors.blueAccent,

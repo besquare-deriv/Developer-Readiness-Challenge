@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:drc/Authorization/auth_helper.dart';
 import 'package:drc/screens/Signup_page.dart';
 import 'package:drc/screens/landing_page.dart';
+import 'package:drc/screens/main_nav_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import '../constants.dart';
@@ -57,6 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
       height: 0,
     );
   }
+
 
   //TextEditing controller
   final TextEditingController _emailController = TextEditingController();
@@ -154,6 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Text(
                           "Forgot Password ?",
                           textAlign: TextAlign.left,
+
                           style: TextStyle(
                               color: Colors.red,
                               fontWeight: FontWeight.bold,
@@ -198,12 +201,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     },
                                   );
 
-                                  // return showDialog(
-                                  //     context: context,
-                                  //     builder: (context) {
-                                  //       return Dialog(
-                                  //           child: Text(e.toString()));
-                                  //     });
                                 });
                               }
                             } else {
@@ -337,6 +334,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ],
+
               ),
             ],
           ),
