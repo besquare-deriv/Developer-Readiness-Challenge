@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drc/Authorization/auth_helper.dart';
-import 'package:drc/screens/home_page.dart';
 import 'package:drc/screens/landing_page.dart';
 import 'package:drc/screens/main_nav_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 
 import 'package:flutter/material.dart';
 
@@ -71,7 +69,7 @@ class MainScreen extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.blue,
             ),
-            home: const LandingScreen(title: 'Flutter Demo Home Page'),
+            home: const LandingScreen(title: 'BeRAD'),
           );
           // return LoginPage();
           // return LandingScreen(title: 'MilkyWay');

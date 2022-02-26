@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:convert';
-
+import 'package:drc/components/error_dialog.dart';
+import 'package:drc/screens/active_transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -53,8 +54,6 @@ class _GraphScreenState extends State<GraphScreen> {
     authChannel.stream.listen((data) {
       var result = jsonDecode(data);
 
-      print(result.toString());
-
       if (result['msg_type'] == 'proposal' && result['proposal'] != null) {
         buy_id = result['proposal']['id'];
 
@@ -75,6 +74,9 @@ class _GraphScreenState extends State<GraphScreen> {
                   child: Text("Confirm"),
                   onPressed: () {
                     buyContract();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (data) => activeOptions()));
+                    Navigator.of(context).pop();
                   },
                 ),
               ],
@@ -157,6 +159,7 @@ class _GraphScreenState extends State<GraphScreen> {
             height: 200,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -287,23 +290,9 @@ class _GraphScreenState extends State<GraphScreen> {
                             getPriceProposal();
                           }
                           if (_inputAmount == null || contractTime == null) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text(
-                                      "Amount or time field is empty. Please give valid input and press 'Done'."),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: Text("OK"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
+                            errorDialog(
+                                message:
+                                    "Amount or time field is empty. Please give valid input and press 'Done'.");
                           }
                         },
                         child: SizedBox(
@@ -338,23 +327,9 @@ class _GraphScreenState extends State<GraphScreen> {
                             getPriceProposal();
                           }
                           if (_inputAmount == null || contractTime == null) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text(
-                                      "Amount or time field is empty. Please give valid input and press 'Done'."),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: Text("OK"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
+                            errorDialog(
+                                message:
+                                    "Amount or time field is empty. Please give valid input and press 'Done'.");
                           }
                         },
                         child: SizedBox(

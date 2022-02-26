@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:drc/components/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:web_socket_channel/io.dart';
@@ -42,8 +43,7 @@ class _chartBuilderState extends State<chartBuilder> {
     channel.sink.add(request1);
   }
 
-
-void getTickStream(){
+  void getTickStream() {
     String request2 = '{"ticks": "$symbol","subscribe": 1}';
     channel2.sink.add(request2);
   }
@@ -159,20 +159,25 @@ void getTickStream(){
       var tickStream = jsonDecode(data);
       dynamic timeConverted;
       String extractedTime = "";
-      timeConverted = DateTime.fromMillisecondsSinceEpoch(
-          tickStream['tick']['epoch'] * 1000);
-      extractedTime = DateFormat.Hms().format(timeConverted);
 
-      setState(() {
-        priceTime.add(
-          tickHistory(
-            time: extractedTime,
-            price: tickStream['tick']['quote'],
-          ),
-        );
+      if (tickStream['msg_type'] == 'tick') {
+        timeConverted = DateTime.fromMillisecondsSinceEpoch(
+            tickStream['tick']['epoch'] * 1000);
+        extractedTime = DateFormat.Hms().format(timeConverted);
 
-        priceTime.removeAt(0);
-      });
+        setState(() {
+          priceTime.add(
+            tickHistory(
+              time: extractedTime,
+              price: tickStream['tick']['quote'],
+            ),
+          );
+
+          priceTime.removeAt(0);
+        });
+      } else if (tickStream['tick']['epoch'] == null) {
+        errorDialog(message: "Market is closed. Please visit later :)");
+      }
     });
   }
 }
