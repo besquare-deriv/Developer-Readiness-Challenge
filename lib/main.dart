@@ -58,7 +58,7 @@ class MainScreen extends StatelessWidget {
                     return NavigationPage();
                   }
                 } else {
-                  return Material(
+                  return const Material(
                     child: Center(
                       child: CircularProgressIndicator(),
                     ),
