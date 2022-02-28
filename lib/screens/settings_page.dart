@@ -1,13 +1,13 @@
 //import 'dart:html';
 
-import 'package:drc/screens/contract_details.dart';
-import 'package:drc/screens/explorer_page.dart';
-import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:country_pickers/country.dart';
+import 'package:country_pickers/country_picker_dropdown.dart';
+import 'package:country_pickers/utils/utils.dart';
+import 'package:drc/screens/explorer_page.dart';
+
 import 'package:flutter/material.dart';
-import 'package:country_pickers/country_pickers.dart';
+
 import '../components/iconwidget.dart';
-import 'graph_page.dart';
 import 'history_page.dart';
 import 'login_page.dart';
 import 'market_list_page.dart';
@@ -300,7 +300,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     leading: IconWidget(icon: Icons.calendar_today),
                     title: Text('Date of Birth*'),
                     subtitle: Text('${date.month}/${date.day}/${date.year}'),
-                    trailing: IconButton(icon: Icon(Icons.calendar_month), onPressed: () => pickDate(context) ,)   
+                    trailing: IconButton(icon: const Icon(Icons.calendar_month), onPressed: () => pickDate(context) ,)   
                   ),
                   //country
                   ListTile(

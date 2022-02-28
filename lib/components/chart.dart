@@ -37,11 +37,11 @@ class _chartBuilderState extends State<chartBuilder> {
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
 
   void getTickHistory() {
-
     String request1 =
         '{"ticks_history": "$symbol" ,"count": ${countList[counts]},"end": "latest"}';
     channel.sink.add(request1);
   }
+
 
 void getTickStream(){
     String request2 = '{"ticks": "$symbol","subscribe": 1}';

@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String username = "User";
-  String apiToken = "5dRHsXj0xsjBEJC";
+  String apiToken = "SZZ9iFcGUaAMqA5";
   num balance = 0.0;
   int winsCount = 0;
   int lossCount = 0;
