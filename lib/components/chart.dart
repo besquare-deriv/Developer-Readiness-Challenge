@@ -11,35 +11,35 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 class chartBuilder extends StatefulWidget {
   chartBuilder(
       {required this.symbol,
-      required this.counts,
       required this.channel2,
+      required this.symbolName,
       Key? key})
       : super(key: key);
-  String symbol;
-  int counts;
+  String symbol, symbolName;
   WebSocketChannel channel2;
 
   @override
   _chartBuilderState createState() =>
-      _chartBuilderState(symbol, counts, channel2);
+      _chartBuilderState(symbol, symbolName, channel2);
 }
 
 class _chartBuilderState extends State<chartBuilder> {
-  _chartBuilderState(this.symbol, this.counts, this.channel2);
+  _chartBuilderState(this.symbol, this.symbolName, this.channel2);
 
   List<tickHistory> priceTime = [];
 
   WebSocketChannel channel2;
-  String symbol;
-  int counts;
-  var countList = [112, 2700, 18900, 81000, 30];
+  String symbol, symbolName;
+  num currentPrice = 0;
+  String message = "";
+  String extractedTime = "";
 
   final channel = IOWebSocketChannel.connect(
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
 
   void getTickHistory() {
     String request1 =
-        '{"ticks_history": "$symbol" ,"count": ${countList[counts]},"end": "latest"}';
+        '{"ticks_history": "$symbol" ,"count": 112,"end": "latest"}';
     channel.sink.add(request1);
   }
 
@@ -59,70 +59,102 @@ class _chartBuilderState extends State<chartBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return SfCartesianChart(
-      margin: EdgeInsets.only(top: 20.0, left: 8.0),
-      enableAxisAnimation: true,
-      plotAreaBackgroundColor: Colors.black,
+    if (priceTime.isNotEmpty) {
+      return Column(
+        children: [
+          Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(10),
+              alignment: Alignment.centerLeft,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "$symbolName :",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  Text(
+                    "$currentPrice USD",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              )),
+          SfCartesianChart(
+            // margin: EdgeInsets.only(top: 20.0, left: 8.0),
+            enableAxisAnimation: true,
+            plotAreaBackgroundColor: Colors.black,
 
-      zoomPanBehavior: ZoomPanBehavior(
-        selectionRectColor: Colors.red,
-        zoomMode: ZoomMode.x,
-        enablePanning: true,
-        enableDoubleTapZooming: true,
-        enablePinching: true,
-      ),
-      primaryXAxis: CategoryAxis(
-        maximumLabels: 5,
-        isVisible: true,
-        majorGridLines: MajorGridLines(width: 0),
-        labelStyle: TextStyle(color: Colors.white),
-        labelPlacement: LabelPlacement.onTicks,
-        labelPosition: ChartDataLabelPosition.inside,
-      ),
-      primaryYAxis: NumericAxis(
-        maximumLabels: 5,
-        interval: 0.1,
-        majorGridLines: MajorGridLines(width: 0),
-        labelPosition: ChartDataLabelPosition.inside,
-        labelStyle: TextStyle(color: Colors.white),
-        opposedPosition: true,
-      ),
+            zoomPanBehavior: ZoomPanBehavior(
+              selectionRectColor: Colors.red,
+              zoomMode: ZoomMode.x,
+              enablePanning: true,
+              enableDoubleTapZooming: true,
+              enablePinching: true,
+            ),
+            primaryXAxis: CategoryAxis(
+              maximumLabels: 5,
+              isVisible: true,
+              majorGridLines: MajorGridLines(width: 0),
+              labelStyle: TextStyle(color: Colors.white),
+              labelPlacement: LabelPlacement.onTicks,
+              labelPosition: ChartDataLabelPosition.inside,
+            ),
+            primaryYAxis: NumericAxis(
+              maximumLabels: 5,
+              interval: 0.1,
+              majorGridLines: MajorGridLines(width: 0),
+              labelPosition: ChartDataLabelPosition.inside,
+              labelStyle: TextStyle(color: Colors.white),
+              opposedPosition: true,
+            ),
 
-      // Chart title
+            // Chart title
 
-      tooltipBehavior: TooltipBehavior(
-        tooltipPosition: TooltipPosition.auto,
-        color: Colors.red,
-        elevation: 10,
-        enable: true,
-        format: 'point.y at point.x',
-        shouldAlwaysShow: true,
-        canShowMarker: true,
-      ),
-      series: <ChartSeries<tickHistory, String>>[
-        AreaSeries<tickHistory, String>(
-          opacity: 0.3,
-          borderWidth: 4,
-          borderGradient: LinearGradient(
-            colors: <Color>[
-              Color.fromRGBO(230, 0, 180, 1),
-              Color.fromRGBO(8, 217, 217, 1)
+            tooltipBehavior: TooltipBehavior(
+              tooltipPosition: TooltipPosition.auto,
+              color: Colors.red,
+              elevation: 10,
+              enable: true,
+              format: 'point.y at point.x',
+              shouldAlwaysShow: true,
+              canShowMarker: true,
+            ),
+            series: <ChartSeries<tickHistory, String>>[
+              AreaSeries<tickHistory, String>(
+                opacity: 0.3,
+                borderWidth: 4,
+                borderGradient: LinearGradient(
+                  colors: <Color>[
+                    Color.fromRGBO(230, 0, 180, 1),
+                    Color.fromRGBO(8, 217, 217, 1)
+                  ],
+                ),
+                onRendererCreated: (ChartSeriesController controller) {
+                  _chartSeriesController:
+                  controller;
+                },
+                color: Colors.grey,
+                enableTooltip: true,
+                dataSource: priceTime,
+                xValueMapper: (tickHistory ticks, _) => ticks.time,
+                yValueMapper: (tickHistory ticks, _) => ticks.price,
+                name: 'Ticks',
+                // Enable data label
+              ),
             ],
           ),
-          onRendererCreated: (ChartSeriesController controller) {
-            _chartSeriesController:
-            controller;
-          },
-          color: Colors.grey,
-          enableTooltip: true,
-          dataSource: priceTime,
-          xValueMapper: (tickHistory ticks, _) => ticks.time,
-          yValueMapper: (tickHistory ticks, _) => ticks.price,
-          name: 'Ticks',
-          // Enable data label
-        ),
-      ],
-    );
+        ],
+      );
+    } else {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
   }
 
   void initialTicks() {
@@ -157,27 +189,23 @@ class _chartBuilderState extends State<chartBuilder> {
 
     channel2.stream.listen((data) {
       var tickStream = jsonDecode(data);
+
       dynamic timeConverted;
-      String extractedTime = "";
 
-      if (tickStream['msg_type'] == 'tick') {
-        timeConverted = DateTime.fromMillisecondsSinceEpoch(
-            tickStream['tick']['epoch'] * 1000);
-        extractedTime = DateFormat.Hms().format(timeConverted);
+      timeConverted = DateTime.fromMillisecondsSinceEpoch(
+          tickStream['tick']['epoch'] * 1000);
+      extractedTime = DateFormat.Hms().format(timeConverted);
+      currentPrice = tickStream['tick']['quote'];
+      setState(() {
+        priceTime.add(
+          tickHistory(
+            time: extractedTime,
+            price: currentPrice,
+          ),
+        );
 
-        setState(() {
-          priceTime.add(
-            tickHistory(
-              time: extractedTime,
-              price: tickStream['tick']['quote'],
-            ),
-          );
-
-          priceTime.removeAt(0);
-        });
-      } else if (tickStream['tick']['epoch'] == null) {
-        errorDialog(message: "Market is closed. Please visit later :)");
-      }
+        priceTime.removeAt(0);
+      });
     });
   }
 }
