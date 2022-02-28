@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:convert';
-
+import 'package:drc/components/error_dialog.dart';
+import 'package:drc/screens/active_transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -10,18 +11,24 @@ import '../components/chart.dart';
 import 'package:flutter/services.dart';
 
 class GraphScreen extends StatefulWidget {
-  const GraphScreen({Key? key, required this.symbolName, required this.symbol})
+  const GraphScreen(
+      {Key? key,
+      required this.state,
+      required this.symbolName,
+      required this.symbol})
       : super(key: key);
   final String symbolName;
   final String symbol;
+  final int state;
 
   @override
   _GraphScreenState createState() =>
-      _GraphScreenState(symbolName: symbolName, symbol: symbol);
+      _GraphScreenState(symbolName: symbolName, symbol: symbol, state: state);
 }
 
 class _GraphScreenState extends State<GraphScreen> {
-  _GraphScreenState({required this.symbolName, required this.symbol});
+  _GraphScreenState(
+      {required this.symbolName, required this.symbol, required this.state});
 
   final channel = IOWebSocketChannel.connect(
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
@@ -29,12 +36,15 @@ class _GraphScreenState extends State<GraphScreen> {
   final authChannel = IOWebSocketChannel.connect(
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
 
+  final checkmarketChannel = IOWebSocketChannel.connect(
+      Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
+
 // For now initializing this data, should get this variables from Maket page
   String symbolName;
   String symbol;
   String apiToken = "SZZ9iFcGUaAMqA5";
   String? buy_id;
-  int counts = 4;
+  int state;
   int? _inputAmount;
   int? contractTime;
   String? contractType;
@@ -52,8 +62,6 @@ class _GraphScreenState extends State<GraphScreen> {
   void listenWS() {
     authChannel.stream.listen((data) {
       var result = jsonDecode(data);
-
-      print(result.toString());
 
       if (result['msg_type'] == 'proposal' && result['proposal'] != null) {
         buy_id = result['proposal']['id'];
@@ -75,6 +83,9 @@ class _GraphScreenState extends State<GraphScreen> {
                   child: Text("Confirm"),
                   onPressed: () {
                     buyContract();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (data) => activeOptions()));
+                    // Navigator.of(context).pop();
                   },
                 ),
               ],
@@ -124,268 +135,234 @@ class _GraphScreenState extends State<GraphScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () {
-              channel.sink.close();
-              Navigator.of(context).pop();
-            }),
-        backgroundColor: Color(0xFF1F96B0),
-        title: Text(
-          symbolName,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-      ),
-      body: ListView(
-        children: [
-          SizedBox(
-            height: 400,
-            width: double.infinity,
-            child: chartBuilder(
-              symbol: symbol,
-              counts: counts,
-              channel2: channel,
+    if (state == 0) {
+      return errorDialog(message: "Market is closed");
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.black),
+              onPressed: () {
+                channel.sink.close();
+                Navigator.of(context).pop();
+              }),
+          backgroundColor: Color(0xFF1F96B0),
+          title: Text(
+            symbolName,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
           ),
-          Container(
-            height: 200,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8),
-                      child: Icon(Icons.watch_later_outlined),
-                    ),
-                    Text(
-                      "Time Intervals",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    ToggleSwitch(
-                      fontSize: 11,
-                      iconSize: 8.0,
-                      minWidth: 60,
-                      inactiveBgColor: Colors.grey.shade400,
-                      activeFgColor: Colors.black,
-                      activeBgColor: [Colors.grey],
-                      initialLabelIndex: 4,
-                      totalSwitches: 4,
-                      labels: ['1 Hour', '1 Day', '7 Days', '30 Days'],
-                      onToggle: (index) {
-                        counts = index as int;
-                      },
-                    )
-                  ],
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 60,
-                  child: Padding(
+          centerTitle: true,
+        ),
+        body: ListView(
+          children: [
+            SizedBox(
+              height: 380,
+              width: double.infinity,
+              child: chartBuilder(
+                symbol: symbol,
+                symbolName: symbolName,
+                channel2: channel,
+              ),
+            ),
+            Container(
+              height: 200,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Padding(
                     padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: Container(
-                            // padding: EdgeInsets.all(10),
-                            alignment: Alignment.centerLeft,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color(0xFFC1C1C1),
-                            ),
-                            child: TextField(
-                              onSubmitted: (value) {
-                                if (value.isNotEmpty) {
-                                  _inputAmount = int.parse(value);
-                                } else {
-                                  _inputAmount = null;
-                                }
-                              },
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                contentPadding:
-                                    EdgeInsets.only(left: 20, bottom: 10),
-                                labelText: "Amount (USD)",
-                                labelStyle: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 8),
+                          child: Icon(Icons.info_outline),
+                        ),
+                        Text(
+                          "Only Rise/Fall contracts available for now.",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 60,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              // padding: EdgeInsets.all(10),
+                              alignment: Alignment.centerLeft,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Color(0xFFC1C1C1),
                               ),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: <TextInputFormatter>[
-                                FilteringTextInputFormatter.digitsOnly
-                              ], // Only numbers can be entered
+                              child: TextField(
+                                onSubmitted: (value) {
+                                  if (value.isNotEmpty) {
+                                    _inputAmount = int.parse(value);
+                                  } else {
+                                    _inputAmount = null;
+                                  }
+                                },
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  contentPadding:
+                                      EdgeInsets.only(left: 20, bottom: 10),
+                                  labelText: "Amount (USD)",
+                                  labelStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ], // Only numbers can be entered
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              // padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Color(0xFFC1C1C1),
+                              ),
+                              child: TextField(
+                                onSubmitted: (value) {
+                                  if (value.isNotEmpty) {
+                                    contractTime = int.parse(value);
+                                  } else {
+                                    contractTime = null;
+                                  }
+                                },
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  contentPadding:
+                                      EdgeInsets.only(left: 20, bottom: 10),
+                                  labelText: "Time (Mins)",
+                                  labelStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ], // Only numbers can be entered
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.green),
+                          ),
+                          onPressed: () {
+                            if (_inputAmount != null || contractTime != null) {
+                              contractType = "CALL";
+                              getPriceProposal();
+                            }
+                            if (_inputAmount == null || contractTime == null) {
+                              errorDialog(
+                                  message:
+                                      "Amount or time field is empty. Please give valid input and press 'Done'.");
+                            }
+                          },
+                          child: SizedBox(
+                            height: 40,
+                            width: 150,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Icon(
+                                  Icons.arrow_upward,
+                                  color: Colors.black,
+                                ),
+                                Text(
+                                  "Rise",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Expanded(
-                          child: Container(
-                            alignment: Alignment.centerLeft,
-                            // padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color(0xFFC1C1C1),
-                            ),
-                            child: TextField(
-                              onSubmitted: (value) {
-                                if (value.isNotEmpty) {
-                                  contractTime = int.parse(value);
-                                } else {
-                                  contractTime = null;
-                                }
-                              },
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                contentPadding:
-                                    EdgeInsets.only(left: 20, bottom: 10),
-                                labelText: "Time (Mins)",
-                                labelStyle: TextStyle(
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.red),
+                          ),
+                          onPressed: () {
+                            if (_inputAmount != null || contractTime != null) {
+                              contractType = "PUT";
+                              getPriceProposal();
+                            }
+                            if (_inputAmount == null || contractTime == null) {
+                              errorDialog(
+                                  message:
+                                      "Amount or time field is empty. Please give valid input and press 'Done'.");
+                            }
+                          },
+                          child: SizedBox(
+                            height: 40,
+                            width: 150,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Icon(
+                                  Icons.arrow_downward,
                                   color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
                                 ),
-                              ),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: <TextInputFormatter>[
-                                FilteringTextInputFormatter.digitsOnly
-                              ], // Only numbers can be entered
+                                Text(
+                                  "Fall",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.green),
-                        ),
-                        onPressed: () {
-                          if (_inputAmount != null || contractTime != null) {
-                            contractType = "CALL";
-                            getPriceProposal();
-                          }
-                          if (_inputAmount == null || contractTime == null) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text(
-                                      "Amount or time field is empty. Please give valid input and press 'Done'."),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: Text("OK"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          }
-                        },
-                        child: SizedBox(
-                          height: 40,
-                          width: 150,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Icon(
-                                Icons.arrow_upward,
-                                color: Colors.black,
-                              ),
-                              Text(
-                                "Rise",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.red),
-                        ),
-                        onPressed: () {
-                          if (_inputAmount != null || contractTime != null) {
-                            contractType = "PUT";
-                            getPriceProposal();
-                          }
-                          if (_inputAmount == null || contractTime == null) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text(
-                                      "Amount or time field is empty. Please give valid input and press 'Done'."),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: Text("OK"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          }
-                        },
-                        child: SizedBox(
-                          height: 40,
-                          width: 150,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Icon(
-                                Icons.arrow_downward,
-                                color: Colors.black,
-                              ),
-                              Text(
-                                "Fall",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    }
   }
 }
