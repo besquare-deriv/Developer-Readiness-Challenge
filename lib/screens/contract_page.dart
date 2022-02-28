@@ -32,8 +32,9 @@ class _ContractPageState extends State<ContractPage> {
 
             Container(
               color: Colors.amber,
-              child: Text('${data.id}'),
+              child: Text('${data[1].amount}'),
             ),
+            ElevatedButton(onPressed: () {print(data.length);}, child: Text('Click me')),
           ],
         ),
       ),
@@ -47,6 +48,7 @@ class transDetails {
   final dynamic id;
   final dynamic amount;
   final dynamic balance;
+  final dynamic contract_id;
   // final dynamic crypto;
 
   transDetails({
@@ -55,9 +57,10 @@ class transDetails {
     this.id,
     this.amount,
     this.balance,
+    this.contract_id,
     // this.crypto,
   });
 
   @override
-  String toString() => '[ $action , $time , $id , $amount, $balance ]';
+  String toString() => '[ $action , $time , $id , $amount, $balance , $contract_id]';
 }
