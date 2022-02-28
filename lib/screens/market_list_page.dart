@@ -43,24 +43,14 @@ class _MarketScreenState extends State<MarketScreen> {
   Widget build(BuildContext context) {
     var symbol;
     var symbolName;
+    var state;
+
     TextEditingController selectedSymbol = new TextEditingController();
 
     List<String> MarketNames = [];
-    return Scaffold(
-      // appBar: new AppBar(
-      //   leading: GestureDetector(
-      //     onTap: () {
-      //       AuthHelper().logOut();
-      //     },
-      //     child: Icon(
-      //       Icons.menu, // add custom icons also
-      //     ),
-      //   ),
-      //   centerTitle: true,
-      //   title: Text("Token"),
-      //   backgroundColor: Colors.lightBlue,
-      // ),
 
+    List<SearchFieldListItem> list = [];
+    return Scaffold(
       body: StreamBuilder(
           stream: channel.stream,
           builder: (context, AsyncSnapshot snapshot) {
@@ -68,8 +58,11 @@ class _MarketScreenState extends State<MarketScreen> {
               var price = jsonDecode(snapshot.data);
               try {
                 for (int i = 0; i <= 76; i++) {
-                  MarketNames.add(price['active_symbols'][i]['display_name']);
+                  if (price['active_symbols'][i]['exchange_is_open'] == 1) {
+                    MarketNames.add(price['active_symbols'][i]['display_name']);
+                  }
                 }
+                list = MarketNames.map((e) => SearchFieldListItem(e)).toList();
               } catch (e) {}
               return Column(
                 children: [
@@ -90,9 +83,7 @@ class _MarketScreenState extends State<MarketScreen> {
                         SearchField(
                             marginColor: Colors.purple,
                             controller: selectedSymbol,
-                            suggestions:
-                                MarketNames.map((e) => SearchFieldListItem(e))
-                                    .toList(),
+                            suggestions: list,
                             suggestionState: Suggestion.expand,
                             maxSuggestionsInViewPort: 5,
                             hint: 'Search Currency Pairs',
@@ -123,8 +114,9 @@ class _MarketScreenState extends State<MarketScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => GraphScreen(
-                                    symbolName: symbolName,
-                                    symbol: symbol,
+                                    symbolName: "",
+                                    symbol: "",
+                                    state: 1,
                                   ),
                                 ),
                               );
@@ -343,6 +335,8 @@ class _MarketScreenState extends State<MarketScreen> {
                                             [index]['display_name'],
                                         symbol: price['active_symbols'][index]
                                             ['symbol'],
+                                        state: price['active_symbols'][index]
+                                            ['exchange_is_open'],
                                       ),
                                     ),
                                   );
