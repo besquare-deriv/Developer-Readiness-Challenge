@@ -7,23 +7,30 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:intl/intl.dart';
-// import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class chartBuilder extends StatefulWidget {
-  chartBuilder({required this.symbol, required this.counts, Key? key})
+  chartBuilder(
+      {required this.symbol,
+      required this.counts,
+      required this.channel2,
+      Key? key})
       : super(key: key);
   String symbol;
   int counts;
+  WebSocketChannel channel2;
 
   @override
-  _chartBuilderState createState() => _chartBuilderState(symbol, counts);
+  _chartBuilderState createState() =>
+      _chartBuilderState(symbol, counts, channel2);
 }
 
 class _chartBuilderState extends State<chartBuilder> {
-  _chartBuilderState(this.symbol, this.counts);
+  _chartBuilderState(this.symbol, this.counts, this.channel2);
 
   List<tickHistory> priceTime = [];
 
+  WebSocketChannel channel2;
   String symbol;
   int counts;
   var countList = [112, 2700, 18900, 81000, 30];
@@ -31,20 +38,14 @@ class _chartBuilderState extends State<chartBuilder> {
   final channel = IOWebSocketChannel.connect(
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
 
-  final channel2 = IOWebSocketChannel.connect(
-      Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
-
   void getTickHistory() {
-    //print(symbol);
 
     String request1 =
         '{"ticks_history": "$symbol" ,"count": ${countList[counts]},"end": "latest"}';
     channel.sink.add(request1);
   }
 
-  void getTickStream() {
-    //print(symbol);
-
+void getTickStream(){
     String request2 = '{"ticks": "$symbol","subscribe": 1}';
     channel2.sink.add(request2);
   }
@@ -180,7 +181,7 @@ class _chartBuilderState extends State<chartBuilder> {
 
 class tickHistory {
   final String time;
-  final double price;
+  final num price;
 
   tickHistory({
     required this.time,

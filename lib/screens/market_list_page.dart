@@ -1,8 +1,8 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:web_socket_channel/io.dart';
-
 import 'graph_page.dart';
 
 class MarketScreen extends StatefulWidget {
@@ -47,6 +47,20 @@ class _MarketScreenState extends State<MarketScreen> {
 
     List<String> MarketNames = [];
     return Scaffold(
+      // appBar: new AppBar(
+      //   leading: GestureDetector(
+      //     onTap: () {
+      //       AuthHelper().logOut();
+      //     },
+      //     child: Icon(
+      //       Icons.menu, // add custom icons also
+      //     ),
+      //   ),
+      //   centerTitle: true,
+      //   title: Text("Token"),
+      //   backgroundColor: Colors.lightBlue,
+      // ),
+
       body: StreamBuilder(
           stream: channel.stream,
           builder: (context, AsyncSnapshot snapshot) {

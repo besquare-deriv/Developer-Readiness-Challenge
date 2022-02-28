@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "665529879242",
+    "project_id": "berad-637fb",
+    "storage_bucket": "berad-637fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665529879242:android:1ff7a48c4a2d1bf3ea4233",
+        "android_client_info": {
+          "package_name": "com.example.drc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "665529879242-ggeboc81ecl04tk60ijmaki3qhqfs8r6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzeCmh-6izbPxucahCVvle0ffA63bDy0Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "665529879242-ggeboc81ecl04tk60ijmaki3qhqfs8r6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
