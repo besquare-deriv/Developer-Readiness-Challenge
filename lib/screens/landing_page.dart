@@ -1,9 +1,12 @@
+import 'package:drc/screens/Signup_page.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';
 import './login_page.dart';
 
 class LandingScreen extends StatefulWidget {
-  const LandingScreen({Key? key}) : super(key: key);
+  const LandingScreen({Key? key, required this.title}) : super(key: key);
+
+  final String title;
 
   @override
   State<LandingScreen> createState() => _LandingScreenState();
@@ -119,8 +122,7 @@ class _LandingScreenState extends State<LandingScreen> {
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginScreen()));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      (const SnackBar(content: Text('Successful sign in. '))));
+
                 },
                 style: ElevatedButton.styleFrom(
                     primary: Colors.white,
@@ -140,8 +142,9 @@ class _LandingScreenState extends State<LandingScreen> {
                       fontSize: 18),
                 ),
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar((const SnackBar(
-                      content: Text('Please enter your details. '))));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SignupScreen()));
+             
                 },
                 style: ElevatedButton.styleFrom(
                     primary: Color(0xFFF305FAD),

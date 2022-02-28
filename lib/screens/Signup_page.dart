@@ -2,22 +2,32 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:drc/Authorization/auth_helper.dart';
-import 'package:drc/screens/Signup_page.dart';
 
+import 'package:drc/screens/login_page.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_signin_button/button_view.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import '../constants.dart';
 
-class LoginScreen extends StatefulWidget {
+class SignupScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignupScreenScreenState createState() => _SignupScreenScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  var _error;
+class _SignupScreenScreenState extends State<SignupScreen> {
+  String? _error;
   bool visible_text = true;
+  TextEditingController? email_Input;
+  TextEditingController? password_Input;
+  TextEditingController? _confirmPasswordController;
+
+  @override
+  void initState() {
+    super.initState();
+    email_Input = TextEditingController(text: "");
+    password_Input = TextEditingController(text: "");
+    _confirmPasswordController = TextEditingController(text: "");
+  }
 
   Widget showAlert() {
     if (_error != null) {
@@ -33,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             Expanded(
               child: AutoSizeText(
-                _error,
+                _error!,
                 maxLines: 3,
               ),
             ),
@@ -82,9 +92,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   clipBehavior: Clip.none,
                   alignment: Alignment.center,
                   children: <Widget>[
-                    const SizedBox(height: 100),
-                    Image.asset("assets/images/BeRad.png",
-                        width: 280, height: 280),
+                    const SizedBox(height: 120),
+                    Image.asset(
+                        "assets/images/robot_forex_terbaik_di_quickpro_apps.png",
+                        width: 280,
+                        height: 180),
                   ],
                 ),
               ),
@@ -94,24 +106,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   key: validkey,
                   child: Card(
                     color: Colors.white,
+                    shadowColor: Colors.black,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0)),
                     elevation: 10.0,
                     child: Column(
                       children: [
-                        const SizedBox(height: 10),
                         Container(
                           margin: EdgeInsets.only(bottom: 5, top: 10),
                           padding:
                               EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                           width: 300.0,
                           child: TextFormField(
-                              controller: _emailController,
+                              controller: email_Input,
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: Colors.transparent,
                                 border: OutlineInputBorder(),
-                                hintText: 'Email Password',
+                                hintText: 'Email Address',
                               ),
                               validator: MultiValidator([
                                 RequiredValidator(errorText: "REQUIRED"),
@@ -125,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                           width: 300.0,
                           child: TextFormField(
-                              controller: _passwordController,
+                              controller: password_Input,
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: Colors.transparent,
@@ -151,20 +163,49 @@ class _LoginScreenState extends State<LoginScreen> {
                                 RequiredValidator(errorText: "REQUIRED"),
                               ])),
                         ),
-                        Text(
-                          "Forgot Password ?",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14),
+                        Container(
+                          margin: EdgeInsets.only(bottom: 5, top: 10),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                          width: 300.0,
+                          child: TextFormField(
+                            controller: _confirmPasswordController,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.transparent,
+                              border: OutlineInputBorder(),
+                              hintText: 'Confirm Password',
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    visible_text = !visible_text;
+                                  });
+                                },
+                                child: Icon(
+                                  visible_text
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.black87,
+                                  size: 24.0,
+                                ),
+                              ),
+                            ),
+                            obscureText: visible_text,
+                            validator: (confirmation) {
+                              return confirmation!.isEmpty
+                                  ? 'Confirm password cant be empty'
+                                  : chkpass(confirmation, password_Input!.text)
+                                      ? null
+                                      : 'Confirm password and password does not match';
+                            },
+                          ),
                         ),
                         SizedBox(
                           height: 6,
                         ),
                         ElevatedButton(
                           child: const Text(
-                            'Log in',
+                            'Submit',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500,
@@ -172,15 +213,25 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           onPressed: () async {
                             if (validkey.currentState!.validate()) {
-                              // validation purpose
                               try {
-                                await AuthHelper.signInWithEmail(
-                                    // the variable being assign to auth helper variable
-                                    email: _emailController.text,
-                                    password: _passwordController.text);
+                                await AuthHelper.signupWithEmail(
+                                    email: email_Input!.text,
+                                    password: password_Input!.text);
+
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(
+                                      "Account have been cretead succesfully"),
+                                  duration: const Duration(seconds: 2),
+                                ));
+
+                                Navigator.of(context).pop();
+
+                                return;
                               } catch (e) {
                                 setState(() {
-                                  // _showDialog(errorMessage);
+                                  print(e);
+
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -200,11 +251,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 });
                               }
                             } else {
-                              //////////////////dDOWN VALIDATION
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
-                                content: Text("ERROR IN SIGN IN"),
-                                // duration: const Duration(seconds: 2),
+                                content: Text("Error occurred"),
                               ));
                             }
                           },
@@ -214,7 +263,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10))),
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -248,6 +297,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: <Widget>[
                             SignInButton(
                               Buttons.Google,
+                              text: "Sign Up with Google",
                               onPressed: () async {
                                 try {
                                   await AuthHelper.signInWithGoogle();
@@ -270,6 +320,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   );
                                 }
                               },
+                              // child: ClipRRect(
+                              //   borderRadius: BorderRadius.circular(20.0),
+                              //   // child: Image.asset("assets/icons/google.png",
+                              //   //     width: 70, height: 70),
+                              // ),
                             ),
                             InkWell(
                               child: ClipRRect(
@@ -289,11 +344,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    " Don't have an account? ",
+                    "Already have an account?",
                     style: TextStyle(
                         fontFamily: 'Montserrat',
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                   SizedBox(width: 5.0),
                   InkWell(
@@ -301,16 +356,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => SignupScreen(),
+                            builder: (_) => LoginScreen(),
                           ));
                     },
                     child: Text(
-                      'Sign Up',
+                      'Login',
                       style: TextStyle(
                           color: Color(0xFFF305FAD),
                           fontFamily: 'Montserrat',
-                          fontSize: 16,
                           fontWeight: FontWeight.bold,
+                          fontSize: 16,
                           decoration: TextDecoration.underline),
                     ),
                   ),
@@ -324,14 +379,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-
-/*{
-  "proposal": 1,
-  "amount": 100,
-  "basis": "payout",
-  "contract_type": "CALL",
-  "currency": "USD",
-  "duration": 60,
-  "duration_unit": "m",
-  "symbol": "R_100"
-}*/
+bool chkpass(String currentValue, String checkValue) {
+  if (currentValue == checkValue) {
+    return true;
+  } else {
+    return false;
+  }
+}

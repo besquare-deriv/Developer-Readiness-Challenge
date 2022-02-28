@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables, camel_case_types
 
 import 'dart:convert';
 
@@ -13,21 +13,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var username = "User";
-  var apiToken = "SZZ9iFcGUaAMqA5";
-  var balance = 9945.10;
-  var winsCount = 12;
-  var lossCount = 4;
-  var profit = 439.89;
-  var loss = 439.89;
+  String username = "User";
+  String apiToken = "5dRHsXj0xsjBEJC";
+  num balance = 0.0;
+  int winsCount = 0;
+  int lossCount = 0;
+  num profit = 0;
+  num loss = 0;
   var assetList = ['BTC/USD', 'EUR/USD', 'ETH/USD', 'Gold'];
 
   final channel = IOWebSocketChannel.connect(
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
 
   void sendAuth() {
-    String authProfile = '{"authorize": "$apiToken"}';
-    channel.sink.add(authProfile);
+    channel.sink.add('{"authorize": "$apiToken"}');
+  }
+
+  void getStatement() {
+    String walletInfo =
+        '{"statement": 1,"description": 1,"limit": 999,"offset": 25}';
+    channel.sink.add(walletInfo);
   }
 
   @override
@@ -140,8 +145,8 @@ class _HomePageState extends State<HomePage> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Expanded(
-                                    child:
-                                        Image.asset('assets/images/BeRad.png'),
+                                    child: Image.asset(
+                                        'assets/images/ethereum.png'),
                                   ),
                                   Text(
                                     assetList[index],
@@ -223,14 +228,14 @@ class _HomePageState extends State<HomePage> {
                       child: Center(
                         child: ListTile(
                           leading: Text(
-                            "Wins",
+                            "Wins    ",
                             style: TextStyle(
-                                fontSize: 28, fontWeight: FontWeight.bold),
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
-                          title: Text(
+                          subtitle: Text(
                             "$winsCount",
                             style: TextStyle(
-                              fontSize: 36,
+                              fontSize: 28,
                             ),
                           ),
                         ),
@@ -251,12 +256,12 @@ class _HomePageState extends State<HomePage> {
                           leading: Text(
                             "Losses",
                             style: TextStyle(
-                                fontSize: 28, fontWeight: FontWeight.bold),
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
-                          title: Text(
+                          subtitle: Text(
                             "$lossCount",
                             style: TextStyle(
-                              fontSize: 36,
+                              fontSize: 28,
                             ),
                           ),
                         ),
@@ -288,7 +293,7 @@ class _HomePageState extends State<HomePage> {
                     height: 20,
                   ),
                   Text(
-                    "+ $profit",
+                    "+${profit.toStringAsFixed(2)}",
                     style: TextStyle(
                       fontSize: 24,
                       color: Colors.white,
@@ -317,7 +322,7 @@ class _HomePageState extends State<HomePage> {
                     height: 20,
                   ),
                   Text(
-                    "- $loss",
+                    loss.toStringAsFixed(2),
                     style: TextStyle(
                       fontSize: 24,
                       color: Colors.white,
@@ -332,17 +337,71 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> getProfileInfo() async {
-    channel.stream.listen((data) async {
-      var response = await jsonDecode(data);
+  void getProfileInfo() {
+    int tempWins = 0;
+    int tempLoss = 0;
+    num tempProfit = 0;
+    num tempLosses = 0;
 
-      var email = response['authorize']['email'];
+    channel.stream.listen((data) {
+      var response = jsonDecode(data);
 
-      var extractedEmail = email.substring(0, email.indexOf('@'));
-      setState(() {
-        username = extractedEmail;
-      });
-      debugPrint(data);
+      if (response['msg_type'] == 'authorize') {
+        getStatement();
+        setState(() {
+          balance = response['authorize']['balance'];
+
+          username = response['authorize']['email']
+              .substring(0, response['authorize']['email'].indexOf('@'));
+        });
+      }
+
+      if (response['msg_type'] == 'statement') {
+        // initialize the length of contracts
+        int loopCount = response['statement']['count'];
+
+        // Starts the first for loop
+
+        for (int i = 0; i < loopCount; i++) {
+          // checks for buy contract type
+          if (response['statement']['transactions'][i]['action_type'] ==
+              'buy') {
+            //initialize contractID and balanceBefore for calculations
+            var contractID =
+                response['statement']['transactions'][i]['contract_id'];
+            var balanceBefore =
+                response['statement']['transactions'][i]['amount'];
+
+// starts the second for loop
+            for (int j = 0; j < loopCount; j++) {
+              var secondID =
+                  response['statement']['transactions'][j]['contract_id'];
+
+              if (response['statement']['transactions'][j]['action_type'] ==
+                  'sell') {
+                if (contractID == secondID) {
+                  var nett = balanceBefore +
+                      response['statement']['transactions'][j]['amount'];
+
+                  if (nett > 0) {
+                    tempWins = tempWins + 1;
+                    tempProfit = tempProfit + nett;
+                  } else if (nett < 0) {
+                    tempLoss = tempLoss + 1;
+                    tempLosses = tempLosses + nett;
+                  }
+                }
+              }
+            }
+          }
+        }
+        setState(() {
+          winsCount = tempWins;
+          lossCount = tempLoss;
+          profit = tempProfit;
+          loss = tempLosses;
+        });
+      }
     });
   }
 }
