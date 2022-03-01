@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   _HomePageState(this.value1, {Key? key});
 
   String username = "User";
+
   num balance = 0.0;
   int winsCount = 0;
   int lossCount = 0;

@@ -1,13 +1,9 @@
 import 'dart:convert';
 
+import 'package:drc/screens/contract_page.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:intl/intl.dart';
-
-import 'faq_page.dart';
-import 'graph_page.dart';
-import 'market_list_page.dart';
-import 'profile_page.dart';
 
 class HistoryScreen extends StatefulWidget {
   // PostPage({required this.postchannel,Key? key}) : super(key: key);
@@ -20,6 +16,7 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> { 
 
   List<transDetails> dataHistory = [];
+  List<transDetails> sortedList = [];
 
   final channel = IOWebSocketChannel.connect(
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089')
@@ -44,7 +41,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     
       if (data['msg_type'] == 'authorize') {
          sendMessageStatement();
-         print(data);
+         //print(data);
        }
       
       if (data['msg_type'] == 'statement') {
@@ -76,23 +73,35 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 id: data['statement']['transactions'][i]['transaction_id'],
                 amount: data['statement']['transactions'][i]['amount'],
                 balance: data['statement']['transactions'][i]['balance_after'],
+                contract_id: data['statement']['transactions'][i]['contract_id'],
                 //crypto: typeCurrency[i],
                 ),
               );
             }
           );
          };
-         print(dataHistory);
+         //print(dataHistory);
        }
     });
-    
   }
+
+  // dynamic getDetails(ref_id) {
+  //   for (int i=0; i <= dataHistory.length -1; i ++){
+  //     if (dataHistory[i].contract_id == ref_id){
+  //       setState(() {
+  //         detailsContract.add(dataHistory[i]);
+  //       });
+  //     }
+  //   }
+  //   return detailsContract;
+  // }
 
   @override
   void initState() {
     sendMessageAuthorize();
     sendMessageStatement();
     getAuthorize();
+    // getDetails(ref_id);
     super.initState();
   }
 
@@ -103,6 +112,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    //final sortedList = dataHistory[].time.toString()
     
     return Scaffold(
       appBar: AppBar(
@@ -136,6 +147,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 onPressed: () {},
               ),
             ]),
+
             Expanded(
               child: SingleChildScrollView(
                 child: ListView.builder(
@@ -144,7 +156,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   shrinkWrap: true,
                   itemCount: dataHistory.length,
                   itemBuilder: (context, index) {
-                    return Center(
+                    return GestureDetector(
+                      onTap: () => {Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ContractPage(data: dataHistory[index],)))
+                        },
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                         child: Card(
@@ -226,6 +242,7 @@ class transDetails {
   final dynamic id;
   final dynamic amount;
   final dynamic balance;
+  final dynamic contract_id;
   // final dynamic crypto;
 
   transDetails({
@@ -234,9 +251,10 @@ class transDetails {
     this.id,
     this.amount,
     this.balance,
+    this.contract_id,
     // this.crypto,
   });
 
   @override
-  String toString() => '[ $action , $time , $id , $amount, $balance ]';
+  String toString() => '[ $action , $time , $id , $amount, $balance , $contract_id]';
 }
