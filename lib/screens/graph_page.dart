@@ -83,6 +83,7 @@ class _GraphScreenState extends State<GraphScreen> {
                   child: Text("Confirm"),
                   onPressed: () {
                     buyContract();
+                    Navigator.of(context).pop();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (data) => activeOptions()));
                     // Navigator.of(context).pop();
