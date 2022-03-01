@@ -26,55 +26,83 @@ class MyApp extends StatelessWidget {
 }
 
 class MainScreen extends StatelessWidget {
+  String? value;
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-        stream: FirebaseAuth.instance
-            .authStateChanges(), // if user logged in or not chang the set
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data != null) {
-            UserHelper.saveUser(snapshot.data);
-            return StreamBuilder<DocumentSnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection("users")
-                  .doc(snapshot.data!.uid)
-                  .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<DocumentSnapshot> snapshot) {
-                if (snapshot.hasError) {
-                  return CircularProgressIndicator();
-                }
-                if (snapshot.hasData && snapshot.data!.data() != null) {
-                  CircularProgressIndicator();
-
-                  final userDoc = snapshot.data;
-                  final user = userDoc!.data() as Map;
-
-                  if (user['role'] == 'user') {
-                    return NavigationPage();
-                  } else {
-                    return NavigationPage();
+    return Scaffold(
+      body: StreamBuilder<User?>(
+          stream: FirebaseAuth.instance
+              .authStateChanges(), // if user logged in or not chang the set
+          builder: (context, snapshot) {
+            if (snapshot.hasData && snapshot.data != null) {
+              UserHelper.saveUser(snapshot.data);
+              return StreamBuilder<DocumentSnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(snapshot.data!.uid)
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return CircularProgressIndicator();
                   }
-                } else {
-                  return Material(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                }
-              },
+                  if (snapshot.hasData && snapshot.data!.data() != null) {
+                    CircularProgressIndicator();
+
+                    final userDoc = snapshot.data;
+                    final user = userDoc!.data() as Map;
+
+                    if (user['role'] == 'user') {
+                      return StreamBuilder(
+                          stream: FirebaseFirestore.instance
+                              .collection("users")
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .collection('notes')
+                              .snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.data!.docs.length == 0) {
+                                return AddNote();
+                              } else {
+                                final docs = snapshot.data!.docs;
+                                final v = docs[0].data() as Map;
+
+                                value = v['token'];
+                                return NavigationPage(value!);
+                              }
+                            } else {
+                              return AddNote();
+                            }
+                          });
+                    } else {
+                      return AddNote();
+                    }
+                  } else {
+                    return Material(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+
+                  }
+                },
+              );
+            }
+
+            return MaterialApp(
+              title: 'Flutter Demo',
+              theme: ThemeData(
+                primarySwatch: Colors.blue,
+              ),
+              home: const LandingScreen(title: 'Flutter Demo Home Page'),
             );
-          }
-          return MaterialApp(
-            title: 'Flutter Demo',
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-            ),
-            home: const LandingScreen(title: 'BeRAD'),
-          );
-          // return LoginPage();
-          // return LandingScreen(title: 'MilkyWay');
-        });
+            // return LoginPage();
+            // return LandingScreen(title: 'MilkyWay');
+          }),
+    );
+
   }
 }

@@ -2,6 +2,7 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:drc/Authorization/auth_helper.dart';
+import 'package:drc/screens/ResetPassword.dart';
 import 'package:drc/screens/Signup_page.dart';
 
 import 'package:flutter/material.dart';
@@ -148,13 +149,28 @@ class _LoginScreenState extends State<LoginScreen> {
                                 RequiredValidator(errorText: "REQUIRED"),
                               ])),
                         ),
-                        Text(
-                          "Forgot Password ?",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            SizedBox(width: 5.0),
+                            InkWell(
+                              onTap: () async {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => ResetScreen(),
+                                    ));
+                              },
+                              child: Text(
+                                "Forgot Password ?",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14),
+                              ),
+                            ),
+                          ],
                         ),
                         SizedBox(
                           height: 6,
