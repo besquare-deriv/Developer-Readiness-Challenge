@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:drc/Authorization/auth_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -13,21 +12,6 @@ class _System_user extends State<System_user> {
   String? value;
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: new AppBar(
-      //   leading: GestureDetector(
-      //     onTap: () {
-      //       AuthHelper().logOut();
-      //     },
-      //     child: Icon(
-      //       Icons.menu, // add custom icons also
-      //     ),
-      //   ),
-      //   centerTitle: true,
-      //   title: Text("Token"),
-      //   backgroundColor: Colors.lightBlue,
-      // ),
-
-      //
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("users")

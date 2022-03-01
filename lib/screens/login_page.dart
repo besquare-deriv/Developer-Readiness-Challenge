@@ -2,8 +2,8 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:drc/Authorization/auth_helper.dart';
-import 'package:drc/screens/ResetPassword.dart';
-import 'package:drc/screens/Signup_page.dart';
+import 'package:drc/screens/reset_password.dart';
+import 'package:drc/screens/signup_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';

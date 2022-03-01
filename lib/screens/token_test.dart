@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../Authorization/auth_helper.dart';
+
 class AddNote extends StatefulWidget {
   @override
   _AddNoteState createState() => _AddNoteState();
@@ -10,19 +12,7 @@ class AddNote extends StatefulWidget {
 class _AddNoteState extends State<AddNote> {
   String? title;
   String? des;
-  // appBar: new AppBar(
-  //   leading: GestureDetector(
-  //     onTap: () {
-  //       AuthHelper().logOut();
-  //     },
-  //     child: Icon(
-  //       Icons.menu, // add custom icons also
-  //     ),
-  //   ),
-  //   centerTitle: true,
-  //   title: Text("Token"),
-  //   backgroundColor: Colors.lightBlue,
-  // ),
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

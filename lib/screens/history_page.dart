@@ -1,13 +1,13 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:drc/screens/active_transactions.dart';
 import 'package:drc/screens/contract_page.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:intl/intl.dart';
 
 class HistoryScreen extends StatefulWidget {
-  // PostPage({required this.postchannel,Key? key}) : super(key: key);
-  // final WebSocketChannel postchannel;
 
   @override
   _HistoryScreenState createState() => _HistoryScreenState();
@@ -15,18 +15,20 @@ class HistoryScreen extends StatefulWidget {
 
 class _HistoryScreenState extends State<HistoryScreen> { 
 
+  List<transDetails> listData = [];
   List<transDetails> dataHistory = [];
   List<transDetails> sortedList = [];
+  List<transDetails> dummyList = [];
+  bool _isLoading = false;
 
   final channel = IOWebSocketChannel.connect(
-      Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089')
-    );
-  
+      Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
+
   void sendMessageAuthorize() {
     channel.sink.add('{"authorize": "5dRHsXj0xsjBEJC"}');
   }
 
-   void sendMessageStatement() {
+  void sendMessageStatement() {
     channel.sink.add('{"statement": 1, "description": 1, "limit": 100}');
   }
 
@@ -35,23 +37,23 @@ class _HistoryScreenState extends State<HistoryScreen> {
       final data = jsonDecode(event);
 
       dataHistory = [];
+      listData = [];
       List<dynamic> time = [];
-      List<String> currency = [];
-      List<String> typeCurrency = [];
+      // List<String> currency = [];
+      // List<String> typeCurrency = [];
     
       if (data['msg_type'] == 'authorize') {
          sendMessageStatement();
-         //print(data);
        }
       
       if (data['msg_type'] == 'statement') {
          for (int i = 0; i <= data['statement']['transactions'].length -1; i ++) {
-          //  print(data['statement']['transactions'][i]['transaction_time']);
 
-           time.add(DateTime.fromMillisecondsSinceEpoch(
-            data['statement']['transactions'][i]['transaction_time'] * 1000));
-          
-          String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(time[i]);
+          time.add(DateTime.fromMillisecondsSinceEpoch(
+              data['statement']['transactions'][i]['transaction_time'] * 1000));
+
+          String formattedDate =
+              DateFormat('yyyy-MM-dd HH:mm:ss').format(time[i]);
 
           // currency.add(data['statement']['transactions'][i]['shortcode']);
 
@@ -64,7 +66,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           //   String output = currency[i].split('_')[1];
           //   typeCurrency.add(output);
           // }
-          
+
           setState(() {
             dataHistory.add(
               transDetails(
@@ -80,28 +82,36 @@ class _HistoryScreenState extends State<HistoryScreen> {
             }
           );
          };
-         //print(dataHistory);
+         setState(() {
+           listData.addAll(dataHistory);
+         });
        }
     });
   }
 
-  // dynamic getDetails(ref_id) {
-  //   for (int i=0; i <= dataHistory.length -1; i ++){
-  //     if (dataHistory[i].contract_id == ref_id){
-  //       setState(() {
-  //         detailsContract.add(dataHistory[i]);
-  //       });
-  //     }
-  //   }
-  //   return detailsContract;
-  // }
+  void checkData() {
+    if (listData.isEmpty){
+      return null;
+    } if (listData.length > 0){
+      setState(() {
+        _isLoading = true;
+      });
+    }
+  }
+
+  timer(){Timer(Duration(seconds: 5), () {
+    setState(() {
+      checkData();
+    });
+  });
+  }
 
   @override
   void initState() {
     sendMessageAuthorize();
     sendMessageStatement();
     getAuthorize();
-    // getDetails(ref_id);
+    timer();
     super.initState();
   }
 
@@ -110,17 +120,44 @@ class _HistoryScreenState extends State<HistoryScreen> {
     super.dispose();
   }
 
+  void filterSearchResults(String query) {
+    dummyList = [];
+    sortedList = [];
+
+    if(query.isNotEmpty) {
+      for (int i = 0; i < dataHistory.length; i ++)
+      {
+        if (dataHistory[i].action == query){
+          setState(() {
+            sortedList.add(dataHistory[i]);
+          }); 
+        }
+      };
+      setState(() {
+        listData.clear();
+        listData.addAll(sortedList);
+      });
+      return;
+    } else {
+      setState(() {
+        listData.clear();
+        listData.addAll(dataHistory);
+      });
+      return;
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
+    sortedList = [];
 
-    //final sortedList = dataHistory[].time.toString()
-    
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        // leading: IconButton(
+        //   icon: Icon(Icons.arrow_back, color: Colors.black),
+        //   onPressed: () => Navigator.of(context).pop(),
+        // ),
         backgroundColor: Color(0xFF1F96B0),
         title: const Text(
           'Transaction History',
@@ -130,21 +167,62 @@ class _HistoryScreenState extends State<HistoryScreen> {
           ),
         ),
         centerTitle: true,
+        actions: [],
       ),
+
       body: SafeArea(
-        child: Center(
+        child: (_isLoading) ? Center (
             child: Column(
           children: <Widget>[
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              Expanded(
+                flex: 8,
+                child: Container(
+                  padding: EdgeInsets.only(left: 10),
+                  alignment: Alignment.centerLeft,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (data) => activeOptions()));
+                    },
+                    child: Text(
+                      "Active Contracts",
+                    ),
+                  ),
+                ),
+              ),
               IconButton(
                 icon: Image.asset('assets/icons/sort.png'),
                 iconSize: 1,
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    listData = listData.reversed.toList();
+                  });
+                },
               ),
               IconButton(
                 icon: Image.asset('assets/icons/filter.png'),
                 iconSize: 1,
-                onPressed: () {},
+                onPressed: () => showDialog(context: context, builder: (BuildContext context){
+                  return AlertDialog(
+                    scrollable: true,
+                    title: Text('Filter by:'),
+                    insetPadding: EdgeInsets.zero,
+
+                    actions: [
+                      ElevatedButton(onPressed: () { filterSearchResults('buy');}, 
+                      child: Text('Buy'),),
+
+                      ElevatedButton(onPressed: () { filterSearchResults('sell');}, 
+                      child: Text('Sell'),),
+
+                      ElevatedButton(onPressed: () { filterSearchResults('');}, 
+                      child: Text('Clear Filter'),),
+                    ]
+                  );
+                }),
               ),
             ]),
 
@@ -154,15 +232,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  itemCount: dataHistory.length,
+                  itemCount: listData.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
+
                       onTap: () => {Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ContractPage(data: dataHistory[index],)))
+                        MaterialPageRoute(builder: (context) => ContractPage(data: listData[index], info: listData)))
                         },
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 4.0),
                         child: Card(
                           color: Colors.white70,
                           shape: RoundedRectangleBorder(
@@ -184,23 +264,23 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 child: Row(
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text(dataHistory[index].action,
+                                        Text(listData[index].action,
                                             style: TextStyle(
                                                 fontSize: 24,
                                                 fontWeight: FontWeight.bold,
-                                                
-                                                color: dataHistory[index].action == 'buy' ? Colors.green : Colors.red)),
+                                                color: listData[index].action == 'buy' ? Colors.green : Colors.red)),
                                         Text('BTCAUSD',
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold)),
-                                        Text('TransactionID: ${dataHistory[index].id}',
+                                        Text('TransactionID: ${listData[index].id}',
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold)),
-                                        Text('${dataHistory[index].time}',
+                                        Text('${listData[index].time}',
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold)),
@@ -213,9 +293,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 width: 10,
                               ),
                               Text(
-                                '${dataHistory[index].amount}',
+                                '${listData[index].amount}',
                                 style: TextStyle(
-                                  fontSize: 30,
+                                  fontSize: 28,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.red,
                                 ),
@@ -230,7 +310,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
               ),
             ),
           ],
-        )),
+        )
+        ):Center(
+          child: CircularProgressIndicator()
+        )
       ),
     );
   }
@@ -256,5 +339,6 @@ class transDetails {
   });
 
   @override
+
   String toString() => '[ $action , $time , $id , $amount, $balance , $contract_id]';
 }
