@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:drc/screens/active_transactions.dart';
 import 'package:drc/screens/contract_page.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
@@ -21,14 +22,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
   bool _isLoading = false;
 
   final channel = IOWebSocketChannel.connect(
-      Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089')
-    );
-  
+      Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
+
   void sendMessageAuthorize() {
     channel.sink.add('{"authorize": "5dRHsXj0xsjBEJC"}');
   }
 
-   void sendMessageStatement() {
+  void sendMessageStatement() {
     channel.sink.add('{"statement": 1, "description": 1, "limit": 100}');
   }
 
@@ -49,10 +49,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
       if (data['msg_type'] == 'statement') {
          for (int i = 0; i <= data['statement']['transactions'].length -1; i ++) {
 
-           time.add(DateTime.fromMillisecondsSinceEpoch(
-            data['statement']['transactions'][i]['transaction_time'] * 1000));
-          
-          String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(time[i]);
+          time.add(DateTime.fromMillisecondsSinceEpoch(
+              data['statement']['transactions'][i]['transaction_time'] * 1000));
+
+          String formattedDate =
+              DateFormat('yyyy-MM-dd HH:mm:ss').format(time[i]);
 
           // currency.add(data['statement']['transactions'][i]['shortcode']);
 
@@ -65,7 +66,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           //   String output = currency[i].split('_')[1];
           //   typeCurrency.add(output);
           // }
-          
+
           setState(() {
             dataHistory.add(
               transDetails(
@@ -150,13 +151,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     sortedList = [];
-    
+
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        // leading: IconButton(
+        //   icon: Icon(Icons.arrow_back, color: Colors.black),
+        //   onPressed: () => Navigator.of(context).pop(),
+        // ),
         backgroundColor: Color(0xFF1F96B0),
         title: const Text(
           'Transaction History',
@@ -166,6 +167,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           ),
         ),
         centerTitle: true,
+        actions: [],
       ),
 
       body: SafeArea(
@@ -173,6 +175,24 @@ class _HistoryScreenState extends State<HistoryScreen> {
             child: Column(
           children: <Widget>[
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              Expanded(
+                flex: 8,
+                child: Container(
+                  padding: EdgeInsets.only(left: 10),
+                  alignment: Alignment.centerLeft,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (data) => activeOptions()));
+                    },
+                    child: Text(
+                      "Active Contracts",
+                    ),
+                  ),
+                ),
+              ),
               IconButton(
                 icon: Image.asset('assets/icons/sort.png'),
                 iconSize: 1,
@@ -215,12 +235,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   itemCount: listData.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
+
                       onTap: () => {Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => ContractPage(data: listData[index], info: listData)))
                         },
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 4.0),
                         child: Card(
                           color: Colors.white70,
                           shape: RoundedRectangleBorder(
@@ -242,7 +264,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 child: Row(
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(listData[index].action,
                                             style: TextStyle(
@@ -316,5 +339,6 @@ class transDetails {
   });
 
   @override
+
   String toString() => '[ $action , $time , $id , $amount, $balance , $contract_id]';
 }

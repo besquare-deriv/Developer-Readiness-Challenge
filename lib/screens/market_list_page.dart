@@ -109,7 +109,6 @@ class _MarketScreenState extends State<MarketScreen> {
                               ),
                             ),
                             onTap: (selectedSymbol) {
-                              print(selectedSymbol);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
