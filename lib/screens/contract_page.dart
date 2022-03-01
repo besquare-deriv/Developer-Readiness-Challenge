@@ -2,16 +2,18 @@
 import 'package:flutter/material.dart';
 
 class ContractPage extends StatefulWidget {
-  const ContractPage({Key? key, required this.data}) : super(key: key);
+  const ContractPage({Key? key, required this.data, this.info}) : super(key: key);
   final data;
+  final info;
 
   @override
-  _ContractPageState createState() => _ContractPageState(this.data);
+  _ContractPageState createState() => _ContractPageState(this.data, this.info);
 }
 
 class _ContractPageState extends State<ContractPage> {
-  _ContractPageState(this.data);
+  _ContractPageState(this.data, this.info);
   final data;
+  final info;
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +34,9 @@ class _ContractPageState extends State<ContractPage> {
 
             Container(
               color: Colors.amber,
-              child: Text('${data[1].amount}'),
+              child: Text('${data.action}'),
             ),
-            ElevatedButton(onPressed: () {print(data.length);}, child: Text('Click me')),
+            ElevatedButton(onPressed: () {print(info.length);}, child: Text('Click me')),
           ],
         ),
       ),
