@@ -200,12 +200,7 @@ class _ContractDetailsState extends State<ContractDetails> {
                           child:
                             IconButton(
                               icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35,),                                   
-                              onPressed: (){
-                                /* Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => HistoryScreen())); */
-                                  Navigator.pop(context);
-                              }, 
+                              onPressed: () => Navigator.of(context).pop(),
                             ),
                         ),
                         Container(
@@ -482,8 +477,6 @@ class _ContractDetailsState extends State<ContractDetails> {
       ],
       ),
       ),
-           //),
-    //);
     );
     }
 }

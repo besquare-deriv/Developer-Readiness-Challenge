@@ -387,8 +387,9 @@ class _SettingsPageState extends State<SettingsPage> {
              )
                 ],
       ),
-      ),
-      );
+
+      ),   
+    );
   }
   pickDate(BuildContext context) async {
     final initialDate = DateTime.now().year - 18;
