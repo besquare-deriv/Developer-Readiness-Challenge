@@ -8,12 +8,17 @@ import 'package:web_socket_channel/io.dart';
 import 'package:intl/intl.dart';
 
 class HistoryScreen extends StatefulWidget {
+  // final String value1;
+
+  // const HistoryScreen(this.value1, {Key? key}) : super(key: key);
 
   @override
   _HistoryScreenState createState() => _HistoryScreenState();
 }
 
 class _HistoryScreenState extends State<HistoryScreen> { 
+  // _HistoryScreenState(this.value1);
+  // String value1;
 
   List<transDetails> listData = [];
   List<transDetails> dataHistory = [];
@@ -39,8 +44,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
       dataHistory = [];
       listData = [];
       List<dynamic> time = [];
-      // List<String> currency = [];
-      // List<String> typeCurrency = [];
+      List<String>? currency = [];
+      List<String>? typeCurrency = [];
     
       if (data['msg_type'] == 'authorize') {
          sendMessageStatement();
@@ -48,24 +53,28 @@ class _HistoryScreenState extends State<HistoryScreen> {
       
       if (data['msg_type'] == 'statement') {
          for (int i = 0; i <= data['statement']['transactions'].length -1; i ++) {
-
-          time.add(DateTime.fromMillisecondsSinceEpoch(
+            time.add(DateTime.fromMillisecondsSinceEpoch(
               data['statement']['transactions'][i]['transaction_time'] * 1000));
 
           String formattedDate =
               DateFormat('yyyy-MM-dd HH:mm:ss').format(time[i]);
 
-          // currency.add(data['statement']['transactions'][i]['shortcode']);
-
-          // if (currency[i].contains('R_')){
-          //   String a = currency[i].split('_')[1];
-          //   String b = currency[i].split('_')[2];
-          //   String output = a + '_' + b;
-          //   typeCurrency.add(output);
-          // } else{
-          //   String output = currency[i].split('_')[1];
-          //   typeCurrency.add(output);
-          // }
+          currency.add(data['statement']['transactions'][i]['shortcode'].toString());
+          // print(currency[i]);
+          print(i);
+          if (currency[i].contains('R_')){
+            String? a = currency[i].split('_')[1];
+            String? b = currency[i].split('_')[2];
+            String? output = a + '_' + b;
+            typeCurrency.add(output);
+          } else if (currency[i].contains('null')) {
+            typeCurrency.add(currency[i]);   
+          } else {
+            String? output = currency[i].split('_')[1];
+            typeCurrency.add(output);
+          }
+          
+          print(typeCurrency[i]);
 
           setState(() {
             dataHistory.add(
@@ -81,10 +90,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
               );
             }
           );
-         };
-         setState(() {
-           listData.addAll(dataHistory);
-         });
+        }
+        print(dataHistory.length);
+
+        setState(() {
+          listData.addAll(dataHistory);
+        });
+        print(listData[52]);
+        print(listData[51]);
        }
     });
   }
@@ -154,10 +167,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        // leading: IconButton(
-        //   icon: Icon(Icons.arrow_back, color: Colors.black),
-        //   onPressed: () => Navigator.of(context).pop(),
-        // ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+
         backgroundColor: Color(0xFF1F96B0),
         title: const Text(
           'Transaction History',
