@@ -4,9 +4,7 @@ import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_dropdown.dart';
 import 'package:country_pickers/utils/utils.dart';
 import 'package:drc/screens/explorer_page.dart';
-
 import 'package:flutter/material.dart';
-
 import '../components/iconwidget.dart';
 import 'history_page.dart';
 import 'login_page.dart';
@@ -57,12 +55,13 @@ class _SettingsPageState extends State<SettingsPage> {
               elevation: 0,
               leading: IconButton(
                         icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35,),                                   
-                        onPressed: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ProfilePage()));
+                        onPressed: () => {
+                          /* Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => ProfilePage())); */
+                             Navigator.pop(context)
                         }, 
-                      ),
+                      ), 
               //toolbarHeight: 90,
               backgroundColor: Color(0xFF1F96B0),
               title: Text('Settings',
@@ -389,63 +388,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
       ),
       ),
-      
-         bottomNavigationBar: BottomAppBar(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(icon: const Icon(Icons.home), 
-                          iconSize: 40,
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()));
-                          }
-                        ),
-              
-              IconButton(icon: Image.asset('assets/icons/explore.png'), 
-                          iconSize: 40,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ExplorePage()));
-                          }
-                        ),
-                        
-              IconButton(icon: Image.asset('assets/icons/plus.png'), 
-                          iconSize: 70,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MarketScreen()));
-                          }
-                        ),
-        
-              IconButton(icon: Image.asset('assets/icons/history.png'), 
-                          iconSize: 40,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => HistoryScreen()));
-                          }
-                        ),
-
-              IconButton(icon: Image.asset('assets/icons/user.png'), 
-                          iconSize: 40,
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ProfilePage()));
-                          }
-                        ),
-            ],
-          ),
-          shape: CircularNotchedRectangle(),
-          color: Colors.black,
-        ),
-        
       );
   }
   pickDate(BuildContext context) async {

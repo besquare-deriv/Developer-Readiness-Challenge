@@ -33,7 +33,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   void sendMessageStatement() {
-    channel.sink.add('{"statement": 1, "description": 1, "limit": 100}');
+    channel.sink.add('{"statement": 1, "description": 1, "limit": 999}');
   }
 
   void getActiveSymbol(){
@@ -310,7 +310,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
                       onTap: () => {Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ContractPage(data: listData[index], info: listData)))
+                        MaterialPageRoute(builder: (context) => ContractDetails(data: listData[index], info: dataHistory)))
                         },
                       child: Container(
                         margin: EdgeInsets.symmetric(
@@ -344,7 +344,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                 fontSize: 24,
                                                 fontWeight: FontWeight.bold,
                                                 color: listData[index].action == 'buy' ? Color.fromRGBO(54, 98, 43, 1) : Color.fromRGBO(232, 69, 69,1))),
-                                        Text('BTCAUSD',
+                                        Text('${listData[index].symbolName}',
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold)),
