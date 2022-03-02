@@ -34,7 +34,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   void sendMessageStatement() {
-    channel.sink.add('{"statement": 1, "description": 1, "limit": 100}');
+    channel.sink.add('{"statement": 1, "description": 1, "limit": 999}');
   }
 
   void getAuthorize() {
@@ -61,7 +61,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
           currency.add(data['statement']['transactions'][i]['shortcode'].toString());
           // print(currency[i]);
-          print(i);
           if (currency[i].contains('R_')){
             String? a = currency[i].split('_')[1];
             String? b = currency[i].split('_')[2];
@@ -73,8 +72,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
             String? output = currency[i].split('_')[1];
             typeCurrency.add(output);
           }
-          
-          print(typeCurrency[i]);
 
           setState(() {
             dataHistory.add(
@@ -91,15 +88,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
             }
           );
         }
-        print(dataHistory.length);
 
         setState(() {
           listData.addAll(dataHistory);
         });
-        print(listData[52]);
-        print(listData[51]);
        }
     });
+    // channel.sink.close();
   }
 
   void checkData() {
@@ -118,6 +113,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
     });
   });
   }
+
+//   void updateUI(){
+//    setState(() {
+//       channel.sink.close();
+//      _HistoryScreenState;
+//     });
+// }
 
   @override
   void initState() {
@@ -167,10 +169,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        // leading: IconButton(
+        //   icon: Icon(Icons.arrow_back, color: Colors.white),
+        //   onPressed: () => Navigator.of(context).pop(),
+        // ),
 
         backgroundColor: Color(0xFF1F96B0),
         title: const Text(
@@ -184,150 +186,163 @@ class _HistoryScreenState extends State<HistoryScreen> {
         actions: [],
       ),
 
-      body: SafeArea(
-        child: (_isLoading) ? Center (
-            child: Column(
-          children: <Widget>[
-            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              Expanded(
-                flex: 8,
-                child: Container(
-                  padding: EdgeInsets.only(left: 10),
-                  alignment: Alignment.centerLeft,
-                  child: TextButton(
+      body: StreamBuilder<Object>(
+        stream: null,
+        builder: (context, snapshot) {
+          return SafeArea(
+            child: (_isLoading) ? Center (
+                child: Column(
+              children: <Widget>[
+                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  Expanded(
+                    flex: 8,
+                    child: Container(
+                      padding: EdgeInsets.only(left: 10),
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (data) => activeOptions()));
+                        },
+                        child: Text(
+                          "Active Contracts",
+                        ),
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Image.asset('assets/icons/sync.png'),
+                    iconSize: 1,
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (data) => activeOptions()));
+                      // setState(() { });
+                      // updateUI();
                     },
-                    child: Text(
-                      "Active Contracts",
+                  ),
+                  IconButton(
+                    icon: Image.asset('assets/icons/sort.png'),
+                    iconSize: 1,
+                    onPressed: () {
+                      setState(() {
+                        listData = listData.reversed.toList();
+                      });
+                    },
+                  ),
+                  IconButton(
+                    icon: Image.asset('assets/icons/filter.png'),
+                    iconSize: 1,
+                    onPressed: () => showDialog(context: context, builder: (BuildContext context){
+                      return AlertDialog(
+                        scrollable: true,
+                        title: Text('Filter by:'),
+                        insetPadding: EdgeInsets.zero,
+      
+                        actions: [
+                          ElevatedButton(onPressed: () { filterSearchResults('buy');}, 
+                          child: Text('Buy'),),
+      
+                          ElevatedButton(onPressed: () { filterSearchResults('sell');}, 
+                          child: Text('Sell'),),
+      
+                          ElevatedButton(onPressed: () { filterSearchResults('');}, 
+                          child: Text('Clear Filter'),),
+                        ]
+                      );
+                    }),
+                  ),
+                ]),
+      
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: listData.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+      
+                          onTap: () => {Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ContractPage(data: listData[index], info: listData)))
+                            },
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 4.0),
+                            child: Card(
+                              color: Colors.white70,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              margin: EdgeInsets.symmetric(horizontal: 5),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10.0,
+                                  vertical: 20.0,
+                                ),
+                                child: Row(children: [
+                                  Container(
+                                    height: 60,
+                                    width: 60,
+                                    child: Image.asset('assets/icons/btc.png'),
+                                  ),
+                                  const SizedBox(width: 7),
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(listData[index].action,
+                                                style: TextStyle(
+                                                    fontSize: 23,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: listData[index].action == 'buy' ? Colors.green : Colors.red)),
+                                            Text('BTCAUSD',
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold)),
+                                            Text('TransactionID: ${listData[index].id}',
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold)),
+                                            Text('${listData[index].time}',
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold)),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    '${listData[index].amount}',
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                      color: listData[index].amount < 0 ? Colors.red : Colors.green,
+                                    ),
+                                  ),
+                                ]),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
-              ),
-              IconButton(
-                icon: Image.asset('assets/icons/sort.png'),
-                iconSize: 1,
-                onPressed: () {
-                  setState(() {
-                    listData = listData.reversed.toList();
-                  });
-                },
-              ),
-              IconButton(
-                icon: Image.asset('assets/icons/filter.png'),
-                iconSize: 1,
-                onPressed: () => showDialog(context: context, builder: (BuildContext context){
-                  return AlertDialog(
-                    scrollable: true,
-                    title: Text('Filter by:'),
-                    insetPadding: EdgeInsets.zero,
-
-                    actions: [
-                      ElevatedButton(onPressed: () { filterSearchResults('buy');}, 
-                      child: Text('Buy'),),
-
-                      ElevatedButton(onPressed: () { filterSearchResults('sell');}, 
-                      child: Text('Sell'),),
-
-                      ElevatedButton(onPressed: () { filterSearchResults('');}, 
-                      child: Text('Clear Filter'),),
-                    ]
-                  );
-                }),
-              ),
-            ]),
-
-            Expanded(
-              child: SingleChildScrollView(
-                child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: listData.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-
-                      onTap: () => {Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ContractPage(data: listData[index], info: listData)))
-                        },
-                      child: Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 4.0),
-                        child: Card(
-                          color: Colors.white70,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
-                          margin: EdgeInsets.symmetric(horizontal: 5),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0,
-                              vertical: 20.0,
-                            ),
-                            child: Row(children: [
-                              Container(
-                                height: 60,
-                                width: 60,
-                                child: Image.asset('assets/icons/btc.png'),
-                              ),
-                              const SizedBox(width: 7),
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(listData[index].action,
-                                            style: TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.bold,
-                                                color: listData[index].action == 'buy' ? Colors.green : Colors.red)),
-                                        Text('BTCAUSD',
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold)),
-                                        Text('TransactionID: ${listData[index].id}',
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold)),
-                                        Text('${listData[index].time}',
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold)),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                '${listData[index].amount}',
-                                style: TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ]),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          ],
-        )
-        ):Center(
-          child: CircularProgressIndicator()
-        )
+              ],
+            )
+            ):Center(
+              child: CircularProgressIndicator()
+            )
+          );
+        }
       ),
     );
   }
