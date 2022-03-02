@@ -23,16 +23,16 @@ class _ContractDetailsState extends State<ContractDetails> {
 
   int? buyID;
   num buyPrice = 0;
-  String startTime = "2021"; 
+  String startTime = "-"; 
   var sellID;
   num sellPrice = 0;
-  String endTime = "2021";
+  String endTime = "-";
   Duration? duration;
   String? printDuration;
   var payoutLimit;
   num accountBalance = 0;
   num profitLoss = 0;
-  var currencyType = "BTC/USD";
+  var currencyType = "-";
 
 
   List output = [];
@@ -153,7 +153,6 @@ class _ContractDetailsState extends State<ContractDetails> {
             }
         }
       }
-    
   } 
 
   void calProfitLoss(){
@@ -483,62 +482,6 @@ class _ContractDetailsState extends State<ContractDetails> {
       ],
       ),
       ),
-
-      bottomNavigationBar: BottomAppBar(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(icon: const Icon(Icons.home), 
-                          iconSize: 40,
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()));
-                          }
-                        ),
-              
-              IconButton(icon: Image.asset('assets/icons/explore.png'), 
-                          iconSize: 40,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ExplorePage()));
-                          }
-                        ),
-                        
-              IconButton(icon: Image.asset('assets/icons/plus.png'), 
-                          iconSize: 70,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MarketScreen()));
-                          }
-                        ),
-        
-              IconButton(icon: Image.asset('assets/icons/history.png'), 
-                          iconSize: 40,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => HistoryScreen()));
-                          }
-                        ),
-
-              IconButton(icon: Image.asset('assets/icons/user.png'), 
-                          iconSize: 40,
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ProfilePage()));
-                          }
-                        ),
-            ],
-          ),
-          shape: CircularNotchedRectangle(),
-          color: Colors.black,
-        ),
            //),
     //);
     );

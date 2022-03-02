@@ -113,8 +113,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     minimumSize: const Size(200.0, 50.0)),
                 onPressed: () {
                   Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Setting()));}),
+                    context,
+                      MaterialPageRoute(builder: (context) => Setting(),
+                      ),
+                    );
+                  }),
 
             const SizedBox(height: 25),
             ElevatedButton(
