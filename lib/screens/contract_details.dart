@@ -1,26 +1,171 @@
 import 'package:drc/screens/explorer_page.dart';
 import 'package:flutter/material.dart';
-
-import 'graph_page.dart';
 import 'history_page.dart';
 import 'login_page.dart';
 import 'market_list_page.dart';
 import 'profile_page.dart';
+import 'package:intl/intl.dart';
 
-class ContractDetails extends StatelessWidget {
-  ContractDetails({Key? key}) : super(key: key);
+class ContractDetails extends StatefulWidget {
+  final data;
+  final info;
 
-  var buyID = "312411681348";
-  var buyPrice = -102.37;
-  var startTime = '2022-02-15 08:48:17 GMT';
-  var sellID = "312411810668";
-  var sellPrice = 200;
-  var endTime = '2022-02-15 08:49:17 GMT';
-  var duration = "1 Minute";
-  var payoutLimit = 200;
-  var accountBalance = "13311.66 USD";
-  var profitLoss = "+56.31";
+  const ContractDetails({ Key? key, required this.data, this.info}) : super(key: key);
+
+  @override
+  _ContractDetailsState createState() => _ContractDetailsState(this.data, this.info);
+}
+
+class _ContractDetailsState extends State<ContractDetails> {
+  _ContractDetailsState(this.data, this.info);
+  final data;
+  final info;
+
+  int? buyID;
+  num buyPrice = 0;
+  String startTime = "2021"; 
+  var sellID;
+  num sellPrice = 0;
+  String endTime = "2021";
+  Duration? duration;
+  String? printDuration;
+  var payoutLimit;
+  num accountBalance = 0;
+  num profitLoss = 0;
   var currencyType = "BTC/USD";
+
+
+  List output = [];
+  List timeList = [];
+
+  void comparison (){
+    for (int i = 0; i < info.length; i ++){
+      if (data.contract_id == info[i].contract_id){
+        output.add(info[i]);
+      }
+      else{
+        output.add(data);
+      }
+    }
+  }
+
+  void setInfo(){
+    if(data.action == 'buy' || data.action == 'sell'){
+    for (int i = 0; i <= output.length - 1; i ++){
+      if(output[i].action == 'buy'){
+        buyID = output[i].id;
+        buyPrice = output[i].amount;
+        startTime = output[i].time; 
+        
+      }
+      if(output[i].action == 'sell'){
+        sellID = output[i].id;
+        sellPrice = output[i].amount;
+        endTime = output[i].time; 
+        accountBalance = output[i].balance;
+      }
+    }
+      currencyType = data.symbolName;
+      payoutLimit = data.payout;
+      calDuration();
+    }
+    if (data.action == 'withdrawal'){
+        currencyType = 'withdrawal';
+        buyID = data.id;
+        buyPrice = data.amount;
+        startTime = data.time; 
+        currencyType;
+        sellID = '-';
+        sellPrice = 0;
+        endTime = '-'; 
+        payoutLimit = 0;
+        accountBalance = data.balance;
+        printDuration = '-';
+    }
+  }
+
+  void calDuration(){
+    DateTime dt1 = DateTime.parse(startTime);
+    DateTime dt2 = DateTime.parse(endTime);
+    duration =  dt2.difference(dt1);
+    //show days, hours, minutes and seconds 
+    if(duration!.inDays != 0){
+      if(duration!.inDays > 1){
+          if(duration!.inHours != 0 || duration!.inMinutes.remainder(60) != 0 || duration!.inSeconds.remainder(60) > 5){
+         printDuration = ('${duration!.inDays} days '+'${duration!.inHours} hours '+'${duration!.inMinutes.remainder(60)} minutes '+'${duration!.inSeconds.remainder(60)} seconds'  );
+        }
+          else{
+            printDuration = ('${duration!.inDays} days' );
+          }
+        }
+        else{
+        if(duration!.inHours != 0 || duration!.inMinutes.remainder(60) != 0 || duration!.inSeconds.remainder(60) > 5){
+         printDuration = ('${duration!.inDays} day '+'${duration!.inHours} hour '+'${duration!.inMinutes.remainder(60)} minutes '+'${duration!.inSeconds.remainder(60)} seconds'  );
+        }
+          else{
+            printDuration = ('${duration!.inHours} hour' );
+          }
+        }
+    } 
+     else{
+         //show hours, minutes and seconds 
+      if(duration!.inHours != 0){
+        if(duration!.inHours > 1){
+          if(duration!.inMinutes.remainder(60) != 0 || duration!.inSeconds.remainder(60) > 5){
+         printDuration = ('${duration!.inHours} hours '+'${duration!.inMinutes.remainder(60)} minutes '+'${duration!.inSeconds.remainder(60)} seconds'  );
+        }
+          else{
+            printDuration = ('${duration!.inHours} hours' );
+          }
+        }
+        else{
+        if(duration!.inMinutes.remainder(60) != 0 || duration!.inSeconds.remainder(60) > 5){
+         printDuration = ('${duration!.inHours} hour '+'${duration!.inMinutes.remainder(60)} minutes '+'${duration!.inSeconds.remainder(60)} seconds'  );
+        }
+          else{
+            printDuration = ('${duration!.inHours} hour' );
+          }
+        }
+      }
+        else{
+          //shows minutes and seconds 
+          if(duration!.inMinutes!= 0){
+            if(duration!.inMinutes > 1){
+              if(duration!.inSeconds.remainder(60) > 5){
+                printDuration = ('${duration!.inMinutes} minutes '+'${duration!.inSeconds.remainder(60)} seconds' );
+              }
+              else{
+              printDuration = ('${duration!.inMinutes} minutes');
+              }
+            }
+            else{
+              if(duration!.inSeconds.remainder(60) > 5){
+                printDuration = ('${duration!.inMinutes} minute '+'${duration!.inSeconds.remainder(60)} seconds' );
+              }
+              else{
+              printDuration = ('${duration!.inMinutes} minute');
+              }
+            }
+          }
+            else{
+              //shows seconds only
+              printDuration = ('${duration!.inSeconds} seconds');
+            }
+        }
+      }
+    
+  } 
+
+  void calProfitLoss(){
+    profitLoss = sellPrice + buyPrice;
+  } 
+
+    @override
+  void initState() {
+    comparison();
+    setInfo();
+    calProfitLoss();
+  }
 
 
   @override
@@ -57,9 +202,10 @@ class ContractDetails extends StatelessWidget {
                             IconButton(
                               icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35,),                                   
                               onPressed: (){
-                                Navigator.push(
+                                /* Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => HistoryScreen()));
+                                  MaterialPageRoute(builder: (context) => HistoryScreen())); */
+                                  Navigator.pop(context);
                               }, 
                             ),
                         ),
@@ -119,7 +265,7 @@ class ContractDetails extends StatelessWidget {
                               fontFamily: 'IBM Plex Sans'))),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: width*0.05093),
-                child:  Text(buyID,
+                child:  Text('$buyID',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
@@ -157,7 +303,7 @@ class ContractDetails extends StatelessWidget {
                               fontFamily: 'IBM Plex Sans'))),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: width*0.05093),
-                child:  Text(startTime,
+                child:  Text('$startTime GMT',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
@@ -187,7 +333,7 @@ class ContractDetails extends StatelessWidget {
                               fontFamily: 'IBM Plex Sans'))),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: width*0.05093),
-                child: Text(sellID,
+                child: Text('$sellID',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
@@ -225,7 +371,7 @@ class ContractDetails extends StatelessWidget {
                               fontFamily: 'IBM Plex Sans'))),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: width*0.05093),
-                child:  Text(endTime,
+                child:  Text('$endTime GMT',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
@@ -255,7 +401,7 @@ class ContractDetails extends StatelessWidget {
                               fontFamily: 'IBM Plex Sans'))),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: width*0.05093),
-                child:  Text(duration,
+                child:  Text('$printDuration',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
@@ -323,11 +469,11 @@ class ContractDetails extends StatelessWidget {
                                           ), 
                   alignment: Alignment.center,
     ),
-    Container(child: Text("$profitLoss", style: TextStyle(
-                                           color:Color.fromRGBO(54, 98, 43, 1),
+    Container(child: Text( profitLoss >= 0 ?"+${profitLoss.toStringAsFixed(2)}" :"${profitLoss.toStringAsFixed(2)}", style: TextStyle(
                                            fontSize: 25, 
                                            fontWeight: FontWeight.bold,
-                                           fontFamily:'DM Sans'
+                                           fontFamily:'DM Sans',
+                                           color: profitLoss >= 0 ? Color.fromRGBO(54, 98, 43, 1) : Color.fromRGBO(232, 69, 69,1)
                                            ),
                                           ), 
                   alignment: Alignment.center,),
@@ -398,3 +544,5 @@ class ContractDetails extends StatelessWidget {
     );
     }
 }
+
+  

@@ -60,7 +60,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         onPressed: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ContractDetails()));
+                            MaterialPageRoute(builder: (context) => ProfilePage()));
                         }, 
                       ),
               //toolbarHeight: 90,
