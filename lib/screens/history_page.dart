@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:drc/screens/contract_details.dart';
 
 import 'package:drc/screens/active_transactions.dart';
 import 'package:drc/screens/contract_page.dart';
@@ -22,6 +23,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   List<transDetails> listData = [];
   List<transDetails> dataHistory = [];
+  List<symbolDetails> activeSymbol = [];
+  List<transDetails> detailsContract = [];
+  late String symbol_id;
   List<transDetails> sortedList = [];
   List<transDetails> dummyList = [];
   bool _isLoading = false;
@@ -37,41 +41,92 @@ class _HistoryScreenState extends State<HistoryScreen> {
     channel.sink.add('{"statement": 1, "description": 1, "limit": 999}');
   }
 
+  void getActiveSymbol(){
+    channel.sink.add('{"active_symbols": "brief","product_type": "basic"}');
+  }
+
+  dynamic getSymbol(data){
+    activeSymbol = [];
+    if(data['msg_type'] == 'active_symbols'){       
+      for(int j = 0; j <= data['active_symbols'].length -1; j ++){
+        symbol_id = data['active_symbols'][j]['symbol'];
+        setState(() {
+            activeSymbol.add(
+              symbolDetails(
+                symbol: symbol_id.toUpperCase(),
+                displayName: data['active_symbols'][j]['display_name']
+                ),
+              );
+            }
+         );
+        }
+    }
+  }
+
   void getAuthorize() {
     channel.stream.listen((event) {
       final data = jsonDecode(event);
-
+      
       dataHistory = [];
       listData = [];
       List<dynamic> time = [];
-      List<String>? currency = [];
-      List<String>? typeCurrency = [];
-    
+      List<String> currency = [];
+      List<String> typeCurrency = [];
+      List<String> displayName = [];
+
+
+      if(data['msg_type'] == 'active_symbols'){
+        getSymbol(data);
+        sendMessageAuthorize();
+      }
+      //getSymbol(data);
+      //sendMessageStatement();
+      
       if (data['msg_type'] == 'authorize') {
          sendMessageStatement();
+         //print(data);
        }
-      
+            
       if (data['msg_type'] == 'statement') {
          for (int i = 0; i <= data['statement']['transactions'].length -1; i ++) {
-            time.add(DateTime.fromMillisecondsSinceEpoch(
-              data['statement']['transactions'][i]['transaction_time'] * 1000));
+          //  print(data['statement']['transactions'][i]['transaction_time']);
+          
+           time.add(DateTime.fromMillisecondsSinceEpoch(
+            data['statement']['transactions'][i]['transaction_time'] * 1000));
+          
+          String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(time[i]);
 
-          String formattedDate =
-              DateFormat('yyyy-MM-dd HH:mm:ss').format(time[i]);
-
+          
           currency.add(data['statement']['transactions'][i]['shortcode'].toString());
-          // print(currency[i]);
+
+          /*final regex = RegExp (r'(?<=_)[^R_]+(?=_)');
+          String? match = regex.stringMatch(currency[i].toString());
+          typeCurrency.add(match!); */
+
           if (currency[i].contains('R_')){
-            String? a = currency[i].split('_')[1];
-            String? b = currency[i].split('_')[2];
-            String? output = a + '_' + b;
+            String a = currency[i].split('_')[1];
+            String b = currency[i].split('_')[2];
+            String output = a + '_' + b;
             typeCurrency.add(output);
-          } else if (currency[i].contains('null')) {
-            typeCurrency.add(currency[i]);   
-          } else {
-            String? output = currency[i].split('_')[1];
+          } else if (currency[i].contains('null')){
+            typeCurrency.add(currency[i]);
+          }
+          else{
+            String output = currency[i].split('_')[1];
             typeCurrency.add(output);
           }
+          //print(typeCurrency.length);
+
+           for(int j = 0; j <= activeSymbol.length -1; j ++){
+              if(typeCurrency[i] == activeSymbol[j].symbol){
+                displayName.add(activeSymbol[j].displayName);
+                break;
+              }
+              if(typeCurrency[i] == 'null'){
+                displayName.add('null');
+                break;
+              }
+            }  
 
           setState(() {
             dataHistory.add(
@@ -82,13 +137,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 amount: data['statement']['transactions'][i]['amount'],
                 balance: data['statement']['transactions'][i]['balance_after'],
                 contract_id: data['statement']['transactions'][i]['contract_id'],
-                //crypto: typeCurrency[i],
+                payout: data['statement']['transactions'][i]['payout'],
+                crypto: typeCurrency[i],
+                symbolName: displayName[i],
                 ),
               );
             }
           );
         }
-
         setState(() {
           listData.addAll(dataHistory);
         });
@@ -123,8 +179,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   @override
   void initState() {
-    sendMessageAuthorize();
-    sendMessageStatement();
+    getActiveSymbol();
+    //sendMessageAuthorize();
+    //sendMessageStatement();
     getAuthorize();
     timer();
     super.initState();
@@ -265,7 +322,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       
                           onTap: () => {Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ContractPage(data: listData[index], info: listData)))
+                            MaterialPageRoute(builder: (context) => ContractPage(data: listData[index], info: dataHistory)))
                             },
                           child: Container(
                             margin: EdgeInsets.symmetric(
@@ -298,7 +355,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                 style: TextStyle(
                                                     fontSize: 23,
                                                     fontWeight: FontWeight.bold,
-                                                    color: listData[index].action == 'buy' ? Colors.green : Colors.red)),
+                                                    color: listData[index].action == 'buy' ? Color.fromRGBO(54, 98, 43, 1) : Color.fromRGBO(232, 69, 69,1))),
                                             Text('BTCAUSD',
                                                 style: TextStyle(
                                                     fontSize: 12,
@@ -324,7 +381,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     style: TextStyle(
                                       fontSize: 25,
                                       fontWeight: FontWeight.bold,
-                                      color: listData[index].amount < 0 ? Colors.red : Colors.green,
+                                      color: listData[index].amount < 0 ? Color.fromRGBO(232, 69, 69,1) : Color.fromRGBO(54, 98, 43, 1),
                                     ),
                                   ),
                                 ]),
@@ -355,7 +412,9 @@ class transDetails {
   final dynamic amount;
   final dynamic balance;
   final dynamic contract_id;
-  // final dynamic crypto;
+  final dynamic payout;
+  final dynamic crypto;
+  final dynamic symbolName;
 
   transDetails({
     required this.action,
@@ -364,10 +423,22 @@ class transDetails {
     this.amount,
     this.balance,
     this.contract_id,
-    // this.crypto,
+    this.payout,
+    this.crypto,
+    this.symbolName,
   });
 
   @override
+  String toString() => '[ $action , $time , $id , $amount, $balance , $contract_id, $payout, $crypto , $symbolName]';
+}
 
-  String toString() => '[ $action , $time , $id , $amount, $balance , $contract_id]';
+class symbolDetails {
+  final String symbol;
+  final String displayName;
+
+  symbolDetails({
+  required this.symbol,
+  required this.displayName,
+  });
+   String toString() => '[ $symbol, $displayName]';
 }

@@ -4,9 +4,7 @@ import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_dropdown.dart';
 import 'package:country_pickers/utils/utils.dart';
 import 'package:drc/screens/explorer_page.dart';
-
 import 'package:flutter/material.dart';
-
 import '../components/iconwidget.dart';
 import 'history_page.dart';
 import 'login_page.dart';
@@ -57,12 +55,13 @@ class _SettingsPageState extends State<SettingsPage> {
               elevation: 0,
               leading: IconButton(
                         icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35,),                                   
-                        onPressed: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ProfilePage()));
+                        onPressed: () => {
+                          /* Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => ProfilePage())); */
+                             Navigator.pop(context)
                         }, 
-                      ),
+                      ), 
               //toolbarHeight: 90,
               backgroundColor: Color(0xFF1F96B0),
               title: Text('Settings',
@@ -388,6 +387,7 @@ class _SettingsPageState extends State<SettingsPage> {
              )
                 ],
       ),
+
       ),   
     );
   }
