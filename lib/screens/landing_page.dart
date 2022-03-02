@@ -1,4 +1,4 @@
-import 'package:drc/screens/Signup_page.dart';
+import 'package:drc/screens/signup_page.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';
 import './login_page.dart';

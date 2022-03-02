@@ -1,13 +1,14 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:drc/screens/contract_details.dart';
+
+import 'package:drc/screens/active_transactions.dart';
 import 'package:drc/screens/contract_page.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:intl/intl.dart';
 
 class HistoryScreen extends StatefulWidget {
-  // PostPage({required this.postchannel,Key? key}) : super(key: key);
-  // final WebSocketChannel postchannel;
 
   @override
   _HistoryScreenState createState() => _HistoryScreenState();
@@ -15,20 +16,23 @@ class HistoryScreen extends StatefulWidget {
 
 class _HistoryScreenState extends State<HistoryScreen> { 
 
+  List<transDetails> listData = [];
   List<transDetails> dataHistory = [];
   List<symbolDetails> activeSymbol = [];
   List<transDetails> detailsContract = [];
   late String symbol_id;
+  List<transDetails> sortedList = [];
+  List<transDetails> dummyList = [];
+  bool _isLoading = false;
 
   final channel = IOWebSocketChannel.connect(
-      Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089')
-    );
-  
+      Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
+
   void sendMessageAuthorize() {
     channel.sink.add('{"authorize": "5dRHsXj0xsjBEJC"}');
   }
 
-   void sendMessageStatement() {
+  void sendMessageStatement() {
     channel.sink.add('{"statement": 1, "description": 1, "limit": 100}');
   }
 
@@ -59,6 +63,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       final data = jsonDecode(event);
       
       dataHistory = [];
+      listData = [];
       List<dynamic> time = [];
       List<String> currency = [];
       List<String> typeCurrency = [];
@@ -137,9 +142,28 @@ class _HistoryScreenState extends State<HistoryScreen> {
           
             
          };
-         //print(dataHistory);
+         setState(() {
+           listData.addAll(dataHistory);
+         });
        }
     });
+  }
+
+  void checkData() {
+    if (listData.isEmpty){
+      return null;
+    } if (listData.length > 0){
+      setState(() {
+        _isLoading = true;
+      });
+    }
+  }
+
+  timer(){Timer(Duration(seconds: 5), () {
+    setState(() {
+      checkData();
+    });
+  });
   }
 
   // dynamic getDetails(ref_id) {
@@ -159,7 +183,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     //sendMessageAuthorize();
     //sendMessageStatement();
     getAuthorize();
-    // getDetails(ref_id);
+    timer();
     super.initState();
   }
 
@@ -168,15 +192,44 @@ class _HistoryScreenState extends State<HistoryScreen> {
     super.dispose();
   }
 
+  void filterSearchResults(String query) {
+    dummyList = [];
+    sortedList = [];
+
+    if(query.isNotEmpty) {
+      for (int i = 0; i < dataHistory.length; i ++)
+      {
+        if (dataHistory[i].action == query){
+          setState(() {
+            sortedList.add(dataHistory[i]);
+          }); 
+        }
+      };
+      setState(() {
+        listData.clear();
+        listData.addAll(sortedList);
+      });
+      return;
+    } else {
+      setState(() {
+        listData.clear();
+        listData.addAll(dataHistory);
+      });
+      return;
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    
+    sortedList = [];
+
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        // leading: IconButton(
+        //   icon: Icon(Icons.arrow_back, color: Colors.black),
+        //   onPressed: () => Navigator.of(context).pop(),
+        // ),
         backgroundColor: Color(0xFF1F96B0),
         title: const Text(
           'Transaction History',
@@ -186,38 +239,82 @@ class _HistoryScreenState extends State<HistoryScreen> {
           ),
         ),
         centerTitle: true,
+        actions: [],
       ),
+
       body: SafeArea(
-        child: Center(
+        child: (_isLoading) ? Center (
             child: Column(
           children: <Widget>[
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              Expanded(
+                flex: 8,
+                child: Container(
+                  padding: EdgeInsets.only(left: 10),
+                  alignment: Alignment.centerLeft,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (data) => activeOptions()));
+                    },
+                    child: Text(
+                      "Active Contracts",
+                    ),
+                  ),
+                ),
+              ),
               IconButton(
                 icon: Image.asset('assets/icons/sort.png'),
                 iconSize: 1,
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    listData = listData.reversed.toList();
+                  });
+                },
               ),
               IconButton(
                 icon: Image.asset('assets/icons/filter.png'),
                 iconSize: 1,
-                onPressed: () {},
+                onPressed: () => showDialog(context: context, builder: (BuildContext context){
+                  return AlertDialog(
+                    scrollable: true,
+                    title: Text('Filter by:'),
+                    insetPadding: EdgeInsets.zero,
+
+                    actions: [
+                      ElevatedButton(onPressed: () { filterSearchResults('buy');}, 
+                      child: Text('Buy'),),
+
+                      ElevatedButton(onPressed: () { filterSearchResults('sell');}, 
+                      child: Text('Sell'),),
+
+                      ElevatedButton(onPressed: () { filterSearchResults('');}, 
+                      child: Text('Clear Filter'),),
+                    ]
+                  );
+                }),
               ),
             ]),
+
             Expanded(
               child: SingleChildScrollView(
                 child: ListView.builder(
                   physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  itemCount: dataHistory.length,
+                  itemCount: listData.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
+
                       onTap: () => {Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ContractDetails(data: dataHistory[index], info: dataHistory)))
+                        MaterialPageRoute(builder: (context) => ContractPage(data: listData[index], info: listData)))
                         },
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 4.0),
                         child: Card(
                           color: Colors.white70,
                           shape: RoundedRectangleBorder(
@@ -239,23 +336,23 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 child: Row(
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text(dataHistory[index].action,
+                                        Text(listData[index].action,
                                             style: TextStyle(
                                                 fontSize: 24,
                                                 fontWeight: FontWeight.bold,
-                                                
-                                                color: dataHistory[index].action == 'buy' ? Color.fromRGBO(54, 98, 43, 1) : Color.fromRGBO(232, 69, 69,1))),
-                                        Text('${dataHistory[index].symbolName}',
+                                                color: listData[index].action == 'buy' ? Color.fromRGBO(54, 98, 43, 1) : Color.fromRGBO(232, 69, 69,1))),
+                                        Text('BTCAUSD',
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold)),
-                                        Text('TransactionID: ${dataHistory[index].id}',
+                                        Text('TransactionID: ${listData[index].id}',
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold)),
-                                        Text('${dataHistory[index].time}',
+                                        Text('${listData[index].time}',
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold)),
@@ -267,9 +364,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               const SizedBox(
                                 width: 10,
                               ),
-                              Text( '${dataHistory[index].amount}',
+                              Text(
+                                '${listData[index].amount}',
                                 style: TextStyle(
-                                  fontSize: 27,
+                                  fontSize: 28,
                                   fontWeight: FontWeight.bold,
                                   color: dataHistory[index].amount >= 0 ?Color.fromRGBO(54, 98, 43, 1) : Color.fromRGBO(232, 69, 69,1),
                                 ),
@@ -284,7 +382,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
               ),
             ),
           ],
-        )),
+        )
+        ):Center(
+          child: CircularProgressIndicator()
+        )
       ),
     );
   }

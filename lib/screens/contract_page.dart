@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ContractPage extends StatefulWidget {
-  const ContractPage({Key? key, required this.data, this.info,}) : super(key: key);
+  const ContractPage({Key? key, required this.data, this.info}) : super(key: key);
   final data;
   final info;
 
@@ -56,7 +56,7 @@ class _ContractPageState extends State<ContractPage> {
 
             Container(
               color: Colors.amber,
-              child: Text('${output[0].amount}'),
+              child: Text('${data.action}'),
             ),
             ElevatedButton(onPressed: () {print(info.length);}, child: Text('Click me')),
           ],
@@ -72,6 +72,7 @@ class transDetails {
   final dynamic id;
   final dynamic amount;
   final dynamic balance;
+  final dynamic contract_id;
   // final dynamic crypto;
 
   transDetails({
@@ -80,9 +81,10 @@ class transDetails {
     this.id,
     this.amount,
     this.balance,
+    this.contract_id,
     // this.crypto,
   });
 
   @override
-  String toString() => '[ $action , $time , $id , $amount, $balance ]';
+  String toString() => '[ $action , $time , $id , $amount, $balance , $contract_id]';
 }
