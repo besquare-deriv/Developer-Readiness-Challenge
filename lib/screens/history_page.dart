@@ -1,25 +1,25 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:drc/screens/contract_details.dart';
 
-import 'package:drc/screens/active_transactions.dart';
-import 'package:drc/screens/contract_page.dart';
+import 'active_transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:intl/intl.dart';
 
 class HistoryScreen extends StatefulWidget {
-  // final String value1;
+  final String value1;
 
-  // const HistoryScreen(this.value1, {Key? key}) : super(key: key);
+  const HistoryScreen(this.value1, {Key? key}) : super(key: key);
 
   @override
-  _HistoryScreenState createState() => _HistoryScreenState();
+  _HistoryScreenState createState() => _HistoryScreenState(value1);
 }
 
 class _HistoryScreenState extends State<HistoryScreen> { 
-  // _HistoryScreenState(this.value1);
-  // String value1;
+  _HistoryScreenState(this.value1);
+  String value1;
 
   List<transDetails> listData = [];
   List<transDetails> dataHistory = [];
@@ -34,7 +34,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
 
   void sendMessageAuthorize() {
-    channel.sink.add('{"authorize": "5dRHsXj0xsjBEJC"}');
+    print(value1);
+    channel.sink.add('{"authorize": "$value1"}');
   }
 
   void sendMessageStatement() {
@@ -226,10 +227,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        // leading: IconButton(
-        //   icon: Icon(Icons.arrow_back, color: Colors.white),
-        //   onPressed: () => Navigator.of(context).pop(),
-        // ),
 
         backgroundColor: Color(0xFF1F96B0),
         title: const Text(
@@ -322,7 +319,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       
                           onTap: () => {Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ContractPage(data: listData[index], info: dataHistory)))
+                            MaterialPageRoute(builder: (context) => ContractDetails(data: listData[index], info: dataHistory)))
                             },
                           child: Container(
                             margin: EdgeInsets.symmetric(

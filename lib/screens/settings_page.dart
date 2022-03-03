@@ -3,33 +3,20 @@
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_dropdown.dart';
 import 'package:country_pickers/utils/utils.dart';
-import 'package:drc/screens/explorer_page.dart';
 import 'package:flutter/material.dart';
 import '../components/iconwidget.dart';
-import 'history_page.dart';
-import 'login_page.dart';
-import 'market_list_page.dart';
-import 'profile_page.dart';
 
-class Setting extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Settings",
-      home: SettingsPage(),
-    );
-  }
-}
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({ Key? key }) : super(key: key);
+class SettingPage extends StatefulWidget {
+  const SettingPage({ Key? key }) : super(key: key);
 
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  _SettingPageState createState() => _SettingPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _SettingPageState extends State<SettingPage> {
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
+  String? value;
   final  _phone = TextEditingController();
   final  _confirmPass = TextEditingController();
   final _pass = TextEditingController();
@@ -54,22 +41,15 @@ class _SettingsPageState extends State<SettingsPage> {
             AppBar( 
               elevation: 0,
               leading: IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35,),                                   
-                        onPressed: () => {
-                          /* Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => ProfilePage())); */
-                             Navigator.pop(context)
-                        }, 
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),                             
+                        onPressed: () => Navigator.of(context).pop(),
                       ), 
               //toolbarHeight: 90,
               backgroundColor: Color(0xFF1F96B0),
               title: Text('Settings',
                       style: TextStyle(
-                       color:Colors.black, 
-                       fontSize: 28, 
+                       color:Colors.white, 
                        fontWeight: FontWeight.bold, 
-                       fontFamily:'DM Sans'
                       ),
                      ),
               centerTitle: true,
