@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drc/Authorization/auth_helper.dart';
 import 'package:drc/screens/active_transactions.dart';
@@ -7,11 +6,8 @@ import 'package:drc/screens/landing_page.dart';
 import 'package:drc/screens/main_nav_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:flutter/material.dart';
-
 import 'screens/token_test.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -90,7 +86,6 @@ class MainScreen extends StatelessWidget {
                         child: CircularProgressIndicator(),
                       ),
                     );
-
                   }
                 },
               );
@@ -107,6 +102,5 @@ class MainScreen extends StatelessWidget {
             // return LandingScreen(title: 'MilkyWay');
           }),
     );
-
   }
 }
