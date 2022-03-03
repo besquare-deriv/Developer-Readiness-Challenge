@@ -101,86 +101,19 @@ class _SettingPageState extends State<SettingPage> {
                       Text(lastName),
                     ]),
                   ),
-                  //email
+
                   ListTile(
                     leading: IconWidget(icon: Icons.email),
                     title: Text('Email*'),
                     subtitle: Text(email),
                   ),
 
-                  //Phone Number
                   ListTile(
                       leading: IconWidget(icon: Icons.phone),
                       title: Text('Phone Number'),
                       subtitle: Text(phoneNumber),
-                      trailing: IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () => showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0),),
-                                  scrollable: true,
-                                  title: Text('Phone Number'),
-                                  insetPadding: EdgeInsets.zero,
-                                  content: /* Padding(
-                              padding: const EdgeInsets.all(8.0),  */
-                                      Container(
-                                          width: width * 0.7639,
-                                          height: height * 0.1119,
-                                          child: Form(
-                                            key: _formKey,
-                                            child: Column(
-                                              children: <Widget>[
-                                                TextFormField(
-                                                  controller: _phone,
-                                                  decoration: InputDecoration(
-                                                      border:
-                                                          OutlineInputBorder(),
-                                                      labelText: 'Phone Number',
-                                                      hintText: phoneNumber),
-                                                  validator: (phoneNumber) {
-                                                    if (phoneNumber != null &&
-                                                        phoneNumber.length >
-                                                            9) {
-                                                      return null;
-                                                    }
-                                                    return "Phone number can't be smaller than 9 digits";
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          )),
-                                  actions: [
-                                    TextButton(
-                                      style: TextButton.styleFrom(
-                                        textStyle:
-                                            const TextStyle(fontSize: 15),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text('CANCEL'),
-                                    ),
-                                    TextButton(
-                                      style: TextButton.styleFrom(
-                                        textStyle:
-                                            const TextStyle(fontSize: 15),
-                                      ),
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          return setState(() {
-                                            phoneNumber = (_phone.text);
-                                            Navigator.pop(context);
-                                          });
-                                        }
-                                      },
-                                      child: const Text('CHANGE'),
-                                    ),
-                                  ],
-                                );
-                              }))),
-                  //password()
+                      ),
+ 
                   ListTile(
                       leading: IconWidget(icon: Icons.password),
                       title: Text('Password*'),
@@ -188,13 +121,12 @@ class _SettingPageState extends State<SettingPage> {
                           Text('${password.replaceAll(RegExp(r"."), "*")}'),
                               ),
 
-                  //calendar
                   ListTile(
                       leading: IconWidget(icon: Icons.calendar_today),
                       title: Text('Date of Birth*'),
                       subtitle: Text('${date.month}/${date.day}/${date.year}'),
                       ),
-                  //country
+         
                   ListTile(
                     leading: Tab(
                       icon: Image.asset('assets/icons/country.png'),
@@ -204,7 +136,6 @@ class _SettingPageState extends State<SettingPage> {
                     subtitle: Text(countryName),
                   ),
 
-                  //API token
                   ListTile(
                       leading: IconWidget(icon: Icons.fingerprint),
                       title: Text('API Token*'),
@@ -216,29 +147,6 @@ class _SettingPageState extends State<SettingPage> {
           ],
         ),
       ),
-
-
-      );
+    );
   }  
 }
-  
-
-
-// bool validateStructure(String value) {
-//   String pattern =
-//       r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-//   RegExp regExp = new RegExp(pattern);
-//   return regExp.hasMatch(value);
-// }
-
-// Widget _buildDropdownItem(Country country) => Container(
-//       child: Row(
-//         children: <Widget>[
-//           CountryPickerUtils.getDefaultFlagImage(country),
-//           SizedBox(
-//             width: 8.0,
-//           ),
-//           Text("+${country.phoneCode}(${country.isoCode})"),
-//         ],
-//       ),
-//     );
