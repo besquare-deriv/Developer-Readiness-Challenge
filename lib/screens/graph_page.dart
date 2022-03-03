@@ -139,7 +139,7 @@ class _GraphScreenState extends State<GraphScreen> {
       return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.black),
+              icon: Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () {
                 channel.sink.close();
                 Navigator.of(context).pop();

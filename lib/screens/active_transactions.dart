@@ -69,10 +69,13 @@ class _activeOptionsState extends State<activeOptions> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: const Color(0xFF1F96B0),
-          title: const Text("Positions",
-              style: TextStyle(
-                color: Colors.black,
-              )),
+          title: const Text("Open Contract Positions",
+                style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                ),
+              ),
+              centerTitle: true,
         ),
         body: Column(
           children: [
