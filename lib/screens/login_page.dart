@@ -111,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 filled: true,
                                 fillColor: Colors.transparent,
                                 border: OutlineInputBorder(),
-                                hintText: 'Email Password',
+                                hintText: 'Email Address',
                               ),
                               validator: MultiValidator([
                                 RequiredValidator(errorText: "REQUIRED"),
