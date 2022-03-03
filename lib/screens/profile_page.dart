@@ -1,28 +1,32 @@
 import 'package:drc/screens/faq_page.dart';
 import 'package:drc/Authorization/auth_helper.dart';
-
 import 'package:flutter/material.dart';
-
 import '../components/button_widget.dart';
 import '../components/profile_widget.dart';
 import '../constants.dart';
 import '../utils/user_information.dart';
+import 'settings_page.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  final String token;
+
+  const ProfilePage(this.token, {Key? key}) : super(key: key);
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _ProfilePageState createState() => _ProfilePageState(token);
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  _ProfilePageState(String token);
+
   @override
   Widget build(BuildContext context) {
+    String token;
+
     const user = UserInformation.myUser;
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 236, 234, 234),
-      //appBar: buildAppBar(context),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
@@ -109,7 +113,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 32, vertical: 12),
                     minimumSize: const Size(200.0, 50.0)),
-                onPressed: () {}),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SettingPage(),
+                    ),
+                  );
+                }),
 
             const SizedBox(height: 25),
             ElevatedButton(

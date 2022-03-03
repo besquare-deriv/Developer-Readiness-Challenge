@@ -8,23 +8,29 @@ import 'package:drc/screens/profile_page.dart';
 import 'package:flutter/material.dart';
 
 class NavigationPage extends StatefulWidget {
-  NavigationPage({Key? key}) : super(key: key);
+  String value1;
+  NavigationPage(this.value1, {Key? key}) : super(key: key);
 
   @override
   _NavigationPageState createState() => _NavigationPageState();
 }
 
 class _NavigationPageState extends State<NavigationPage> {
+  String? value1;
   var _selectedIndex = 0;
-  static List<Widget> _pageScreens = <Widget>[
-    HomePage(),
-    ExplorePage(),
-    MarketScreen(),
-    HistoryScreen(),
-    ProfilePage()
-  ];
+
   @override
   Widget build(BuildContext context) {
+    // debugPrint(value1);
+    List<Widget> _pageScreens = <Widget>[
+      HomePage(widget.value1),
+      ExplorePage(),
+      MarketScreen(),
+      HistoryScreen(widget.value1),
+      ProfilePage(widget.value1),
+    ];
+    
+    value1 = widget.value1;
     return Scaffold(
       resizeToAvoidBottomInset: false,
 
@@ -88,9 +94,9 @@ class _NavigationPageState extends State<NavigationPage> {
     // ignore: dead_code
   }
 
-  void changePage(int value) {
+  void changePage(index) {
     setState(() {
-      _selectedIndex = value;
+      _selectedIndex = index;
     });
   }
 }
