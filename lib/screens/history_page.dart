@@ -148,7 +148,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           listData.addAll(dataHistory);
         });
        }
-       
+
     });
   }
 
@@ -176,6 +176,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
     getActiveSymbol();
     getAuthorize();
     timer();
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override

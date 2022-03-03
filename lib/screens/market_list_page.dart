@@ -68,7 +68,7 @@ class _MarketScreenState extends State<MarketScreen> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Color.fromRGBO(8, 217, 217, 100),
+                      color: Color(0xFF1F96B0),
                       borderRadius: BorderRadius.only(
                         bottomRight: Radius.circular(30.0),
                         bottomLeft: Radius.circular(30.0),
@@ -119,11 +119,6 @@ class _MarketScreenState extends State<MarketScreen> {
                                   ),
                                 ),
                               );
-                              setState(
-                                () {
-                                  // selectedSymbol = "";
-                                },
-                              );
                             }),
                         Container(
                           height: 50,
@@ -157,7 +152,12 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Forex';
                                         });
                                       },
-                                      child: Text('Forex'),
+                                      child: Text('Forex', 
+                                          style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   Material(
@@ -184,7 +184,12 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Stock Indices';
                                         });
                                       },
-                                      child: Text('Stock Indices'),
+                                      child: Text('Stock Indices',
+                                          style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   Material(
@@ -211,7 +216,12 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Commodities';
                                         });
                                       },
-                                      child: Text('Commodities'),
+                                      child: Text('Commodities',
+                                          style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   Material(
@@ -238,7 +248,12 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Synthetic Indices';
                                         });
                                       },
-                                      child: Text('Synthetic Indices'),
+                                      child: Text('Synthetic Indices',
+                                          style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   Material(
@@ -266,7 +281,12 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Cryptocurrencies';
                                         });
                                       },
-                                      child: Text('Cryptocurrencies'),
+                                      child: Text('Cryptocurrencies',
+                                          style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -318,11 +338,6 @@ class _MarketScreenState extends State<MarketScreen> {
                                   ['market_display_name'] ==
                               textname) {
                             return Card(
-                              // margin: EdgeInsets.only(
-                              //   // top: 2,
-                              //   // left: 8,
-                              //   // right: 8,
-                              // ),
                               elevation: 5,
                               child: InkWell(
                                 onTap: () {
@@ -364,9 +379,6 @@ class _MarketScreenState extends State<MarketScreen> {
                                         '${price['active_symbols'][index]['spot']}',
                                         textAlign: TextAlign.start,
                                       ),
-
-                                      // mainAxisAlignment:
-                                      //     MainAxisAlignment.center,
                                     ),
                                   ),
                                 ),
@@ -385,9 +397,7 @@ class _MarketScreenState extends State<MarketScreen> {
             }
 
             return const Center(
-              child: CircularProgressIndicator(
-                color: Colors.amber,
-              ),
+              child: CircularProgressIndicator(),
             );
           }),
     );
