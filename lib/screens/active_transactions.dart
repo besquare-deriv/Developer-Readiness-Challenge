@@ -12,7 +12,7 @@ class activeOptions extends StatefulWidget {
 }
 
 class _activeOptionsState extends State<activeOptions> {
-  String apiToken = "SZZ9iFcGUaAMqA5";
+  String apiToken = "5dRHsXj0xsjBEJC";
 
   List<activeContracts> contractsList = [];
   List<int> idList = [];
@@ -68,18 +68,44 @@ class _activeOptionsState extends State<activeOptions> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: const Color(0xFF1F96B0),
-          title: const Text("Active Transactions"),
-          centerTitle: true,
+          title: const Text("Positions",
+              style: TextStyle(
+                color: Colors.black,
+              )),
         ),
-        body: ListView.builder(
-            itemCount: idList.length,
-            itemBuilder: (context, index) {
-              if (idList.isNotEmpty) {
-                return activeCard(contract_id: idList[index]);
-              }
-              {
-                return SizedBox.shrink();
-              }
-            }));
+        body: Column(
+          children: [
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.fromLTRB(20, 20, 100, 10),
+              child: Text(
+                "Open Positions",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Divider(
+                color: Colors.black,
+                thickness: 1,
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                  itemCount: idList.length,
+                  itemBuilder: (context, index) {
+                    if (idList.isNotEmpty) {
+                      return activeCard(contract_id: idList[index]);
+                    }
+                    {
+                      return LinearProgressIndicator();
+                    }
+                  }),
+            ),
+          ],
+        ));
   }
 }

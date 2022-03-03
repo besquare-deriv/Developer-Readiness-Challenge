@@ -48,7 +48,11 @@ dependencies:
   form_field_validator: ^1.1.0
   firebase_storage: ^10.2.7
   provider: ^6.0.2
+<<<<<<< HEAD
   flutter_signin_button: ^2.0.0
+=======
+  country_picker: ^2.0.12
+>>>>>>> d0aff14c35ce649633bb205cb68336a431394a10
 
 dev_dependencies:
   flutter_test:
