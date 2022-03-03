@@ -8,15 +8,21 @@ import '../utils/user_information.dart';
 import 'settings_page.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  final String token;
+
+  const ProfilePage(this.token ,{Key? key}) : super(key: key);
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _ProfilePageState createState() => _ProfilePageState(token);
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  _ProfilePageState(String token);
+
   @override
   Widget build(BuildContext context) {
+    String token;
+
     const user = UserInformation.myUser;
 
     return Scaffold(
@@ -113,8 +119,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     minimumSize: const Size(200.0, 50.0)),
                 onPressed: () {
                   Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Setting()));}),
+                    context,
+                      MaterialPageRoute(builder: (context) => SettingPage(),
+                      ),
+                    );
+                  }),
 
             const SizedBox(height: 25),
             ElevatedButton(

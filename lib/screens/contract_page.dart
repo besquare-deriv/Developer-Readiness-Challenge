@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_unnecessary_containers, camel_case_types, prefer_const_constructors
 import 'package:flutter/material.dart';
 
 class ContractPage extends StatefulWidget {
@@ -12,8 +11,31 @@ class ContractPage extends StatefulWidget {
 
 class _ContractPageState extends State<ContractPage> {
   _ContractPageState(this.data, this.info);
+  List output = [];
   final data;
   final info;
+
+  void comparison (){
+    for (int i = 0; i < info.length; i ++){
+      if (data.contract_id == info[i].contract_id){
+        output.add(info[i]);
+      }
+    }
+    print(output);
+  }
+
+    @override
+  void initState() {
+    comparison();
+    // getDetails(ref_id);
+    //super.initState();
+  }
+
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  // }
+
 
   @override
   Widget build(BuildContext context) {
