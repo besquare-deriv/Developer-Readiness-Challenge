@@ -20,6 +20,7 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> { 
   _HistoryScreenState(this.value1);
   String value1;
+  var channel;
 
   List<transDetails> listData = [];
   List<transDetails> dataHistory = [];
@@ -30,23 +31,24 @@ class _HistoryScreenState extends State<HistoryScreen> {
   List<transDetails> dummyList = [];
   bool _isLoading = false;
 
-  final channel = IOWebSocketChannel.connect(
+  initialConnection() {
+    channel = IOWebSocketChannel.connect(
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
+  }
 
-  void sendMessageAuthorize() {
-    print(value1);
+  sendMessageAuthorize() {
     channel.sink.add('{"authorize": "$value1"}');
   }
 
-  void sendMessageStatement() {
+  sendMessageStatement() {
     channel.sink.add('{"statement": 1, "description": 1, "limit": 999}');
   }
 
-  void getActiveSymbol(){
+  getActiveSymbol(){
     channel.sink.add('{"active_symbols": "brief","product_type": "basic"}');
   }
 
-  dynamic getSymbol(data){
+  void getSymbol(data){
     activeSymbol = [];
     if(data['msg_type'] == 'active_symbols'){       
       for(int j = 0; j <= data['active_symbols'].length -1; j ++){
@@ -80,29 +82,20 @@ class _HistoryScreenState extends State<HistoryScreen> {
         getSymbol(data);
         sendMessageAuthorize();
       }
-      //getSymbol(data);
-      //sendMessageStatement();
       
       if (data['msg_type'] == 'authorize') {
          sendMessageStatement();
-         //print(data);
        }
             
       if (data['msg_type'] == 'statement') {
          for (int i = 0; i <= data['statement']['transactions'].length -1; i ++) {
-          //  print(data['statement']['transactions'][i]['transaction_time']);
           
            time.add(DateTime.fromMillisecondsSinceEpoch(
             data['statement']['transactions'][i]['transaction_time'] * 1000));
           
           String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(time[i]);
 
-          
           currency.add(data['statement']['transactions'][i]['shortcode'].toString());
-
-          /*final regex = RegExp (r'(?<=_)[^R_]+(?=_)');
-          String? match = regex.stringMatch(currency[i].toString());
-          typeCurrency.add(match!); */
 
           if (currency[i].contains('R_')){
             String a = currency[i].split('_')[1];
@@ -116,7 +109,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
             String output = currency[i].split('_')[1];
             typeCurrency.add(output);
           }
-          //print(typeCurrency.length);
 
            for(int j = 0; j <= activeSymbol.length -1; j ++){
               if(typeCurrency[i] == activeSymbol[j].symbol){
@@ -151,7 +143,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
         });
        }
     });
-    // channel.sink.close();
   }
 
   void checkData() {
@@ -168,23 +159,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
     setState(() {
       checkData();
     });
-  });
-  }
+  });}
 
-//   void updateUI(){
-//    setState(() {
-//       channel.sink.close();
-//      _HistoryScreenState;
-//     });
-// }
+  getData() async{
+    await initialConnection();
+    getActiveSymbol();
+    getAuthorize();
+    timer();
+  }
 
   @override
   void initState() {
-    getActiveSymbol();
-    //sendMessageAuthorize();
-    //sendMessageStatement();
-    getAuthorize();
-    timer();
+    getData();
     super.initState();
   }
 
@@ -218,7 +204,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
       });
       return;
     }
-
   }
 
   @override
@@ -240,10 +225,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
         actions: [],
       ),
 
-      body: StreamBuilder<Object>(
-        stream: null,
-        builder: (context, snapshot) {
-          return SafeArea(
+      body: 
+          SafeArea(
             child: (_isLoading) ? Center (
                 child: Column(
               children: <Widget>[
@@ -269,10 +252,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   IconButton(
                     icon: Image.asset('assets/icons/sync.png'),
                     iconSize: 1,
-                    onPressed: () {
-                      // setState(() { });
-                      // updateUI();
-                    },
+                    onPressed: () { getData(); },
                   ),
                   IconButton(
                     icon: Image.asset('assets/icons/sort.png'),
@@ -392,12 +372,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 ),
               ],
             )
-            ):Center(
+            ): Center(
               child: CircularProgressIndicator()
             )
-          );
-        }
-      ),
+          )
     );
   }
 }

@@ -109,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 filled: true,
                                 //fillColor: Colors.amber,
                                 border: OutlineInputBorder(),
-                                hintText: 'EMAIL',
+                                hintText: 'Email',
                               ),
                               validator: MultiValidator([
                                 RequiredValidator(errorText: "REQUIRED"),

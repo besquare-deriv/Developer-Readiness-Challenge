@@ -49,8 +49,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print(value1);
-
     return Column(
       children: [
         SizedBox(

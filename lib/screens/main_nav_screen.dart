@@ -92,7 +92,7 @@ class _NavigationPageState extends State<NavigationPage> {
     // ignore: dead_code
   }
 
-  void changePage(int index) {
+  void changePage(index) {
     setState(() {
       _selectedIndex = index;
     });
