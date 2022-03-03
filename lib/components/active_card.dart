@@ -42,7 +42,6 @@ class _activeCardState extends State<activeCard> {
   }
 
   getContractInfo(contract_id) {
-    print("contract info requested for $contract_id");
     proposalChannel.sink.add(
         '{"proposal_open_contract": 1,"contract_id": $contract_id, "subscribe":1}');
   }

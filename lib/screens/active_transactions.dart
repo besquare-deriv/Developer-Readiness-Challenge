@@ -12,7 +12,7 @@ class activeOptions extends StatefulWidget {
 }
 
 class _activeOptionsState extends State<activeOptions> {
-  String apiToken = "5dRHsXj0xsjBEJC";
+  String apiToken = "SZZ9iFcGUaAMqA5";
 
   List<activeContracts> contractsList = [];
   List<int> idList = [];
@@ -34,6 +34,7 @@ class _activeOptionsState extends State<activeOptions> {
   void listenActiveContracts() {
     activeChannel.stream.listen((data) {
       var result = jsonDecode(data);
+
       if (idList.isEmpty) {
         if (result['msg_type'] == 'portfolio') {
           for (int i = 0;
@@ -68,10 +69,13 @@ class _activeOptionsState extends State<activeOptions> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: const Color(0xFF1F96B0),
-          title: const Text("Positions",
-              style: TextStyle(
-                color: Colors.black,
-              )),
+          title: const Text("Open Contract Positions",
+                style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                ),
+              ),
+              centerTitle: true,
         ),
         body: Column(
           children: [

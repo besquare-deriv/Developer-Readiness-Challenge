@@ -199,7 +199,7 @@ class _ContractDetailsState extends State<ContractDetails> {
                           alignment: Alignment.centerLeft,
                           child:
                             IconButton(
-                              icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35,),                                   
+                              icon: const Icon(Icons.arrow_back, color: Colors.white),                                   
                               onPressed: () => Navigator.of(context).pop(),
                             ),
                         ),
