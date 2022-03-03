@@ -8,7 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:intl/intl.dart';
 
+import 'contract_page.dart';
+
 class HistoryScreen extends StatefulWidget {
+
   final String value1;
 
   const HistoryScreen(this.value1, {Key? key}) : super(key: key);
@@ -17,10 +20,12 @@ class HistoryScreen extends StatefulWidget {
   _HistoryScreenState createState() => _HistoryScreenState(value1);
 }
 
+
 class _HistoryScreenState extends State<HistoryScreen> { 
   _HistoryScreenState(this.value1);
   String value1;
   var channel;
+
 
   List<transDetails> listData = [];
   List<transDetails> dataHistory = [];
@@ -73,6 +78,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       dataHistory = [];
       listData = [];
       List<dynamic> time = [];
+
       List<String> currency = [];
       List<String> typeCurrency = [];
       List<String> displayName = [];
@@ -129,6 +135,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 id: data['statement']['transactions'][i]['transaction_id'],
                 amount: data['statement']['transactions'][i]['amount'],
                 balance: data['statement']['transactions'][i]['balance_after'],
+
                 contract_id: data['statement']['transactions'][i]['contract_id'],
                 payout: data['statement']['transactions'][i]['payout'],
                 crypto: typeCurrency[i],
@@ -146,20 +153,23 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   void checkData() {
-    if (listData.isEmpty){
+    if (listData.isEmpty) {
       return null;
-    } if (listData.length > 0){
+    }
+    if (listData.length > 0) {
       setState(() {
         _isLoading = true;
       });
     }
   }
 
-  timer(){Timer(Duration(seconds: 5), () {
-    setState(() {
-      checkData();
+  timer() {
+    Timer(Duration(seconds: 5), () {
+      setState(() {
+        checkData();
+      });
     });
-  });}
+  }
 
   getData() async{
     await initialConnection();
@@ -183,15 +193,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
     dummyList = [];
     sortedList = [];
 
-    if(query.isNotEmpty) {
-      for (int i = 0; i < dataHistory.length; i ++)
-      {
-        if (dataHistory[i].action == query){
+    if (query.isNotEmpty) {
+      for (int i = 0; i < dataHistory.length; i++) {
+        if (dataHistory[i].action == query) {
           setState(() {
             sortedList.add(dataHistory[i]);
-          }); 
+          });
         }
-      };
+      }
+      ;
       setState(() {
         listData.clear();
         listData.addAll(sortedList);
@@ -404,6 +414,7 @@ class transDetails {
   });
 
   @override
+
   String toString() => '[ $action , $time , $id , $amount, $balance , $contract_id, $payout, $crypto , $symbolName]';
 }
 

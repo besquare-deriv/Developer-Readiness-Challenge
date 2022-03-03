@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drc/Authorization/auth_helper.dart';
 import 'package:drc/screens/landing_page.dart';
@@ -85,7 +84,6 @@ class MainScreen extends StatelessWidget {
                         child: CircularProgressIndicator(),
                       ),
                     );
-
                   }
                 },
               );
@@ -102,6 +100,5 @@ class MainScreen extends StatelessWidget {
             // return LandingScreen(title: 'MilkyWay');
           }),
     );
-
   }
 }
