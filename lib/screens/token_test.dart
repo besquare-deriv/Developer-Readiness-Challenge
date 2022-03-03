@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../Authorization/auth_helper.dart';
+
 class AddNote extends StatefulWidget {
   @override
   _AddNoteState createState() => _AddNoteState();
@@ -15,6 +17,19 @@ class _AddNoteState extends State<AddNote> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: new AppBar(
+          leading: GestureDetector(
+            onTap: () {
+              AuthHelper().logOut();
+            },
+            child: Icon(
+              Icons.menu, // add custom icons also
+            ),
+          ),
+          centerTitle: true,
+          title: Text("Token"),
+          backgroundColor: Colors.lightBlue,
+        ),
         body: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(12.0),
@@ -112,7 +127,22 @@ class _AddNoteState extends State<AddNote> {
       'created': DateTime.now(),
     });
     // save to db
-
-    Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text('Data Added Successfully'),
+          actions: <Widget>[
+            TextButton(
+              child: new Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+    AuthHelper().logOut();
   }
 }

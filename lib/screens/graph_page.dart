@@ -4,8 +4,6 @@ import 'dart:convert';
 import 'package:drc/components/error_dialog.dart';
 import 'package:drc/screens/active_transactions.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 import 'package:web_socket_channel/io.dart';
 import '../components/chart.dart';
 import 'package:flutter/services.dart';
