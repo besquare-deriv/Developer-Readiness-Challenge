@@ -26,7 +26,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
   String value1;
   var channel;
 
-
   List<transDetails> listData = [];
   List<transDetails> dataHistory = [];
   List<symbolDetails> activeSymbol = [];
@@ -149,6 +148,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           listData.addAll(dataHistory);
         });
        }
+       
     });
   }
 
