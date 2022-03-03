@@ -21,7 +21,7 @@ class _NavigationPageState extends State<NavigationPage> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(value1);
+    // debugPrint(value1);
     List<Widget> _pageScreens = <Widget>[
       HomePage(widget.value1),
       ExplorePage(),
@@ -29,7 +29,7 @@ class _NavigationPageState extends State<NavigationPage> {
       HistoryScreen(widget.value1),
       ProfilePage(widget.value1),
     ];
-    // print("E" + widget.value1);
+    
     value1 = widget.value1;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -93,7 +93,7 @@ class _NavigationPageState extends State<NavigationPage> {
     // ignore: dead_code
   }
 
-  void changePage(int index) {
+  void changePage(index) {
     setState(() {
       _selectedIndex = index;
     });

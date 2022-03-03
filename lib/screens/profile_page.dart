@@ -27,8 +27,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-
-      //appBar: buildAppBar(context),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
