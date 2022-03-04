@@ -18,7 +18,7 @@ class NavigationPage extends StatefulWidget {
 class _NavigationPageState extends State<NavigationPage> {
   String? value1;
   var _selectedIndex = 0;
-  
+
   @override
   Widget build(BuildContext context) {
     List<Widget> _pageScreens = <Widget>[
@@ -26,7 +26,7 @@ class _NavigationPageState extends State<NavigationPage> {
       ExplorePage(),
       MarketScreen(),
       HistoryScreen(),
-      ProfilePage()
+      ProfilePage(widget.value1)
     ];
     // print("E" + widget.value1);
     value1 = widget.value1;

@@ -167,14 +167,32 @@ class _ResetScreenState extends State<ResetScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title:
-                new Text('A password reset link has been sent to your email'),
+            title: new Text(
+              'A new password rest link has been sent to your registered email address.',
+              style: const TextStyle(
+                fontSize: 22.0,
+                color: Colors.black,
+              ),
+            ),
+            content: Container(
+              child: Text(
+                "Please log in again",
+                style: const TextStyle(
+                  fontSize: 19.0,
+                  color: Colors.black,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
             actions: <Widget>[
-              TextButton(
-                child: new Text("OK"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+              Divider(color: Colors.black),
+              Center(
+                child: TextButton(
+                  child: Text("OK", style: TextStyle(fontSize: 25)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
               ),
             ],
           );
