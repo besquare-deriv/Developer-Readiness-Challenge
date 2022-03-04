@@ -1,7 +1,9 @@
-// ignore_for_file: non_constant_identifier_names, prefer_typing_uninitialized_variables, camel_case_types
+// ignore_for_file: non_constant_identifier_names, prefer_typing_uninitialized_variables, camel_case_types, prefer_const_constructors
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:drc/components/error_dialog.dart';
+import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
@@ -35,11 +37,16 @@ class _activeCardState extends State<activeCard> {
     });
   }
 
+  void sellContract(contract_id) {
+    proposalChannel.sink.add('{"sell": $contract_id,"price": 0}');
+  }
+
   getContractInfo(contract_id) {
-    print("contract info requested for $contract_id");
     proposalChannel.sink.add(
         '{"proposal_open_contract": 1,"contract_id": $contract_id, "subscribe":1}');
   }
+
+  format(Duration d) => d.toString().split('.').first;
 
   void listenContractInfo() {
     proposalChannel.stream.listen((data) {
@@ -60,31 +67,179 @@ class _activeCardState extends State<activeCard> {
   Widget build(BuildContext context) {
     try {
       if (result['proposal_open_contract'] != null) {
-        return Card(
-            elevation: 5.0,
-            child: Column(
-              children: [
-                ListTile(
-                  leading: Text(
-                      "${result['proposal_open_contract']['display_name']}"),
-                  trailing: Column(
+        var expiry_time = DateTime.fromMillisecondsSinceEpoch(
+            result['proposal_open_contract']['date_expiry'] * 1000);
+        var current_time = DateTime.fromMillisecondsSinceEpoch(
+            result['proposal_open_contract']['current_spot_time'] * 1000);
+
+        var time_remaining = format(expiry_time.difference(current_time));
+
+        var validSell = result['proposal_open_contract']['is_valid_to_sell'];
+
+        var profit = result['proposal_open_contract']['profit'];
+
+        return Stack(
+          children: [
+            Container(
+              padding: EdgeInsets.only(top: 40, left: 10, right: 10),
+              child: Card(
+                elevation: 5.0,
+                child: Container(
+                  height: 130,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Column(
                     children: [
-                      Text(
-                          "Buy Price : ${result['proposal_open_contract']['buy_price']}"),
-                      Text(
-                          "Profit/Loss: ${result['proposal_open_contract']['profit']}"),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      SizedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Buy Price :",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  Text(
+                                    " ${result['proposal_open_contract']['buy_price']}",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                                child: Row(
+                              children: [
+                                Text(
+                                  "Profit :",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                Text(
+                                  " ${profit}",
+                                  style: (profit < 0)
+                                      ? TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                        )
+                                      : TextStyle(
+                                          color: Colors.green,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                ),
+                              ],
+                            ))
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      SizedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Payout Limit :",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  Text(
+                                    " ${result['proposal_open_contract']['payout']}",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                                child: Row(
+                              children: [
+                                Text(
+                                  "Time Left :",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                Text(
+                                  " ${time_remaining}",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ))
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(top: 5),
+                        alignment: Alignment.center,
+                        child: (validSell == 1)
+                            ? ElevatedButton(
+                                onPressed: () {
+                                  sellContract(contract_id);
+                                  Navigator.pop(context);
+                                },
+                                child: Text("Sell"),
+                              )
+                            : Text(""),
+                      )
                     ],
                   ),
                 ),
-              ],
-            ));
+              ),
+            ),
+            FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Container(
+                constraints: BoxConstraints(minWidth: 50),
+                alignment: Alignment.centerLeft,
+                height: 50,
+                margin: EdgeInsets.fromLTRB(25, 10, 100, 0),
+                padding: EdgeInsets.only(left: 10, right: 10),
+                decoration: BoxDecoration(
+                  color: Color(0xFF08D9D6),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                ),
+                child: Text(
+                  "${result['proposal_open_contract']['display_name']}",
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
       }
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
 
     {
-      return SizedBox.shrink();
+      return LinearProgressIndicator();
     }
   }
 }

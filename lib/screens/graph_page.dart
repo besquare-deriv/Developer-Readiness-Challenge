@@ -60,7 +60,6 @@ class _GraphScreenState extends State<GraphScreen> {
   void listenWS() {
     authChannel.stream.listen((data) {
       var result = jsonDecode(data);
-
       if (result['msg_type'] == 'proposal' && result['proposal'] != null) {
         buy_id = result['proposal']['id'];
 
@@ -140,7 +139,7 @@ class _GraphScreenState extends State<GraphScreen> {
       return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.black),
+              icon: Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () {
                 channel.sink.close();
                 Navigator.of(context).pop();

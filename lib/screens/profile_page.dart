@@ -54,8 +54,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
   DocumentReference? ref;
   GlobalKey<FormState> validkey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
+    String token;
+
     const user = UserInformation.myUser;
     print(value1);
 
@@ -74,6 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
             return Scaffold(
               backgroundColor: Colors.white,
+
 
               //appBar: buildAppBar(context),
               body: SingleChildScrollView(
@@ -224,6 +228,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             );
                           }),
+
 
                       const SizedBox(height: 25),
                       ElevatedButton(

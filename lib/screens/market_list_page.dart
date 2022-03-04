@@ -68,13 +68,13 @@ class _MarketScreenState extends State<MarketScreen> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Color.fromRGBO(8, 217, 217, 100),
+                      color: Color(0xFF1F96B0),
                       borderRadius: BorderRadius.only(
                         bottomRight: Radius.circular(30.0),
                         bottomLeft: Radius.circular(30.0),
                       ),
                     ),
-                    // color: Color.fromRGBO(8, 217, 217, 100),
+
                     height: 200,
                     width: double.infinity,
                     padding: const EdgeInsets.fromLTRB(5, 30, 5, 10),
@@ -109,21 +109,23 @@ class _MarketScreenState extends State<MarketScreen> {
                               ),
                             ),
                             onTap: (selectedSymbol) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => GraphScreen(
-                                    symbolName: "",
-                                    symbol: "",
-                                    state: 1,
-                                  ),
-                                ),
-                              );
-                              setState(
-                                () {
-                                  // selectedSymbol = "";
-                                },
-                              );
+                              for (int i = 0; i < list.length; i++){
+                                if (price['active_symbols'][i]['display_name'] == selectedSymbol.searchKey) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => GraphScreen(
+                                            symbolName: price['active_symbols']
+                                                [i]['display_name'],
+                                            symbol: price['active_symbols'][i]
+                                                ['symbol'],
+                                            state: price['active_symbols'][i]
+                                                ['exchange_is_open'],
+                                      ),
+                                    ),
+                                  );
+                                };
+                              };
                             }),
                         Container(
                           height: 50,
@@ -157,7 +159,12 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Forex';
                                         });
                                       },
-                                      child: Text('Forex'),
+                                      child: Text('Forex', 
+                                          style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   Material(
@@ -184,7 +191,12 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Stock Indices';
                                         });
                                       },
-                                      child: Text('Stock Indices'),
+                                      child: Text('Stock Indices',
+                                          style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   Material(
@@ -211,7 +223,12 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Commodities';
                                         });
                                       },
-                                      child: Text('Commodities'),
+                                      child: Text('Commodities',
+                                          style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   Material(
@@ -238,7 +255,12 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Synthetic Indices';
                                         });
                                       },
-                                      child: Text('Synthetic Indices'),
+                                      child: Text('Synthetic Indices',
+                                          style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   Material(
@@ -266,7 +288,12 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Cryptocurrencies';
                                         });
                                       },
-                                      child: Text('Cryptocurrencies'),
+                                      child: Text('Cryptocurrencies',
+                                          style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -279,12 +306,10 @@ class _MarketScreenState extends State<MarketScreen> {
                   ),
                   Card(
                     elevation: 5,
+                    color: Colors.amberAccent,
+                    shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(9)),
                     child: Container(
                       height: 60,
-                      decoration: BoxDecoration(
-                        color: Colors.amberAccent,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
                       child: Center(
                         child: ListTile(
                           visualDensity:
@@ -310,19 +335,11 @@ class _MarketScreenState extends State<MarketScreen> {
                         padding: EdgeInsets.all(0),
                         itemCount: 78,
                         itemBuilder: (BuildContext context, int index) {
-                          // symbol = price['active_symbols'][index]['symbol'];
-                          // symbolName =
-                          //     price['active_symbols'][index]['display_name'];
 
                           if (price['active_symbols'][index]
                                   ['market_display_name'] ==
                               textname) {
                             return Card(
-                              // margin: EdgeInsets.only(
-                              //   // top: 2,
-                              //   // left: 8,
-                              //   // right: 8,
-                              // ),
                               elevation: 5,
                               child: InkWell(
                                 onTap: () {
@@ -364,9 +381,6 @@ class _MarketScreenState extends State<MarketScreen> {
                                         '${price['active_symbols'][index]['spot']}',
                                         textAlign: TextAlign.start,
                                       ),
-
-                                      // mainAxisAlignment:
-                                      //     MainAxisAlignment.center,
                                     ),
                                   ),
                                 ),
@@ -385,9 +399,7 @@ class _MarketScreenState extends State<MarketScreen> {
             }
 
             return const Center(
-              child: CircularProgressIndicator(
-                color: Colors.amber,
-              ),
+              child: CircularProgressIndicator(),
             );
           }),
     );
