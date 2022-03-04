@@ -246,6 +246,7 @@ class _ContractDetailsState extends State<ContractDetails> {
           child: Wrap (
             direction: Axis.horizontal,
             spacing: 2,
+            runSpacing: 2,
             children: <Widget> [
              Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -265,7 +266,6 @@ class _ContractDetailsState extends State<ContractDetails> {
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans')))
             ],),
-             SizedBox(height: height*0.01317),
              Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -284,7 +284,6 @@ class _ContractDetailsState extends State<ContractDetails> {
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans')))
             ],),
-            SizedBox(height: height*0.01317),
              Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -303,7 +302,6 @@ class _ContractDetailsState extends State<ContractDetails> {
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans')))
             ],),
-            SizedBox(height: height*0.03293),
 
             const Divider(
               height: 10,
@@ -333,7 +331,7 @@ class _ContractDetailsState extends State<ContractDetails> {
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans')))
             ],),
-            SizedBox(height: height*0.01317),
+       
              Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -352,7 +350,7 @@ class _ContractDetailsState extends State<ContractDetails> {
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans')))
             ],),
-            SizedBox(height: height*0.01317),
+          
              Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -401,7 +399,7 @@ class _ContractDetailsState extends State<ContractDetails> {
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans')))
             ],),
-            SizedBox(height: height*0.01317),
+           
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -420,7 +418,7 @@ class _ContractDetailsState extends State<ContractDetails> {
                               fontSize: 16,
                               fontFamily: 'IBM Plex Sans')))
             ],),
-            const SizedBox(height: 10),
+    
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

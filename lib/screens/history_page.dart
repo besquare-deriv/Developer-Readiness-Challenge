@@ -243,7 +243,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
             child: (_isLoading) ? Center (
                 child: Column(
               children: <Widget>[
-                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                Row(mainAxisAlignment: MainAxisAlignment.end, 
+                children: [
                   Expanded(
                     flex: 8,
                     child: Container(
