@@ -1,7 +1,7 @@
 import '../constants.dart';
 
 class UserInformation {
-  static const myUser = User(
+  static const myUser = Users(
     imagePath:
         'https://cdn.iconscout.com/icon/free/png-256/avatar-370-456322.png',
     name: 'John Doe',

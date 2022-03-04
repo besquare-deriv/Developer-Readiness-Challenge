@@ -166,71 +166,75 @@ class _ContractDetailsState extends State<ContractDetails> {
     calProfitLoss();
   }
 
-
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(234, 230, 230, 1) ,
+      backgroundColor: const Color.fromRGBO(234, 230, 230, 1),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        child:
-              Stack(
-        alignment: Alignment.topCenter,
-        children: <Widget>[
-          Container(
-            padding:const EdgeInsets.symmetric(vertical: 40),
-            height: height*0.25,
-            width:width,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(50), 
-                bottomLeft: Radius.circular(50)), 
-              color: Color.fromRGBO(31, 150, 176,1)),
-            child: Column(
-              children: [
-                  Padding(
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 40),
+              height: height * 0.25,
+              width: width,
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(50),
+                      bottomLeft: Radius.circular(50)),
+                  color: Color.fromRGBO(31, 150, 176, 1)),
+              child: Column(children: [
+                Padding(
                     padding: EdgeInsets.all(5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
                           alignment: Alignment.centerLeft,
+
                           child:
                             IconButton(
                               icon: const Icon(Icons.arrow_back, color: Colors.white),                                   
                               onPressed: () => Navigator.of(context).pop(),
                             ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HistoryScreen()));
+                            },
+                          ),
                         ),
                         Container(
-                          margin:EdgeInsets.symmetric(horizontal: width*0.1),
+                          margin: EdgeInsets.symmetric(horizontal: width * 0.1),
                           alignment: Alignment.center,
-                          child: Text('Contract Details',
+                          child: Text(
+                            'Contract Details',
                             /* textAlign: TextAlign.center, */
                             style: TextStyle(
-                            color:Colors.black, 
-                            fontSize: 28, 
-                            fontWeight: FontWeight.bold, 
-                            fontFamily:'DM Sans',
+                              color: Colors.black,
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'DM Sans',
                             ),
                           ),
                         ),
-                      ],)
+                      ],
+                    )),
+                Container(
+                  child: Text(
+                    "$currencyType",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 36,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'IBM Plex Sans'),
                   ),
 
-                  Container(
-                    child:
-                      Text("$currencyType", 
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color:Colors.black, 
-                          fontSize: 36, 
-                          fontWeight: FontWeight.bold, 
-                          fontFamily:'IBM Plex Sans'
-                                    ),
-                                  ),
-                  ),
               ]
                     ),),
 
@@ -440,26 +444,257 @@ class _ContractDetailsState extends State<ContractDetails> {
           ],)
         ), 
 
+            //Contract statement
+            Container(
+                margin: EdgeInsets.only(top: height * 0.3),
+                padding: EdgeInsets.symmetric(vertical: height * 0.06585),
+                width: width * 0.9548,
+                height: height * 0.5663,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white),
+                child: Wrap(
+                  direction: Axis.horizontal,
+                  spacing: 2,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 0, horizontal: width * 0.05093),
+                            child: const Text('Buy ID',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(126, 117, 117, 1),
+                                    fontSize: 16,
+                                    fontFamily: 'IBM Plex Sans'))),
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05093),
+                            child: Text(buyID,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: 'IBM Plex Sans')))
+                      ],
+                    ),
+                    SizedBox(height: height * 0.01317),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05093),
+                            child: const Text('Buy Price',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(126, 117, 117, 1),
+                                    fontSize: 16,
+                                    fontFamily: 'IBM Plex Sans'))),
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05093),
+                            child: Text("$buyPrice",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: 'IBM Plex Sans')))
+                      ],
+                    ),
+                    SizedBox(height: height * 0.01317),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05093),
+                            child: const Text('Start Time',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(126, 117, 117, 1),
+                                    fontSize: 16,
+                                    fontFamily: 'IBM Plex Sans'))),
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05093),
+                            child: Text(startTime,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: 'IBM Plex Sans')))
+                      ],
+                    ),
+                    SizedBox(height: height * 0.03293),
+                    const Divider(
+                      height: 10,
+                      thickness: 1,
+                      indent: 10,
+                      endIndent: 10,
+                      color: Color.fromRGBO(196, 196, 196, 1),
+                    ),
+                    SizedBox(height: height * 0.03293),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05093),
+                            child: const Text('Sell ID',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(126, 117, 117, 1),
+                                    fontSize: 16,
+                                    fontFamily: 'IBM Plex Sans'))),
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05093),
+                            child: Text(sellID,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: 'IBM Plex Sans')))
+                      ],
+                    ),
+                    SizedBox(height: height * 0.01317),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05093),
+                            child: const Text('Sell Price',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(126, 117, 117, 1),
+                                    fontSize: 16,
+                                    fontFamily: 'IBM Plex Sans'))),
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05093),
+                            child: Text("$sellPrice",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: 'IBM Plex Sans')))
+                      ],
+                    ),
+                    SizedBox(height: height * 0.01317),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05093),
+                            child: const Text('End Time',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(126, 117, 117, 1),
+                                    fontSize: 16,
+                                    fontFamily: 'IBM Plex Sans'))),
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05093),
+                            child: Text(endTime,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: 'IBM Plex Sans')))
+                      ],
+                    ),
+                    SizedBox(height: height * 0.03293),
+                    const Divider(
+                      height: 10,
+                      thickness: 1,
+                      indent: 10,
+                      endIndent: 10,
+                      color: Color.fromRGBO(196, 196, 196, 1),
+                    ),
+                    SizedBox(height: height * 0.03293),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05093),
+                            child: const Text('Duration',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(126, 117, 117, 1),
+                                    fontSize: 16,
+                                    fontFamily: 'IBM Plex Sans'))),
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05093),
+                            child: Text(duration,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: 'IBM Plex Sans')))
+                      ],
+                    ),
+                    SizedBox(height: height * 0.01317),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05093),
+                            child: const Text('Payout limit',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(126, 117, 117, 1),
+                                    fontSize: 16,
+                                    fontFamily: 'IBM Plex Sans'))),
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05093),
+                            child: Text("$payoutLimit",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: 'IBM Plex Sans')))
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05093),
+                            child: const Text('Account balance',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(126, 117, 117, 1),
+                                    fontSize: 16,
+                                    fontFamily: 'IBM Plex Sans'))),
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05093),
+                            child: Text("$accountBalance",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: 'IBM Plex Sans')))
+                      ],
+                    ),
+                  ],
+                )),
 
-        // Profit/Loss statement
-        Container(
-             margin: EdgeInsets.only(top:height*0.2107),
-             padding: EdgeInsets.symmetric(vertical:height*0.02634),
-             width: width*0.7384,
-             height: height*0.1264,
-             decoration: BoxDecoration(
-               border: Border.all(color: Colors.black, width: 1.5),
-               borderRadius: BorderRadius.circular(20), 
-               color: const Color(0xFFC4C4C4),),
-                child: Column( children: <Widget>[
-                  Container(child: const Text('Total profit/loss',
-                                      style: TextStyle(
-                                           color:Colors.black, 
-                                           fontSize: 20, 
-                                           fontFamily:'IBM Plex Sans'
-                                           ),
-                                          ), 
+            // Profit/Loss statement
+            Container(
+              margin: EdgeInsets.only(top: height * 0.2107),
+              padding: EdgeInsets.symmetric(vertical: height * 0.02634),
+              width: width * 0.7384,
+              height: height * 0.1264,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black, width: 1.5),
+                borderRadius: BorderRadius.circular(20),
+                color: const Color(0xFFC4C4C4),
+              ),
+              child: Column(children: <Widget>[
+                Container(
+                  child: const Text(
+                    'Total profit/loss',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontFamily: 'IBM Plex Sans'),
+                  ),
                   alignment: Alignment.center,
+
     ),
     Container(child: Text( profitLoss >= 0 ?"+${profitLoss.toStringAsFixed(2)}" :"${profitLoss.toStringAsFixed(2)}", style: TextStyle(
                                            fontSize: 25, 
@@ -476,7 +711,7 @@ class _ContractDetailsState extends State<ContractDetails> {
       ),
       ),
     );
-    }
+  }
 }
 
   
