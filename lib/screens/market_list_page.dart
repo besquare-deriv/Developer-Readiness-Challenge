@@ -74,7 +74,8 @@ class _MarketScreenState extends State<MarketScreen> {
                         bottomLeft: Radius.circular(30.0),
                       ),
                     ),
-                    height: 150,
+
+                    height: 200,
                     width: double.infinity,
                     padding: const EdgeInsets.fromLTRB(5, 30, 5, 10),
                     child: Column(
@@ -108,16 +109,23 @@ class _MarketScreenState extends State<MarketScreen> {
                               ),
                             ),
                             onTap: (selectedSymbol) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => GraphScreen(
-                                    symbolName: "",
-                                    symbol: "",
-                                    state: 1,
-                                  ),
-                                ),
-                              );
+                              for (int i = 0; i < list.length; i++){
+                                if (price['active_symbols'][i]['display_name'] == selectedSymbol.searchKey) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => GraphScreen(
+                                            symbolName: price['active_symbols']
+                                                [i]['display_name'],
+                                            symbol: price['active_symbols'][i]
+                                                ['symbol'],
+                                            state: price['active_symbols'][i]
+                                                ['exchange_is_open'],
+                                      ),
+                                    ),
+                                  );
+                                };
+                              };
                             }),
                         Container(
                           height: 50,
@@ -303,11 +311,10 @@ class _MarketScreenState extends State<MarketScreen> {
                   ),
                   Card(
                     elevation: 5,
+                    color: Colors.amberAccent,
+                    shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(9)),
                     child: Container(
                       height: 60,
-                      decoration: BoxDecoration(
-                        color: Colors.amberAccent,
-                      ),
                       child: Center(
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -370,9 +377,6 @@ class _MarketScreenState extends State<MarketScreen> {
                         padding: EdgeInsets.all(0),
                         itemCount: 78,
                         itemBuilder: (BuildContext context, int index) {
-                          // symbol = price['active_symbols'][index]['symbol'];
-                          // symbolName =
-                          //     price['active_symbols'][index]['display_name'];
 
                           if (price['active_symbols'][index]
                                   ['market_display_name'] ==
