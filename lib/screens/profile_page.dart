@@ -78,7 +78,6 @@ class _ProfilePageState extends State<ProfilePage> {
             return Scaffold(
               backgroundColor: Colors.white,
 
-
               //appBar: buildAppBar(context),
               body: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
@@ -204,7 +203,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SettingsPage()));
+                                    builder: (context) => SettingPage()));
                           }),
 
                       const SizedBox(height: 25),
@@ -228,7 +227,6 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             );
                           }),
-
 
                       const SizedBox(height: 25),
                       ElevatedButton(
