@@ -5,14 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 
 class activeOptions extends StatefulWidget {
-  const activeOptions({Key? key}) : super(key: key);
+  activeOptions({this.apiToken, Key? key}) : super(key: key);
 
+  String? apiToken;
   @override
-  _activeOptionsState createState() => _activeOptionsState();
+  _activeOptionsState createState() => _activeOptionsState(apiToken: apiToken);
 }
 
 class _activeOptionsState extends State<activeOptions> {
-  String apiToken = "SZZ9iFcGUaAMqA5";
+  _activeOptionsState({this.apiToken});
+
+  String? apiToken;
 
   List<activeContracts> contractsList = [];
   List<int> idList = [];
@@ -66,16 +69,18 @@ class _activeOptionsState extends State<activeOptions> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('Mangus + $apiToken');
     return Scaffold(
         appBar: AppBar(
           backgroundColor: const Color(0xFF1F96B0),
-          title: const Text("Open Contract Positions",
-                style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                ),
-              ),
-              centerTitle: true,
+          title: const Text(
+            "Open Contract Positions",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          centerTitle: true,
         ),
         body: Column(
           children: [
@@ -102,7 +107,8 @@ class _activeOptionsState extends State<activeOptions> {
                   itemCount: idList.length,
                   itemBuilder: (context, index) {
                     if (idList.isNotEmpty) {
-                      return activeCard(contract_id: idList[index]);
+                      return activeCard(
+                          apiToken: apiToken, contract_id: idList[index]);
                     }
                     {
                       return LinearProgressIndicator();

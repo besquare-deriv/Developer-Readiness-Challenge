@@ -254,7 +254,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (data) => activeOptions()));
+                                        builder: (data) => activeOptions(
+                                              apiToken: value1,
+                                            )));
                               },
                               child: Text(
                                 "Active Contracts",

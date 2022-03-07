@@ -9,20 +9,24 @@ import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 
 class activeCard extends StatefulWidget {
-  activeCard({required this.contract_id, Key? key}) : super(key: key);
+  activeCard({this.apiToken, required this.contract_id, Key? key})
+      : super(key: key);
 
+  String? apiToken;
   int contract_id;
 
   @override
-  _activeCardState createState() => _activeCardState(contract_id: contract_id);
+  _activeCardState createState() =>
+      _activeCardState(apiToken: apiToken, contract_id: contract_id);
 }
 
 class _activeCardState extends State<activeCard> {
   _activeCardState({
     required this.contract_id,
+    this.apiToken,
   });
 
-  String apiToken = "SZZ9iFcGUaAMqA5";
+  String? apiToken;
   int contract_id;
   var result;
 
