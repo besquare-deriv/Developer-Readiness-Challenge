@@ -9,20 +9,24 @@ import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 
 class activeCard extends StatefulWidget {
-  activeCard({required this.contract_id, Key? key}) : super(key: key);
+  activeCard({this.apiToken, required this.contract_id, Key? key})
+      : super(key: key);
 
+  String? apiToken;
   int contract_id;
 
   @override
-  _activeCardState createState() => _activeCardState(contract_id: contract_id);
+  _activeCardState createState() =>
+      _activeCardState(apiToken: apiToken, contract_id: contract_id);
 }
 
 class _activeCardState extends State<activeCard> {
   _activeCardState({
     required this.contract_id,
+    this.apiToken,
   });
 
-  String apiToken = "SZZ9iFcGUaAMqA5";
+  String? apiToken;
   int contract_id;
   var result;
 
@@ -88,6 +92,7 @@ class _activeCardState extends State<activeCard> {
             Container(
               padding: EdgeInsets.only(top: 40, left: 10, right: 10),
               child: Card(
+                color: Color(0xFFFFF4F4F4),
                 elevation: 5.0,
                 child: Container(
                   height: 130,
@@ -204,7 +209,12 @@ class _activeCardState extends State<activeCard> {
                                   sellContract(contract_id);
                                   Navigator.pop(context);
                                 },
-                                child: Text("Sell"),
+                                child: Text("Sell", 
+                                          style: TextStyle(
+                                            color: Colors.white
+                                            )
+                                        ),
+                                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromRGBO(48, 95, 173, 1))),
                               )
                             : Text(""),
                       )
@@ -230,6 +240,7 @@ class _activeCardState extends State<activeCard> {
                 child: Text(
                   "${result['proposal_open_contract']['display_name']}",
                   style: TextStyle(
+                    color: Colors.black,
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                   ),
