@@ -10,10 +10,12 @@ class ContractDetails extends StatefulWidget {
   final data;
   final info;
 
-  const ContractDetails({ Key? key, required this.data, this.info}) : super(key: key);
+  const ContractDetails({Key? key, required this.data, this.info})
+      : super(key: key);
 
   @override
-  _ContractDetailsState createState() => _ContractDetailsState(this.data, this.info);
+  _ContractDetailsState createState() =>
+      _ContractDetailsState(this.data, this.info);
 }
 
 class _ContractDetailsState extends State<ContractDetails> {
@@ -23,7 +25,7 @@ class _ContractDetailsState extends State<ContractDetails> {
 
   int? buyID;
   num buyPrice = 0;
-  String startTime = "-"; 
+  String startTime = "-";
   var sellID;
   num sellPrice = 0;
   String endTime = "-";
@@ -34,138 +36,140 @@ class _ContractDetailsState extends State<ContractDetails> {
   num profitLoss = 0;
   var currencyType = "-";
 
-
   List output = [];
   List timeList = [];
 
-  void comparison (){
-    for (int i = 0; i < info.length; i ++){
-      if (data.contract_id == info[i].contract_id){
+  void comparison() {
+    for (int i = 0; i < info.length; i++) {
+      if (data.contract_id == info[i].contract_id) {
         output.add(info[i]);
-      }
-      else{
+      } else {
         output.add(data);
       }
     }
   }
 
-  void setInfo(){
-    if(data.action == 'buy' || data.action == 'sell'){
-    for (int i = 0; i <= output.length - 1; i ++){
-      if(output[i].action == 'buy'){
-        buyID = output[i].id;
-        buyPrice = output[i].amount;
-        startTime = output[i].time; 
-        
+  void setInfo() {
+    if (data.action == 'buy' || data.action == 'sell') {
+      for (int i = 0; i <= output.length - 1; i++) {
+        if (output[i].action == 'buy') {
+          buyID = output[i].id;
+          buyPrice = output[i].amount;
+          startTime = output[i].time;
+        }
+        if (output[i].action == 'sell') {
+          sellID = output[i].id;
+          sellPrice = output[i].amount;
+          endTime = output[i].time;
+          accountBalance = output[i].balance;
+        }
       }
-      if(output[i].action == 'sell'){
-        sellID = output[i].id;
-        sellPrice = output[i].amount;
-        endTime = output[i].time; 
-        accountBalance = output[i].balance;
-      }
-    }
       currencyType = data.symbolName;
       payoutLimit = data.payout;
       calDuration();
     }
-    if (data.action == 'withdrawal'){
-        currencyType = 'withdrawal';
-        buyID = data.id;
-        buyPrice = data.amount;
-        startTime = data.time; 
-        currencyType;
-        sellID = '-';
-        sellPrice = 0;
-        endTime = '-'; 
-        payoutLimit = 0;
-        accountBalance = data.balance;
-        printDuration = '-';
+    if (data.action == 'withdrawal') {
+      currencyType = 'withdrawal';
+      buyID = data.id;
+      buyPrice = data.amount;
+      startTime = data.time;
+      currencyType;
+      sellID = '-';
+      sellPrice = 0;
+      endTime = '-';
+      payoutLimit = 0;
+      accountBalance = data.balance;
+      printDuration = '-';
     }
   }
 
-  void calDuration(){
+  void calDuration() {
     DateTime dt1 = DateTime.parse(startTime);
     DateTime dt2 = DateTime.parse(endTime);
-    duration =  dt2.difference(dt1);
-    //show days, hours, minutes and seconds 
-    if(duration!.inDays != 0){
-      if(duration!.inDays > 1){
-          if(duration!.inHours != 0 || duration!.inMinutes.remainder(60) != 0 || duration!.inSeconds.remainder(60) > 5){
-         printDuration = ('${duration!.inDays} days '+'${duration!.inHours} hours '+'${duration!.inMinutes.remainder(60)} minutes '+'${duration!.inSeconds.remainder(60)} seconds'  );
+    duration = dt2.difference(dt1);
+    //show days, hours, minutes and seconds
+    if (duration!.inDays != 0) {
+      if (duration!.inDays > 1) {
+        if (duration!.inHours != 0 ||
+            duration!.inMinutes.remainder(60) != 0 ||
+            duration!.inSeconds.remainder(60) > 5) {
+          printDuration = ('${duration!.inDays} days ' +
+              '${duration!.inHours} hours ' +
+              '${duration!.inMinutes.remainder(60)} minutes ' +
+              '${duration!.inSeconds.remainder(60)} seconds');
+        } else {
+          printDuration = ('${duration!.inDays} days');
         }
-          else{
-            printDuration = ('${duration!.inDays} days' );
-          }
-        }
-        else{
-        if(duration!.inHours != 0 || duration!.inMinutes.remainder(60) != 0 || duration!.inSeconds.remainder(60) > 5){
-         printDuration = ('${duration!.inDays} day '+'${duration!.inHours} hour '+'${duration!.inMinutes.remainder(60)} minutes '+'${duration!.inSeconds.remainder(60)} seconds'  );
-        }
-          else{
-            printDuration = ('${duration!.inHours} hour' );
-          }
-        }
-    } 
-     else{
-         //show hours, minutes and seconds 
-      if(duration!.inHours != 0){
-        if(duration!.inHours > 1){
-          if(duration!.inMinutes.remainder(60) != 0 || duration!.inSeconds.remainder(60) > 5){
-         printDuration = ('${duration!.inHours} hours '+'${duration!.inMinutes.remainder(60)} minutes '+'${duration!.inSeconds.remainder(60)} seconds'  );
-        }
-          else{
-            printDuration = ('${duration!.inHours} hours' );
-          }
-        }
-        else{
-        if(duration!.inMinutes.remainder(60) != 0 || duration!.inSeconds.remainder(60) > 5){
-         printDuration = ('${duration!.inHours} hour '+'${duration!.inMinutes.remainder(60)} minutes '+'${duration!.inSeconds.remainder(60)} seconds'  );
-        }
-          else{
-            printDuration = ('${duration!.inHours} hour' );
-          }
+      } else {
+        if (duration!.inHours != 0 ||
+            duration!.inMinutes.remainder(60) != 0 ||
+            duration!.inSeconds.remainder(60) > 5) {
+          printDuration = ('${duration!.inDays} day ' +
+              '${duration!.inHours} hour ' +
+              '${duration!.inMinutes.remainder(60)} minutes ' +
+              '${duration!.inSeconds.remainder(60)} seconds');
+        } else {
+          printDuration = ('${duration!.inHours} hour');
         }
       }
-        else{
-          //shows minutes and seconds 
-          if(duration!.inMinutes!= 0){
-            if(duration!.inMinutes > 1){
-              if(duration!.inSeconds.remainder(60) > 5){
-                printDuration = ('${duration!.inMinutes} minutes '+'${duration!.inSeconds.remainder(60)} seconds' );
-              }
-              else{
+    } else {
+      //show hours, minutes and seconds
+      if (duration!.inHours != 0) {
+        if (duration!.inHours > 1) {
+          if (duration!.inMinutes.remainder(60) != 0 ||
+              duration!.inSeconds.remainder(60) > 5) {
+            printDuration = ('${duration!.inHours} hours ' +
+                '${duration!.inMinutes.remainder(60)} minutes ' +
+                '${duration!.inSeconds.remainder(60)} seconds');
+          } else {
+            printDuration = ('${duration!.inHours} hours');
+          }
+        } else {
+          if (duration!.inMinutes.remainder(60) != 0 ||
+              duration!.inSeconds.remainder(60) > 5) {
+            printDuration = ('${duration!.inHours} hour ' +
+                '${duration!.inMinutes.remainder(60)} minutes ' +
+                '${duration!.inSeconds.remainder(60)} seconds');
+          } else {
+            printDuration = ('${duration!.inHours} hour');
+          }
+        }
+      } else {
+        //shows minutes and seconds
+        if (duration!.inMinutes != 0) {
+          if (duration!.inMinutes > 1) {
+            if (duration!.inSeconds.remainder(60) > 5) {
+              printDuration = ('${duration!.inMinutes} minutes ' +
+                  '${duration!.inSeconds.remainder(60)} seconds');
+            } else {
               printDuration = ('${duration!.inMinutes} minutes');
-              }
             }
-            else{
-              if(duration!.inSeconds.remainder(60) > 5){
-                printDuration = ('${duration!.inMinutes} minute '+'${duration!.inSeconds.remainder(60)} seconds' );
-              }
-              else{
+          } else {
+            if (duration!.inSeconds.remainder(60) > 5) {
+              printDuration = ('${duration!.inMinutes} minute ' +
+                  '${duration!.inSeconds.remainder(60)} seconds');
+            } else {
               printDuration = ('${duration!.inMinutes} minute');
-              }
             }
           }
-            else{
-              //shows seconds only
-              printDuration = ('${duration!.inSeconds} seconds');
-            }
+        } else {
+          //shows seconds only
+          printDuration = ('${duration!.inSeconds} seconds');
         }
       }
-  } 
+    }
+  }
 
-  void calProfitLoss(){
+  void calProfitLoss() {
     profitLoss = sellPrice + buyPrice;
-  } 
+  }
 
-    @override
+  @override
   void initState() {
     comparison();
     setInfo();
     calProfitLoss();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -216,7 +220,6 @@ class _ContractDetailsState extends State<ContractDetails> {
                               fontWeight: FontWeight.bold, 
                               fontFamily:'DM Sans',
                               ),
-
                             ),
                           ),
                           Spacer(),
@@ -431,7 +434,7 @@ class _ContractDetailsState extends State<ContractDetails> {
             Row(
               children: [
                 Expanded(
-                  child: Padding(padding:EdgeInsets.only(left: width*0.05093), 
+                   child:  Padding(padding:EdgeInsets.only(left: width*0.05093), 
                       child:Text('Duration', 
                               style: TextStyle(
                                 color: Color.fromRGBO(126, 117, 117, 1),
@@ -439,20 +442,24 @@ class _ContractDetailsState extends State<ContractDetails> {
                                 fontFamily: 'IBM Plex Sans'
                               )
                         )
-                    )
+                    ),
                   ),
 
-                Wrap(children: [
-                  Padding(padding: EdgeInsets.only(right: width*0.05093),
+                //Wrap(children: [
+                  Expanded(
+                  flex: 3,
+                  child: Padding(padding: EdgeInsets.only(right: width*0.05093),
                     child: Text('$printDuration',
+                            textAlign: TextAlign.end,
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
                                 fontFamily: 'IBM Plex Sans'
                             )
                       )
-                  )
-                ],)
+                  ),)
+                  
+                //],)
                 
                 ],
               ),
@@ -511,7 +518,6 @@ class _ContractDetailsState extends State<ContractDetails> {
           )
         ), 
 
-
         // Profit/Loss statement
         Container(
              margin: EdgeInsets.only(top:height*0.2607),
@@ -551,7 +557,5 @@ class _ContractDetailsState extends State<ContractDetails> {
       ),
       ),
     );
-    }
+  }
 }
-
-  

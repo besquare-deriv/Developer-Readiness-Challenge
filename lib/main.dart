@@ -1,19 +1,14 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drc/Authorization/auth_helper.dart';
-import 'package:drc/screens/active_transactions.dart';
-import 'package:drc/screens/history_page.dart';
 import 'package:drc/screens/landing_page.dart';
 import 'package:drc/screens/main_nav_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'components/theme_provider.dart';
 import 'screens/token_test.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +18,6 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   @override
-
   Widget build(BuildContext context) => ChangeNotifierProvider(
     create: (context)=> ThemeProvider(),
     builder: (context, _) {
@@ -78,20 +72,20 @@ class MainScreen extends StatelessWidget {
                               .snapshots(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
-                            if (snapshot.hasData) {
-                              if (snapshot.data!.docs.length == 0) {
-                                return AddNote();
-                              } else {
-                                final docs = snapshot.data!.docs;
-                                final v = docs[0].data() as Map;
+                                if (snapshot.hasData) {
+                                  if (snapshot.data!.docs.length == 0) {
+                                    return AddNote();
+                                  } else {
+                                    final docs = snapshot.data!.docs;
+                                    final v = docs[0].data() as Map;
 
-                                value = v['token'];
-                                return NavigationPage(value!);
+                                    value = v['token'];
+                                    return NavigationPage(value!);
+                                  }
+                                }
+                                return SizedBox.shrink();
                               }
-                            } else {
-                              return AddNote();
-                            }
-                          });
+                      );
                     } else {
                       return AddNote();
                     }
@@ -101,7 +95,6 @@ class MainScreen extends StatelessWidget {
                         child: CircularProgressIndicator(),
                       ),
                     );
-
                   }
                 },
               );
@@ -112,12 +105,11 @@ class MainScreen extends StatelessWidget {
               theme: ThemeData(
                 primarySwatch: Colors.blue,
               ),
-              home: const LandingScreen(title: 'Flutter Demo Home Page'),
+              home: const LandingScreen(title: 'BeRAD'),
             );
             // return LoginPage();
             // return LandingScreen(title: 'MilkyWay');
           }),
     );
-
   }
 }

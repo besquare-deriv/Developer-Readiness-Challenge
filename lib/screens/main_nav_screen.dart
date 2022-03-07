@@ -5,6 +5,7 @@ import 'package:drc/screens/history_page.dart';
 import 'package:drc/screens/home_page.dart';
 import 'package:drc/screens/market_list_page.dart';
 import 'package:drc/screens/profile_page.dart';
+import 'package:drc/screens/token_test.dart';
 import 'package:flutter/material.dart';
 
 class NavigationPage extends StatefulWidget {
@@ -18,17 +19,18 @@ class NavigationPage extends StatefulWidget {
 class _NavigationPageState extends State<NavigationPage> {
   String? value1;
   var _selectedIndex = 0;
-  
+
   @override
   Widget build(BuildContext context) {
     List<Widget> _pageScreens = <Widget>[
       HomePage(widget.value1),
       ExplorePage(),
       MarketScreen(),
-      HistoryScreen(),
-      ProfilePage(widget.value1)
+      HistoryScreen(widget.value1),
+      ProfilePage(widget.value1),
+
     ];
-    // print("E" + widget.value1);
+
     value1 = widget.value1;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -73,7 +75,7 @@ class _NavigationPageState extends State<NavigationPage> {
               height: 20,
               width: 20,
             ),
-            label: 'Transactions',
+            label: 'History',
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
@@ -92,9 +94,9 @@ class _NavigationPageState extends State<NavigationPage> {
     // ignore: dead_code
   }
 
-  void changePage(int value) {
+  void changePage(index) {
     setState(() {
-      _selectedIndex = value;
+      _selectedIndex = index;
     });
   }
 }

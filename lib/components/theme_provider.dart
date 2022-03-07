@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:theme_mode_handler/theme_mode_manager_interface.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemeMode themeMode = ThemeMode.system;
@@ -12,12 +14,26 @@ class ThemeProvider extends ChangeNotifier {
       return themeMode == ThemeMode.dark;
     }
   }
-
   void toggleTheme(bool isOn) {
     themeMode = isOn ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
   }
 }
+
+
+/* class ThemeManager implements IThemeModeManager{
+  @override
+  Future<String?> loadThemeMode() async {
+    final _prefs = await SharedPreferences.getInstance();
+    return _prefs.getString("THEME_PREF");
+  }
+
+  @override
+  Future<bool> saveThemeMode(String value) async {
+    final _prefs = await SharedPreferences.getInstance();
+    return _prefs.setString("THEME_PREF", value);
+  }
+} */
 
 class MyThemes {
   static final darkTheme = ThemeData(
