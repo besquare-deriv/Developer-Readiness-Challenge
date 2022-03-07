@@ -64,6 +64,11 @@ class _activeCardState extends State<activeCard> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     try {
       if (result['proposal_open_contract'] != null) {
