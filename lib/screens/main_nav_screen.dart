@@ -26,8 +26,10 @@ class _NavigationPageState extends State<NavigationPage> {
       HomePage(widget.value1),
       ExplorePage(),
       MarketScreen(),
+
       HistoryScreen(widget.value1),
       ProfilePage(widget.value1),
+
     ];
     
     value1 = widget.value1;
