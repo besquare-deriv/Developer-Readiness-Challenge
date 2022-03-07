@@ -115,7 +115,6 @@ class _MarketScreenState extends State<MarketScreen> {
                                 if (price['active_symbols'][i]
                                         ['display_name'] ==
                                     selectedSymbol.searchKey) {
-                                  print(token);
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
