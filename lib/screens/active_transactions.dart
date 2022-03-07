@@ -68,11 +68,11 @@ class _activeOptionsState extends State<activeOptions> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color(0xFF1F96B0),
-          title: const Text("Open Contract Positions",
+          backgroundColor: Theme.of(context).appBarTheme.color,
+          title: Text("Open Contract Positions",
                 style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               centerTitle: true,
@@ -93,7 +93,7 @@ class _activeOptionsState extends State<activeOptions> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Divider(
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.onSurface,
                 thickness: 1,
               ),
             ),

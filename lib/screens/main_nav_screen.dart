@@ -44,7 +44,7 @@ class _NavigationPageState extends State<NavigationPage> {
         onTap: changePage,
         iconSize: 20,
         currentIndex: _selectedIndex,
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         // elevation: 10.0,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
