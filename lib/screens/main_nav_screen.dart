@@ -5,6 +5,7 @@ import 'package:drc/screens/history_page.dart';
 import 'package:drc/screens/home_page.dart';
 import 'package:drc/screens/market_list_page.dart';
 import 'package:drc/screens/profile_page.dart';
+import 'package:drc/screens/token_test.dart';
 import 'package:flutter/material.dart';
 
 class NavigationPage extends StatefulWidget {
@@ -21,7 +22,6 @@ class _NavigationPageState extends State<NavigationPage> {
 
   @override
   Widget build(BuildContext context) {
-    // debugPrint(value1);
     List<Widget> _pageScreens = <Widget>[
       HomePage(widget.value1),
       ExplorePage(),
@@ -29,7 +29,6 @@ class _NavigationPageState extends State<NavigationPage> {
 
       HistoryScreen(widget.value1),
       ProfilePage(widget.value1),
-
     ];
 
     value1 = widget.value1;
@@ -45,7 +44,7 @@ class _NavigationPageState extends State<NavigationPage> {
         onTap: changePage,
         iconSize: 20,
         currentIndex: _selectedIndex,
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         // elevation: 10.0,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
