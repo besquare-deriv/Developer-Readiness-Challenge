@@ -105,7 +105,7 @@ class MainScreen extends StatelessWidget {
               theme: ThemeData(
                 primarySwatch: Colors.blue,
               ),
-              home: const LandingScreen(title: 'Flutter Demo Home Page'),
+              home: const LandingScreen(title: 'BeRAD'),
             );
             // return LoginPage();
             // return LandingScreen(title: 'MilkyWay');

@@ -13,20 +13,28 @@ class GraphScreen extends StatefulWidget {
       {Key? key,
       required this.state,
       required this.symbolName,
+      required this.currency_symbol,
       required this.symbol})
       : super(key: key);
   final String symbolName;
   final String symbol;
+  final String currency_symbol;
   final int state;
 
   @override
-  _GraphScreenState createState() =>
-      _GraphScreenState(symbolName: symbolName, symbol: symbol, state: state);
+  _GraphScreenState createState() => _GraphScreenState(
+      currency_symbol: currency_symbol,
+      symbolName: symbolName,
+      symbol: symbol,
+      state: state);
 }
 
 class _GraphScreenState extends State<GraphScreen> {
   _GraphScreenState(
-      {required this.symbolName, required this.symbol, required this.state});
+      {required this.symbolName,
+      required this.symbol,
+      required this.currency_symbol,
+      required this.state});
 
   final channel = IOWebSocketChannel.connect(
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
@@ -40,6 +48,7 @@ class _GraphScreenState extends State<GraphScreen> {
 // For now initializing this data, should get this variables from Maket page
   String symbolName;
   String symbol;
+  String currency_symbol;
   String apiToken = "SZZ9iFcGUaAMqA5";
   String? buy_id;
   int state;
@@ -163,6 +172,7 @@ class _GraphScreenState extends State<GraphScreen> {
                 symbol: symbol,
                 symbolName: symbolName,
                 channel2: channel,
+                currency_symbol: currency_symbol,
               ),
             ),
             Container(

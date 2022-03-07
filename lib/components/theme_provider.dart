@@ -14,12 +14,12 @@ class ThemeProvider extends ChangeNotifier {
       return themeMode == ThemeMode.dark;
     }
   }
-
   void toggleTheme(bool isOn) {
     themeMode = isOn ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
   }
 }
+
 
 /* class ThemeManager implements IThemeModeManager{
   @override

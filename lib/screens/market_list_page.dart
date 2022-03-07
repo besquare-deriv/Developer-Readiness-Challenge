@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:web_socket_channel/io.dart';
 import 'graph_page.dart';
+import 'package:intl/intl.dart';
 
 class MarketScreen extends StatefulWidget {
   const MarketScreen({Key? key}) : super(key: key);
@@ -74,7 +75,6 @@ class _MarketScreenState extends State<MarketScreen> {
                         bottomLeft: Radius.circular(30.0),
                       ),
                     ),
-
                     height: 200,
                     width: double.infinity,
                     padding: const EdgeInsets.fromLTRB(5, 30, 5, 10),
@@ -110,23 +110,29 @@ class _MarketScreenState extends State<MarketScreen> {
                               ),
                             ),
                             onTap: (selectedSymbol) {
-                              for (int i = 0; i < list.length; i++){
-                                if (price['active_symbols'][i]['display_name'] == selectedSymbol.searchKey) {
+                              for (int i = 0; i < list.length; i++) {
+                                if (price['active_symbols'][i]
+                                        ['display_name'] ==
+                                    selectedSymbol.searchKey) {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => GraphScreen(
-                                            symbolName: price['active_symbols']
-                                                [i]['display_name'],
-                                            symbol: price['active_symbols'][i]
-                                                ['symbol'],
-                                            state: price['active_symbols'][i]
-                                                ['exchange_is_open'],
+                                        symbolName: price['active_symbols'][i]
+                                            ['display_name'],
+                                        symbol: price['active_symbols'][i]
+                                            ['symbol'],
+                                        state: price['active_symbols'][i]
+                                            ['exchange_is_open'],
+                                        currency_symbol: price['active_symbols']
+                                            [i]['quoted_currency_symbol'],
                                       ),
                                     ),
                                   );
-                                };
-                              };
+                                }
+                                ;
+                              }
+                              ;
                             }),
                         Container(
                           height: 50,
@@ -160,8 +166,9 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Forex';
                                         });
                                       },
-                                      child: Text('Forex', 
-                                          style: TextStyle(
+                                      child: Text(
+                                        'Forex',
+                                        style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Theme.of(context).colorScheme.onSurface,
                                         ),
@@ -192,8 +199,9 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Stock Indices';
                                         });
                                       },
-                                      child: Text('Stock Indices',
-                                          style: TextStyle(
+                                      child: Text(
+                                        'Stock Indices',
+                                        style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Theme.of(context).colorScheme.onSurface,
                                         ),
@@ -224,8 +232,9 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Commodities';
                                         });
                                       },
-                                      child: Text('Commodities',
-                                          style: TextStyle(
+                                      child: Text(
+                                        'Commodities',
+                                        style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Theme.of(context).colorScheme.onSurface,
                                         ),
@@ -256,8 +265,9 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Synthetic Indices';
                                         });
                                       },
-                                      child: Text('Synthetic Indices',
-                                          style: TextStyle(
+                                      child: Text(
+                                        'Synthetic Indices',
+                                        style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Theme.of(context).colorScheme.onSurface,
                                         ),
@@ -289,8 +299,9 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Cryptocurrencies';
                                         });
                                       },
-                                      child: Text('Cryptocurrencies',
-                                          style: TextStyle(
+                                      child: Text(
+                                        'Cryptocurrencies',
+                                        style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Theme.of(context).colorScheme.onSurface,
                                         ),
@@ -309,7 +320,8 @@ class _MarketScreenState extends State<MarketScreen> {
                     color: Theme.of(context).scaffoldBackgroundColor,
                     elevation: 5,
                     //color: Colors.amberAccent,
-                    shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(9)),
+                    shape: BeveledRectangleBorder(
+                        borderRadius: BorderRadius.circular(9)),
                     child: Container(
                       height: 60,
                       decoration: BoxDecoration(
@@ -341,10 +353,12 @@ class _MarketScreenState extends State<MarketScreen> {
                         padding: EdgeInsets.all(0),
                         itemCount: 78,
                         itemBuilder: (BuildContext context, int index) {
-
                           if (price['active_symbols'][index]
                                   ['market_display_name'] ==
                               textname) {
+                            var formatPrice = NumberFormat.currency(
+                                    customPattern: '##,###.0#')
+                                .format(price['active_symbols'][index]['spot']);
                             return Card(
                               elevation: 5,
                               child: InkWell(
@@ -359,6 +373,8 @@ class _MarketScreenState extends State<MarketScreen> {
                                             ['symbol'],
                                         state: price['active_symbols'][index]
                                             ['exchange_is_open'],
+                                        currency_symbol: price['active_symbols']
+                                            [index]['quoted_currency_symbol'],
                                       ),
                                     ),
                                   );
@@ -375,21 +391,22 @@ class _MarketScreenState extends State<MarketScreen> {
                                           horizontal: 0, vertical: -4),
                                       horizontalTitleGap: 20.0,
                                       leading: Text(
-                                          '${price['active_symbols'][index]['market_display_name']}'
-                                          "      ",
-                                          style:TextStyle(color: Colors.black
-                                          ),
+                                          '${price['active_symbols'][index]['market_display_name']}',
+                                          style:TextStyle(color: Colors.black),
                                       ),
-                                      trailing: Text(
-                                        '${price['active_symbols'][index]['display_name']}',
-                                        textAlign: TextAlign.center,
-                                        style:TextStyle(color: Colors.black
-                                          )
+                                      trailing: Container(
+                                        width: 70,
+                                        child: Wrap(children: [
+                                          Text(
+                                            '${price['active_symbols'][index]['display_name']}',
+                                            textAlign: TextAlign.center,
+                                            style:TextStyle(color: Colors.black
+                                          ),
+                                          ),
+                                        ]),
                                       ),
                                       title: Text(
-                                        '${price['active_symbols'][index]['quoted_currency_symbol']}'
-                                        " "
-                                        '${price['active_symbols'][index]['spot']}',
+                                        '${formatPrice} ${price['active_symbols'][index]['quoted_currency_symbol']} ',
                                         textAlign: TextAlign.start,
                                         style:TextStyle(color: Colors.black
                                           )

@@ -69,10 +69,10 @@ class _activeOptionsState extends State<activeOptions> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).appBarTheme.color,
-          title: const Text("Open Contract Positions",
+          title: Text("Open Contract Positions",
                 style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               centerTitle: true,
@@ -93,7 +93,7 @@ class _activeOptionsState extends State<activeOptions> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Divider(
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.onSurface,
                 thickness: 1,
               ),
             ),
