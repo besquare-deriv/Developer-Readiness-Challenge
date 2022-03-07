@@ -179,308 +179,382 @@ class _ContractDetailsState extends State<ContractDetails> {
       //backgroundColor: const Color.fromRGBO(234, 230, 230, 1) ,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 40),
-              height: height * 0.25,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(50),
-                      bottomLeft: Radius.circular(50)),
-                  color: Theme.of(context).appBarTheme.color),
-              child: Column(children: [
-                Padding(
-                    padding: EdgeInsets.all(5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Container(
+        child:
+              Stack(
+        alignment: Alignment.topCenter,
+        children: <Widget>[
+          Container(
+            padding:const EdgeInsets.only(top: 40),
+            height: height*0.3,
+            width:double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(50), 
+                bottomLeft: Radius.circular(50)), 
+              color: Theme.of(context).appBarTheme.color ),
+            child: Column(
+              children: [
+                  Padding(
+                    padding: EdgeInsets.all(0),
+                    child:
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(child:  Container(
                             alignment: Alignment.centerLeft,
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.arrow_back,
-                                color: Theme.of(context)
-                                    .appBarTheme
-                                    .iconTheme
-                                    ?.color,
-                                size: 35,
+                            child: 
+                              IconButton(
+                                icon:  Icon(Icons.arrow_back,  color: Theme.of(context).appBarTheme.iconTheme?.color, size: 35,),                                   
+                                onPressed: (){
+                                    Navigator.pop(context);
+                                }, 
                               ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
+                          ),
+                          ),
+                          
+                          Container(
+                            alignment: Alignment.center,
+                            child: Text('Contract Details',
+                              style: TextStyle(
+                              fontSize: 28, 
+                              fontWeight: FontWeight.bold, 
+                              fontFamily:'DM Sans',
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Contract Details',
-                            style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'DM Sans',
-                            ),
+                          Spacer(),
+                        ],)
+                  ),
+                  SizedBox(height:30),
+                  Wrap(
+                    children: <Widget>[
+                      Text("$currencyType", 
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            //color:Colors.black, 
+                            fontSize: 30, 
+                            fontWeight: FontWeight.bold, 
+                            fontFamily:'IBM Plex Sans'
                           ),
-                        ),
-                        Spacer(),
-                      ],
-                    )),
-                SizedBox(height: 10),
-                Text(
-                  "$currencyType",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      //color:Colors.black,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'IBM Plex Sans'),
-                ),
-              ]),
-            ),
-
-            //Contract statement
-            Container(
-                margin: EdgeInsets.only(top: height * 0.3),
-                padding: EdgeInsets.symmetric(vertical: height * 0.08585),
-                width: width * 0.9548,
-                height: height * 0.6663,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Theme.of(context).cardTheme.color),
-                child: Wrap(
-                  direction: Axis.horizontal,
-                  spacing: 2,
-                  runSpacing: 15,
-                  children: <Widget>[
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Padding(
-                                padding: EdgeInsets.only(left: width * 0.05093),
-                                child: Text('Buy ID',
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .secondaryHeaderColor,
-                                        fontSize: 16,
-                                        fontFamily: 'IBM Plex Sans')))),
-                        Padding(
-                            padding: EdgeInsets.only(right: width * 0.05093),
-                            child: Text('$buyID',
-                                style: TextStyle(
-                                    fontSize: 16, fontFamily: 'IBM Plex Sans')))
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Padding(
-                                padding: EdgeInsets.only(left: width * 0.05093),
-                                child: Text('Buy Price',
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .secondaryHeaderColor,
-                                        fontSize: 16,
-                                        fontFamily: 'IBM Plex Sans')))),
-                        Padding(
-                            padding: EdgeInsets.only(right: width * 0.05093),
-                            child: Text('$buyPrice',
-                                style: TextStyle(
-                                    fontSize: 16, fontFamily: 'IBM Plex Sans')))
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Padding(
-                                padding: EdgeInsets.only(left: width * 0.05093),
-                                child: Text('Start Time',
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .secondaryHeaderColor,
-                                        fontSize: 16,
-                                        fontFamily: 'IBM Plex Sans')))),
-                        Padding(
-                            padding: EdgeInsets.only(right: width * 0.05093),
-                            child: Text('$startTime GMT',
-                                style: TextStyle(
-                                    fontSize: 16, fontFamily: 'IBM Plex Sans')))
-                      ],
-                    ),
-                    SizedBox(height: 0.01),
-                    const Divider(
-                      height: 10,
-                      thickness: 1,
-                      indent: 10,
-                      endIndent: 10,
-                      color: Color.fromRGBO(196, 196, 196, 1),
-                    ),
-                    SizedBox(height: 0.01),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Padding(
-                                padding: EdgeInsets.only(left: width * 0.05093),
-                                child: Text('Sell ID',
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .secondaryHeaderColor,
-                                        fontSize: 16,
-                                        fontFamily: 'IBM Plex Sans')))),
-                        Padding(
-                            padding: EdgeInsets.only(right: width * 0.05093),
-                            child: Text('$sellID',
-                                style: TextStyle(
-                                    fontSize: 16, fontFamily: 'IBM Plex Sans')))
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Padding(
-                                padding: EdgeInsets.only(left: width * 0.05093),
-                                child: Text('Sell Price',
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .secondaryHeaderColor,
-                                        fontSize: 16,
-                                        fontFamily: 'IBM Plex Sans')))),
-                        Padding(
-                            padding: EdgeInsets.only(right: width * 0.05093),
-                            child: Text('$sellPrice',
-                                style: TextStyle(
-                                    fontSize: 16, fontFamily: 'IBM Plex Sans')))
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Padding(
-                                padding: EdgeInsets.only(left: width * 0.05093),
-                                child: Text('End Time',
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .secondaryHeaderColor,
-                                        fontSize: 16,
-                                        fontFamily: 'IBM Plex Sans')))),
-                        Padding(
-                            padding: EdgeInsets.only(right: width * 0.05093),
-                            child: Text('$endTime GMT',
-                                style: TextStyle(
-                                    fontSize: 16, fontFamily: 'IBM Plex Sans')))
-                      ],
-                    ),
-                    SizedBox(height: 0.01),
-                    const Divider(
-                      height: 10,
-                      thickness: 1,
-                      indent: 10,
-                      endIndent: 10,
-                      color: Color.fromRGBO(196, 196, 196, 1),
-                    ),
-                    SizedBox(height: 0.01),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Padding(
-                                padding: EdgeInsets.only(left: width * 0.05093),
-                                child: Text('Duration',
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .secondaryHeaderColor,
-                                        fontSize: 16,
-                                        fontFamily: 'IBM Plex Sans')))),
-                        Padding(
-                            padding: EdgeInsets.only(right: width * 0.05093),
-                            child: Text('$printDuration',
-                                style: TextStyle(
-                                    fontSize: 16, fontFamily: 'IBM Plex Sans')))
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Padding(
-                                padding: EdgeInsets.only(left: width * 0.05093),
-                                child: Text('Payout Limit',
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .secondaryHeaderColor,
-                                        fontSize: 16,
-                                        fontFamily: 'IBM Plex Sans')))),
-                        Padding(
-                            padding: EdgeInsets.only(right: width * 0.05093),
-                            child: Text('$payoutLimit',
-                                style: TextStyle(
-                                    fontSize: 16, fontFamily: 'IBM Plex Sans')))
-                      ],
-                    ),
-                    /* const SizedBox(height: 10), */
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Padding(
-                                padding: EdgeInsets.only(left: width * 0.05093),
-                                child: Text('Account Balance',
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .secondaryHeaderColor,
-                                        fontSize: 16,
-                                        fontFamily: 'IBM Plex Sans')))),
-                        Padding(
-                            padding: EdgeInsets.only(right: width * 0.05093),
-                            child: Text('$accountBalance',
-                                style: TextStyle(
-                                    fontSize: 16, fontFamily: 'IBM Plex Sans')))
-                      ],
-                    ),
-                  ],
-                )),
-
-            // Profit/Loss statement
-            Container(
-              margin: EdgeInsets.only(top: height * 0.2107),
-              padding: EdgeInsets.symmetric(vertical: height * 0.02634),
-              width: width * 0.7384,
-              height: height * 0.1264,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black, width: 1.5),
-                borderRadius: BorderRadius.circular(20),
-                color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ],
+                  )        
+              ]
               ),
-              child: Column(children: <Widget>[
-                Container(
-                  child: const Text(
-                    'Total profit/loss',
-                    style: TextStyle(
-                        //color:Colors.black,
-                        fontSize: 20,
-                        fontFamily: 'IBM Plex Sans'),
-                  ),
-                  alignment: Alignment.center,
-                ),
-                Container(
-                  child: Text(
-                    profitLoss >= 0
-                        ? "+${profitLoss.toStringAsFixed(2)}"
-                        : "${profitLoss.toStringAsFixed(2)}",
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'DM Sans',
-                        color: profitLoss >= 0
-                            ? Color.fromRGBO(54, 98, 43, 1)
-                            : Color.fromRGBO(232, 69, 69, 1)),
-                  ),
-                  alignment: Alignment.center,
-                ),
-              ]),
             ),
+
+        //Contract statement  
+        Container(
+          margin: EdgeInsets.only(top: height*0.35),
+          padding: EdgeInsets.only(top: height*0.05885),
+          width:width*0.9548,
+          height: height*0.6163,
+          decoration: BoxDecoration(
+               borderRadius: BorderRadius.circular(20), 
+               color: Color(0xFFFFF4F4F4)),
+          child: Wrap (
+            direction: Axis.horizontal,
+            spacing: 2,
+            runSpacing: 15,
+            children: <Widget> [
+             Row(
+              children: [
+                Expanded(
+                  child: Padding(padding:EdgeInsets.only(left: width*0.05093), 
+                      child:Text('Buy ID', 
+                              style: TextStyle(
+                                color: Color.fromRGBO(126, 117, 117, 1),
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans'
+                              )
+                        )
+                    )
+                  ),
+
+                Padding(padding: EdgeInsets.only(right: width*0.05093),
+                    child: Text('$buyID',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans'
+                            )
+                      )
+                  )
+                ],
+              ),
+             Row(
+              children: [
+                Expanded(
+                  child: Padding(padding:EdgeInsets.only(left: width*0.05093), 
+                      child:Text('Buy Price', 
+                              style: TextStyle(
+                                color: Color.fromRGBO(126, 117, 117, 1),
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans'
+                              )
+                        )
+                    )
+                  ),
+
+                Padding(padding: EdgeInsets.only(right: width*0.05093),
+                    child: Text('$buyPrice',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans'
+                            )
+                      )
+                  )
+                ],
+              ),
+             Row(
+              children: [
+                Expanded(
+                  child: Padding(padding:EdgeInsets.only(left: width*0.05093), 
+                      child:Text('Start Time', 
+                              style: TextStyle(
+                                color: Color.fromRGBO(126, 117, 117, 1),
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans'
+                              )
+                        )
+                    )
+                  ),
+
+                Padding(padding: EdgeInsets.only(right: width*0.05093),
+                    child: Text('$startTime GMT',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans'
+                            )
+                      )
+                  )
+                ],
+              ),
+             SizedBox(height: 0.01), 
+
+            const Divider(
+              height: 10,
+              thickness: 1,
+              indent: 10,
+              endIndent: 10,
+              color: Color.fromRGBO(196, 196, 196, 1),
+          ),
+
+             SizedBox(height: 0.01), 
+
+             Row(
+              children: [
+                Expanded(
+                  child: Padding(padding:EdgeInsets.only(left: width*0.05093), 
+                      child:Text('Sell ID', 
+                              style: TextStyle(
+                                color: Color.fromRGBO(126, 117, 117, 1),
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans'
+                              )
+                        )
+                    )
+                  ),
+
+                Padding(padding: EdgeInsets.only(right: width*0.05093),
+                    child: Text('$sellID',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans'
+                            )
+                      )
+                  )
+                ],
+              ),
+             Row(
+              children: [
+                Expanded(
+                  child: Padding(padding:EdgeInsets.only(left: width*0.05093), 
+                      child:Text('Sell Price', 
+                              style: TextStyle(
+                                color: Color.fromRGBO(126, 117, 117, 1),
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans'
+                              )
+                        )
+                    )
+                  ),
+
+                Padding(padding: EdgeInsets.only(right: width*0.05093),
+                    child: Text('$sellPrice',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans'
+                            )
+                      )
+                  )
+                ],
+              ),
+             Row(
+              children: [
+                Expanded(
+                  child: Padding(padding:EdgeInsets.only(left: width*0.05093), 
+                      child:Text('End Time', 
+                              style: TextStyle(
+                                color: Color.fromRGBO(126, 117, 117, 1),
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans'
+                              )
+                        )
+                    )
+                  ),
+
+                Padding(padding: EdgeInsets.only(right: width*0.05093),
+                    child: Text('$endTime GMT',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans'
+                            )
+                      )
+                  )
+                ],
+              ),
+             SizedBox(height: 0.01), 
+
+            const Divider(
+              height: 10,
+              thickness: 1,
+              indent: 10,
+              endIndent: 10,
+              color: Color.fromRGBO(196, 196, 196, 1),
+          ),
+
+             SizedBox(height: 0.01), 
+
+            Row(
+              children: [
+                Expanded(
+                   child:  Padding(padding:EdgeInsets.only(left: width*0.05093), 
+                      child:Text('Duration', 
+                              style: TextStyle(
+                                color: Color.fromRGBO(126, 117, 117, 1),
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans'
+                              )
+                        )
+                    ),
+                  ),
+
+                //Wrap(children: [
+                  Expanded(
+                  flex: 3,
+                  child: Padding(padding: EdgeInsets.only(right: width*0.05093),
+                    child: Text('$printDuration',
+                            textAlign: TextAlign.end,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans'
+                            )
+                      )
+                  ),)
+                  
+                //],)
+                
+                ],
+              ),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(padding:EdgeInsets.only(left: width*0.05093), 
+                      child:Text('Payout Limit', 
+                              style: TextStyle(
+                                color: Color.fromRGBO(126, 117, 117, 1),
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans'
+                              )
+                        )
+                    )
+                  ),
+
+                Padding(padding: EdgeInsets.only(right: width*0.05093),
+                    child: Text('$payoutLimit',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans'
+                            )
+                      )
+                  )
+                ],
+              ),
+            /* const SizedBox(height: 10), */
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(padding:EdgeInsets.only(left: width*0.05093), 
+                      child:Text('Account Balance', 
+                              style: TextStyle(
+                                color: Color.fromRGBO(126, 117, 117, 1),
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans'
+                              )
+                        )
+                    )
+                  ),
+
+                Padding(padding: EdgeInsets.only(right: width*0.05093),
+                    child: Text('$accountBalance',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans'
+                            )
+                      )
+                  )
+                ],
+              ),
           ],
+          )
+        ), 
+
+        // Profit/Loss statement
+        Container(
+             margin: EdgeInsets.only(top:height*0.2607),
+             padding: EdgeInsets.only(top:height*0.02634),
+             width: width*0.7384,
+             height: height*0.1304,
+             decoration: BoxDecoration(
+               border: Border.all(color: Colors.black, width: 1.5),
+               borderRadius: BorderRadius.circular(20), 
+               color: Color(0xFFC4C4C4)
+             ),
+                child: Column( children: <Widget>[
+                  Container(child: const Text('Total profit/loss',
+                                      style: TextStyle(
+                                           color:Colors.black, 
+                                           fontSize: 20, 
+                                           fontFamily:'IBM Plex Sans'
+                                           ),
+                                          ), 
+                  alignment: Alignment.center,
+                    ),
+        Container(
+          child: Text( profitLoss >= 0 ?"+${profitLoss.toStringAsFixed(2)}" :"${profitLoss.toStringAsFixed(2)}", 
+                    style: TextStyle(
+                        fontSize: 25, 
+                        fontWeight: FontWeight.bold,
+                        fontFamily:'DM Sans',
+                        color: profitLoss >= 0 ? Color.fromRGBO(54, 98, 43, 1) : Color.fromRGBO(232, 69, 69,1)
+                      ),
+          ), 
+          alignment: Alignment.center,
         ),
+  ]
+  ),
+),
+      ],
+      ),
       ),
     );
   }

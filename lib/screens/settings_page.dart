@@ -1,25 +1,36 @@
 //import 'dart:html';
 
+import 'dart:convert';
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_dropdown.dart';
 
 import 'package:country_pickers/utils/utils.dart';
+import 'package:drc/components/change_theme_button_widget.dart';
+import 'package:drc/screens/explorer_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
+import 'package:web_socket_channel/io.dart';
 import '../components/iconwidget.dart';
+import 'history_page.dart';
+import 'login_page.dart';
+import 'market_list_page.dart';
+import 'profile_page.dart';
+import 'package:intl/intl.dart';
 
+class SettingsPage extends StatefulWidget {
+  final String value;
 
-class SettingPage extends StatefulWidget {
-  const SettingPage({ Key? key }) : super(key: key);
+  const SettingsPage({Key? key, required this.value}) : super(key: key);
 
   @override
-  _SettingPageState createState() => _SettingPageState();
+  _SettingsPageState createState() => _SettingsPageState(value);
 }
 
-class _SettingPageState extends State<SettingPage> {
+class _SettingsPageState extends State<SettingsPage> {
+  String value;
+  _SettingsPageState(this.value);
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
-
-  String? value;
   final  _phone = TextEditingController();
   final  _confirmPass = TextEditingController();
   final _pass = TextEditingController();
@@ -31,29 +42,76 @@ class _SettingPageState extends State<SettingPage> {
   String phoneNumber = '+601123456789';
   String password = '********';
   String countryName = 'Indonesia';
-  String apiToken = 'XXXXXXXXXXXXXXXX';
+  String apiToken = '***********';
   DateTime date = DateTime.now();
+
+  final channel = IOWebSocketChannel.connect(
+        Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
+
+  void sendMessageAuthorize() {
+    channel.sink.add('{"authorize": "$value"}');
+  }
+
+  void getAccountSettings() {
+    channel.sink.add('{"get_settings": 1}');
+  }
+
+  void initState() {
+        sendMessageAuthorize();
+        getAccountSettings();
+        getAuthorize();
+        super.initState();
+      }
+
+
+  void getAuthorize() {
+    channel.stream.listen((event) {
+      final data = jsonDecode(event);
+
+      if (data['msg_type'] == 'authorize') {
+        getAccountSettings(); 
+      }
+      
+      if (data['msg_type'] == 'get_settings') {
+        setState(() {
+          firstName = data['get_settings']['first_name'];
+          lastName = data['get_settings']['last_name'];
+          email = data['get_settings']['email'];
+          phoneNumber = data['get_settings']['phone'];
+          countryName = data['get_settings']['country'];
+          apiToken = value;
+          date = (DateTime.fromMillisecondsSinceEpoch(data['get_settings']['date_of_birth'] * 1000));
+          // String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(time);
+        });
+       }
+
+      
+    });
+    }
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-
     return  Scaffold(
-        backgroundColor: const Color.fromRGBO(234, 230, 230, 1) ,
+        //backgroundColor: Theme.of(context).backgroundColor,//const Color.fromRGBO(234, 230, 230, 1) ,
         appBar:
             AppBar( 
               elevation: 0,
               leading: IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),                             
-                        onPressed: () => Navigator.of(context).pop(),
+                        icon: const Icon(Icons.arrow_back, /* color: Colors.black, size: 35, */),                                   
+                        onPressed: () => {
+                             Navigator.pop(context)
+                        }, 
                       ), 
               //toolbarHeight: 90,
-              backgroundColor: Color(0xFF1F96B0),
+              //backgroundColor: Color(0xFF1F96B0),
               title: Text('Settings',
                       style: TextStyle(
-                       color:Colors.white, 
+                       //color: Theme.of(context).colorScheme.onSurface, 
+                       fontSize: 28, 
                        fontWeight: FontWeight.bold, 
+                       fontFamily:'DM Sans'
                       ),
                      ),
               centerTitle: true,
@@ -65,88 +123,179 @@ class _SettingPageState extends State<SettingPage> {
           children: [
             Container(
                 alignment: Alignment.topCenter,
-                padding: EdgeInsets.symmetric(vertical: 28),
-                child: Text('Account Infomation',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 24,
-                        fontFamily: 'DM Sans'))),
-            Card(
-              elevation: 4.0,
-              //margin: const EdgeInsets.only(left:10, right:10),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              //padding: const EdgeInsets.all(0.5),
-              child: Column(
-                children: <Widget>[
+                padding: EdgeInsets.symmetric(vertical:28) ,
+                child: 
+              Text('Account Infomation',
+                style: TextStyle(
+                //color:Theme.of(context).colorScheme.onSurface, 
+                fontSize: 24,
+                fontFamily:'DM Sans'))),
+              Card(
+                color: Color(0xFFFFF4F4F4),
+                elevation: 4.0,
+                  margin: const EdgeInsets.only(left:10, right:10),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)), 
+                  //padding: const EdgeInsets.all(0.5),
+                    child: Column(
+                     children: <Widget>[
+                  
+                  Container(
+                  padding: EdgeInsets.only(left: 15, top: 10),
+                  child:Text('GENERAL', 
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.8) ,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13
+                                )
+                              ), 
+                  alignment: Alignment.centerLeft,),
+                
                   //username
                   ListTile(
-                    leading: IconWidget(icon: Icons.account_circle),
-                    title: Row(children: [
-                      Container(
-                        width: width * 0.3819,
-                        child: Text(
-                          'First Name *',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(fontFamily: 'DM Sans'),
+                    leading: IconWidget(icon:Icons.account_circle),
+                    title: Row(
+                      children: [
+                        Container(
+                          width: width*0.3819,    
+                          child:  
+                              Text('First Name *', 
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        fontFamily:'DM Sans',
+                                        color: Colors.black
+                                      ),
+                              ),
                         ),
-                      ),
-                      Text('Last Name *')
-                    ]),
-                    subtitle: Row(children: [
-                      Container(
-                        width: width * 0.3819,
-                        child: Text(firstName),
-                      ),
-                      Text(lastName),
-                    ]),
-                  ),
-
+                        Text ('Last Name *',
+                          style: TextStyle(
+                            color: Colors.black
+                            ),
+                        )
+                      ]
+                    ),
+                    subtitle: Row(
+                        children: [
+                          Container(
+                            width: width*0.3819, 
+                            child: 
+                              Text('$firstName',
+                                style: TextStyle(
+                                color: Colors.black
+                                ),
+                              ),
+                          ),
+                          Text ('$lastName',
+                            style: TextStyle(
+                              color: Colors.black
+                            ),
+                          ) ,
+                        ]
+                    ),
+                ),
+                  //email
                   ListTile(
                     leading: IconWidget(icon: Icons.email),
-                    title: Text('Email*'),
-                    subtitle: Text(email),
-                  ),
-
-                  ListTile(
-                      leading: IconWidget(icon: Icons.phone),
-                      title: Text('Phone Number'),
-                      subtitle: Text(phoneNumber),
+                    title: Text('Email*',
+                      style: TextStyle(
+                          color: Colors.black
+                                ),
                       ),
- 
-                  ListTile(
-                      leading: IconWidget(icon: Icons.password),
-                      title: Text('Password*'),
-                      subtitle:
-                          Text('${password.replaceAll(RegExp(r"."), "*")}'),
-                              ),
-
-                  ListTile(
-                      leading: IconWidget(icon: Icons.calendar_today),
-                      title: Text('Date of Birth*'),
-                      subtitle: Text('${date.month}/${date.day}/${date.year}'),
-                      ),
-         
-                  ListTile(
-                    leading: Tab(
-                      icon: Image.asset('assets/icons/country.png'),
-                      iconMargin: EdgeInsets.only(right: 100),
+                    subtitle: Text('$email',
+                      style: TextStyle(
+                          color: Colors.black
+                        ),
                     ),
-                    title: Text('Country*'),
-                    subtitle: Text(countryName),
                   ),
 
                   ListTile(
-                      leading: IconWidget(icon: Icons.fingerprint),
-                      title: Text('API Token*'),
-                      subtitle: Text(apiToken),
+                    leading: IconWidget(icon: Icons.phone),
+                    title: Text('Phone Number',
+                      style: TextStyle(
+                          color: Colors.black
+                        ),
+                    ),
+                    subtitle: Text('$phoneNumber',
+                      style: TextStyle(
+                          color: Colors.black
+                        ),
+                    ),
+                  ),
+                  
+                  //calendar
+                  ListTile(
+                    leading: IconWidget(icon: Icons.calendar_today),
+                    title: Text('Date of Birth*',
+                      style: TextStyle(
+                          color: Colors.black
+                        ),
+                    ),
+                    subtitle: Text('${date.month}/${date.day}/${date.year}',
+                      style: TextStyle(
+                          color: Colors.black
+                        ),
+                    ),
+                  ),
+                  //country
+                  ListTile(
+                    leading: Tab(icon: Image.asset('assets/icons/country.png'), iconMargin: EdgeInsets.only(right: 100) ,),
+                    title: Text('Country*',
+                      style: TextStyle(
+                          color: Colors.black
+                        ),
+                      ),
+                    subtitle: Text(countryName,
+                      style: TextStyle(
+                          color: Colors.black
+                        ),
+                    ),
+                    ),
+                  ListTile(
+                    leading: IconWidget(icon: Icons.fingerprint),
+                    title: Text('API Token*',
+                      style: TextStyle(
+                          color: Colors.black
+                        ),
+                    ),
+                    subtitle: Text('$apiToken',
+                      style: TextStyle(
+                          color: Colors.black
+                        ),
+                    ),
+                ),
+                SizedBox(height:10),
+                Divider(
+                      height: 0,
+                      thickness: 1,
+                      indent: 10,
+                      endIndent: 10,
+                      color: Color.fromRGBO(196, 196, 196, 1),
+                  ),
+                Container(
+                  padding: EdgeInsets.only(left: 15, top: 10),
+                  child:Text('THEME', 
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.8) ,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13
+                                )
+                              ), 
+                  alignment: Alignment.centerLeft,),
+                
+                ListTile(
+                  leading: IconWidget(icon: Icons.dark_mode),
+                    title: Text('Dark mode', 
+                              style: TextStyle(
+                          color: Colors.black
+                        ),
                               ),
+                    trailing: ChangeThemeButtonWidget()
+                 ), 
+                     ]
+                    ),
+             )
                 ],
               ),
             )
-          ],
-        ),
-      ),
-    );
-  }  
+        );
+  }
 }

@@ -69,7 +69,7 @@ class _MarketScreenState extends State<MarketScreen> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Color(0xFF1F96B0),
+                      color: Theme.of(context).appBarTheme.color ,
                       borderRadius: BorderRadius.only(
                         bottomRight: Radius.circular(30.0),
                         bottomLeft: Radius.circular(30.0),
@@ -81,7 +81,7 @@ class _MarketScreenState extends State<MarketScreen> {
                     child: Column(
                       children: [
                         SearchField(
-                            marginColor: Colors.purple,
+                            marginColor: Colors.black,
                             controller: selectedSymbol,
                             suggestions: list,
                             suggestionState: Suggestion.expand,
@@ -89,12 +89,13 @@ class _MarketScreenState extends State<MarketScreen> {
                             hint: 'Search Currency Pairs',
                             searchStyle: TextStyle(
                               fontSize: 15,
-                              color: Colors.black.withOpacity(0.8),
+                              color: Colors.black,
                             ),
                             searchInputDecoration: InputDecoration(
-                              prefixIcon: Icon(Icons.search),
+                              prefixIcon: Icon(Icons.search, color: Colors.black,),
                               filled: true,
-                              fillColor: Colors.blue.shade100,
+                              fillColor: Theme.of(context).colorScheme.tertiaryContainer,
+                              hintStyle: TextStyle(color: Colors.black),
 
                               // icon: Icon(Icons.search),
                               focusedBorder: OutlineInputBorder(
@@ -146,7 +147,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor
-                                                ? Colors.teal
+                                                ? Theme.of(context).highlightColor
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -169,7 +170,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                         'Forex',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                                          color: Theme.of(context).colorScheme.onSurface,
                                         ),
                                       ),
                                     ),
@@ -179,7 +180,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor1
-                                                ? Colors.teal
+                                                ? Theme.of(context).highlightColor
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -202,7 +203,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                         'Stock Indices',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                                          color: Theme.of(context).colorScheme.onSurface,
                                         ),
                                       ),
                                     ),
@@ -212,7 +213,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor2
-                                                ? Colors.teal
+                                                ? Theme.of(context).highlightColor
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -235,7 +236,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                         'Commodities',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                                          color: Theme.of(context).colorScheme.onSurface,
                                         ),
                                       ),
                                     ),
@@ -245,7 +246,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor3
-                                                ? Colors.teal
+                                                ? Theme.of(context).highlightColor
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -268,7 +269,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                         'Synthetic Indices',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                                          color: Theme.of(context).colorScheme.onSurface,
                                         ),
                                       ),
                                     ),
@@ -278,7 +279,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor4
-                                                ? Colors.teal
+                                                ? Theme.of(context).highlightColor
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -302,7 +303,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                         'Cryptocurrencies',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                                          color: Theme.of(context).colorScheme.onSurface,
                                         ),
                                       ),
                                     ),
@@ -316,12 +317,17 @@ class _MarketScreenState extends State<MarketScreen> {
                     ),
                   ),
                   Card(
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     elevation: 5,
-                    color: Colors.amberAccent,
+                    //color: Colors.amberAccent,
                     shape: BeveledRectangleBorder(
                         borderRadius: BorderRadius.circular(9)),
                     child: Container(
                       height: 60,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       child: Center(
                         child: ListTile(
                           visualDensity:
@@ -376,28 +382,34 @@ class _MarketScreenState extends State<MarketScreen> {
                                 child: Container(
                                   height: 100,
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: Color(0xFFFFF4F4F4),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Center(
                                     child: ListTile(
                                       visualDensity: VisualDensity(
                                           horizontal: 0, vertical: -4),
-                                      horizontalTitleGap: 20.0,
+                                      horizontalTitleGap: 50.0,
                                       leading: Text(
-                                          '${price['active_symbols'][index]['market_display_name']}'),
+                                          '${price['active_symbols'][index]['market_display_name']}',
+                                          style:TextStyle(color: Colors.black),
+                                      ),
                                       trailing: Container(
                                         width: 70,
                                         child: Wrap(children: [
                                           Text(
                                             '${price['active_symbols'][index]['display_name']}',
                                             textAlign: TextAlign.center,
+                                            style:TextStyle(color: Colors.black
+                                          ),
                                           ),
                                         ]),
                                       ),
                                       title: Text(
                                         '${formatPrice} ${price['active_symbols'][index]['quoted_currency_symbol']} ',
                                         textAlign: TextAlign.start,
+                                        style:TextStyle(color: Colors.black
+                                          )
                                       ),
                                     ),
                                   ),
