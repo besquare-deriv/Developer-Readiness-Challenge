@@ -40,12 +40,12 @@ class _GraphScreenState extends State<GraphScreen> {
 // For now initializing this data, should get this variables from Maket page
   String symbolName;
   String symbol;
-  String apiToken = "SZZ9iFcGUaAMqA5";
   String? buy_id;
   int state;
   int? _inputAmount;
   int? contractTime;
   String? contractType;
+  String? value1;
 
   void getPriceProposal() {
     String request =
@@ -54,7 +54,7 @@ class _GraphScreenState extends State<GraphScreen> {
   }
 
   void sendAuth() {
-    authChannel.sink.add('{"authorize": "$apiToken"}');
+    authChannel.sink.add('{"authorize": "$value1"}');
   }
 
   void listenWS() {

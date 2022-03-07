@@ -243,8 +243,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             child: (_isLoading) ? Center (
                 child: Column(
               children: <Widget>[
-                Row(mainAxisAlignment: MainAxisAlignment.end, 
-                children: [
+                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                   Expanded(
                     flex: 8,
                     child: Container(
@@ -264,13 +263,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     ),
                   ),
                   IconButton(
-                    icon: Image.asset('assets/icons/sync.png'),
-                    iconSize: 1,
+                    icon: Icon(Icons.refresh_rounded, size: 40),
                     onPressed: () { getData(); },
                   ),
                   IconButton(
-                    icon: Image.asset('assets/icons/sort.png'),
-                    iconSize: 1,
+                    icon: Icon(Icons.sort_rounded, size: 40),
                     onPressed: () {
                       setState(() {
                         listData = listData.reversed.toList();
@@ -278,7 +275,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     },
                   ),
                   IconButton(
-                    icon: Image.asset('assets/icons/filter.png'),
+                    icon: Icon(Icons.filter_alt, size: 40),
                     iconSize: 1,
                     onPressed: () => showDialog(context: context, builder: (BuildContext context){
                       return AlertDialog(
