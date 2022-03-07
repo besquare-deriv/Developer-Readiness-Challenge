@@ -81,7 +81,7 @@ class _MarketScreenState extends State<MarketScreen> {
                     child: Column(
                       children: [
                         SearchField(
-                            //marginColor: Colors.purple,
+                            // marginColor: Colors.purple,
                             controller: selectedSymbol,
                             suggestions: list,
                             suggestionState: Suggestion.expand,
@@ -146,8 +146,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor
-                                                ? Color.fromARGB(
-                                                    255, 150, 0, 87)
+                                                ? Colors.teal
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -180,8 +179,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor1
-                                                ? Color.fromARGB(
-                                                    255, 150, 0, 87)
+                                                ? Colors.teal
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -214,8 +212,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor2
-                                                ? Color.fromARGB(
-                                                    255, 150, 0, 87)
+                                                ? Colors.teal
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -248,8 +245,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor3
-                                                ? Color.fromARGB(
-                                                    255, 150, 0, 87)
+                                                ? Colors.teal
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -282,8 +278,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor4
-                                                ? Color.fromARGB(
-                                                    255, 150, 0, 87)
+                                                ? Colors.teal
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -328,79 +323,26 @@ class _MarketScreenState extends State<MarketScreen> {
                     child: Container(
                       height: 60,
                       child: Center(
-                        // child: ListTile(
-                        //   visualDensity:
-                        //       VisualDensity(horizontal: 0, vertical: -4),
-                        //   horizontalTitleGap: 20.0,
-                        //   leading: Text('Market Name' "         "),
-                        //   trailing: Text(
-                        //     'Display Name',
-                        //     textAlign: TextAlign.center,
-                        //   ),
-                        //   title: Text(
-                        //     '   Price'
-                        //     " ",
-                        //     textAlign: TextAlign.start,
-                        //   ),
-                        // ),
-
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    'Market Name',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                color: Colors.white,
-                                width: 0.2,
-                                height: 22,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    'Price',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                color: Colors.white,
-                                width: 0.2,
-                                height: 22,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    'Display Name',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  ),
-                                ],
-                              ),
-                            ]),
+                        child: ListTile(
+                          visualDensity:
+                              VisualDensity(horizontal: 0, vertical: -4),
+                          horizontalTitleGap: 20.0,
+                          leading: Text('Market Name' "         "),
+                          trailing: Text(
+                            'Display Name',
+                            textAlign: TextAlign.center,
+                          ),
+                          title: Text(
+                            '   Price'
+                            " ",
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                   Expanded(
                     child: Container(
-                      height: 60,
-                      // padding: EdgeInsets.all(8),
                       child: ListView.builder(
                         padding: EdgeInsets.all(0),
                         itemCount: 78,
@@ -458,48 +400,10 @@ class _MarketScreenState extends State<MarketScreen> {
                                         textAlign: TextAlign.start,
                                       ),
                                     ),
-                                    Container(
-                                      color: Colors.white,
-                                      width: 0.2,
-                                      height: 80,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                            '${price['active_symbols'][index]['quoted_currency_symbol']}'
-                                            " "
-                                            '${price['active_symbols'][index]['spot']}'),
-                                      ],
-                                    ),
-                                    Container(
-                                      color: Colors.white,
-                                      width: 0.2,
-                                      height: 80,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          '${price['active_symbols'][index]['display_name']}',
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      color: Colors.white,
-                                      width: 0.2,
-                                      height: 80,
-                                    ),
-                                  ],
+                                  ),
                                 ),
-
-                                // mainAxisAlignment:
-                                //     MainAxisAlignment.center,
+                                // priceChangeEvaluator
                               ),
-
-                              // priceChangeEvaluator
                             );
                           } else {
                             return SizedBox.shrink();

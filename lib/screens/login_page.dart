@@ -247,7 +247,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: Colors.grey,
                           ),
                         ),
-                        const SizedBox(height: 10),
                       ],
                     ),
                     SignInButton(
@@ -314,7 +313,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                           color: Colors.blue[900],
                           fontFamily: 'Montserrat',
-                          fontSize: 16,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                           decoration: TextDecoration.underline),
