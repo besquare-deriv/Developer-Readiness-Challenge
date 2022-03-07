@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drc/Authorization/auth_helper.dart';
 
 import 'package:drc/screens/login_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -16,18 +19,11 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenScreenState extends State<SignupScreen> {
   String? _error;
+  String? title;
   bool visible_text = true;
   TextEditingController? email_Input;
   TextEditingController? password_Input;
   TextEditingController? _confirmPasswordController;
-
-  @override
-  void initState() {
-    super.initState();
-    email_Input = TextEditingController(text: "");
-    password_Input = TextEditingController(text: "");
-    _confirmPasswordController = TextEditingController(text: "");
-  }
 
   Widget showAlert() {
     if (_error != null) {
@@ -65,6 +61,14 @@ class _SignupScreenScreenState extends State<SignupScreen> {
     return SizedBox(
       height: 0,
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    email_Input = TextEditingController(text: "");
+    password_Input = TextEditingController(text: "");
+    _confirmPasswordController = TextEditingController(text: "");
   }
 
   //TextEditing controller
@@ -221,7 +225,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(
                                   content: Text(
-                                      "Account have been cretead succesfully"),
+                                      "Account have been created succesfully"),
                                   duration: const Duration(seconds: 2),
                                 ));
 
