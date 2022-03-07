@@ -29,7 +29,7 @@ class _NavigationPageState extends State<NavigationPage> {
       HistoryScreen(widget.value1),
       ProfilePage(widget.value1),
     ];
-    
+
     value1 = widget.value1;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -74,7 +74,7 @@ class _NavigationPageState extends State<NavigationPage> {
               height: 20,
               width: 20,
             ),
-            label: 'Transactions',
+            label: 'History',
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
