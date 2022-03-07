@@ -343,6 +343,7 @@ class _MarketScreenState extends State<MarketScreen> {
                         //     textAlign: TextAlign.start,
                         //   ),
                         // ),
+
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
