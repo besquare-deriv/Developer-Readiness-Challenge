@@ -28,7 +28,6 @@ class _NavigationPageState extends State<NavigationPage> {
       MarketScreen(),
       HistoryScreen(widget.value1),
       ProfilePage(widget.value1),
-
     ];
 
     value1 = widget.value1;
