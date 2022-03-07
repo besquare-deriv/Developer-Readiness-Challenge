@@ -40,7 +40,7 @@ class ShapePainter2 extends CustomPainter {
   }
 }
 
-class User {
+class Users {
   final String imagePath;
   final String name;
   final String email;
@@ -48,7 +48,7 @@ class User {
   final String token;
   final bool isDarkMode;
 
-  const User({
+  const Users({
     required this.imagePath,
     required this.name,
     required this.email,

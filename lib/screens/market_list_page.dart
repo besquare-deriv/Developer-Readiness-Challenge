@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:web_socket_channel/io.dart';
 import 'graph_page.dart';
+import 'package:intl/intl.dart';
 
 class MarketScreen extends StatefulWidget {
   const MarketScreen({Key? key}) : super(key: key);
@@ -43,24 +44,14 @@ class _MarketScreenState extends State<MarketScreen> {
   Widget build(BuildContext context) {
     var symbol;
     var symbolName;
+    var state;
+
     TextEditingController selectedSymbol = new TextEditingController();
 
     List<String> MarketNames = [];
-    return Scaffold(
-      // appBar: new AppBar(
-      //   leading: GestureDetector(
-      //     onTap: () {
-      //       AuthHelper().logOut();
-      //     },
-      //     child: Icon(
-      //       Icons.menu, // add custom icons also
-      //     ),
-      //   ),
-      //   centerTitle: true,
-      //   title: Text("Token"),
-      //   backgroundColor: Colors.lightBlue,
-      // ),
 
+    List<SearchFieldListItem> list = [];
+    return Scaffold(
       body: StreamBuilder(
           stream: channel.stream,
           builder: (context, AsyncSnapshot snapshot) {
@@ -68,20 +59,23 @@ class _MarketScreenState extends State<MarketScreen> {
               var price = jsonDecode(snapshot.data);
               try {
                 for (int i = 0; i <= 76; i++) {
-                  MarketNames.add(price['active_symbols'][i]['display_name']);
+                  if (price['active_symbols'][i]['exchange_is_open'] == 1) {
+                    MarketNames.add(price['active_symbols'][i]['display_name']);
+                  }
                 }
+                list = MarketNames.map((e) => SearchFieldListItem(e)).toList();
               } catch (e) {}
               return Column(
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Color(0xFFF1F96B0),
-                      // borderRadius: BorderRadius.only(
-                      //   bottomRight: Radius.circular(20.0),
-                      //   bottomLeft: Radius.circular(20.0),
-                      // ),
+                      color: Color(0xFF1F96B0),
+                      borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(30.0),
+                        bottomLeft: Radius.circular(30.0),
+                      ),
                     ),
-                    height: 150,
+                    height: 200,
                     width: double.infinity,
                     padding: const EdgeInsets.fromLTRB(5, 30, 5, 10),
                     child: Column(
@@ -89,9 +83,7 @@ class _MarketScreenState extends State<MarketScreen> {
                         SearchField(
                             //marginColor: Colors.purple,
                             controller: selectedSymbol,
-                            suggestions:
-                                MarketNames.map((e) => SearchFieldListItem(e))
-                                    .toList(),
+                            suggestions: list,
                             suggestionState: Suggestion.expand,
                             maxSuggestionsInViewPort: 5,
                             hint: 'Search Currency Pairs',
@@ -117,21 +109,29 @@ class _MarketScreenState extends State<MarketScreen> {
                               ),
                             ),
                             onTap: (selectedSymbol) {
-                              print(selectedSymbol);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => GraphScreen(
-                                    symbolName: symbolName,
-                                    symbol: symbol,
-                                  ),
-                                ),
-                              );
-                              setState(
-                                () {
-                                  // selectedSymbol = "";
-                                },
-                              );
+                              for (int i = 0; i < list.length; i++) {
+                                if (price['active_symbols'][i]
+                                        ['display_name'] ==
+                                    selectedSymbol.searchKey) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => GraphScreen(
+                                        symbolName: price['active_symbols'][i]
+                                            ['display_name'],
+                                        symbol: price['active_symbols'][i]
+                                            ['symbol'],
+                                        state: price['active_symbols'][i]
+                                            ['exchange_is_open'],
+                                        currency_symbol: price['active_symbols']
+                                            [i]['quoted_currency_symbol'],
+                                      ),
+                                    ),
+                                  );
+                                }
+                                ;
+                              }
+                              ;
                             }),
                         Container(
                           height: 50,
@@ -166,7 +166,13 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Forex';
                                         });
                                       },
-                                      child: Text('Forex'),
+                                      child: Text(
+                                        'Forex',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   Material(
@@ -194,7 +200,13 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Stock Indices';
                                         });
                                       },
-                                      child: Text('Stock Indices'),
+                                      child: Text(
+                                        'Stock Indices',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   Material(
@@ -222,7 +234,13 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Commodities';
                                         });
                                       },
-                                      child: Text('Commodities'),
+                                      child: Text(
+                                        'Commodities',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   Material(
@@ -250,7 +268,13 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Synthetic Indices';
                                         });
                                       },
-                                      child: Text('Synthetic Indices'),
+                                      child: Text(
+                                        'Synthetic Indices',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   Material(
@@ -279,7 +303,13 @@ class _MarketScreenState extends State<MarketScreen> {
                                           textname = 'Cryptocurrencies';
                                         });
                                       },
-                                      child: Text('Cryptocurrencies'),
+                                      child: Text(
+                                        'Cryptocurrencies',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -292,12 +322,11 @@ class _MarketScreenState extends State<MarketScreen> {
                   ),
                   Card(
                     elevation: 5,
+                    color: Colors.amberAccent,
+                    shape: BeveledRectangleBorder(
+                        borderRadius: BorderRadius.circular(9)),
                     child: Container(
                       height: 60,
-                      decoration: BoxDecoration(
-                        color: Colors.amberAccent,
-                        //borderRadius: BorderRadius.circular(10),
-                      ),
                       child: Center(
                         // child: ListTile(
                         //   visualDensity:
@@ -375,19 +404,13 @@ class _MarketScreenState extends State<MarketScreen> {
                         padding: EdgeInsets.all(0),
                         itemCount: 78,
                         itemBuilder: (BuildContext context, int index) {
-                          // symbol = price['active_symbols'][index]['symbol'];
-                          // symbolName =
-                          //     price['active_symbols'][index]['display_name'];
-
                           if (price['active_symbols'][index]
                                   ['market_display_name'] ==
                               textname) {
+                            var formatPrice = NumberFormat.currency(
+                                    customPattern: '##,###.0#')
+                                .format(price['active_symbols'][index]['spot']);
                             return Card(
-                              // margin: EdgeInsets.only(
-                              //   // top: 2,
-                              //   // left: 8,
-                              //   // right: 8,
-                              // ),
                               elevation: 5,
                               child: InkWell(
                                 onTap: () {
@@ -399,49 +422,40 @@ class _MarketScreenState extends State<MarketScreen> {
                                             [index]['display_name'],
                                         symbol: price['active_symbols'][index]
                                             ['symbol'],
+                                        state: price['active_symbols'][index]
+                                            ['exchange_is_open'],
+                                        currency_symbol: price['active_symbols']
+                                            [index]['quoted_currency_symbol'],
                                       ),
                                     ),
                                   );
                                 },
-
-                                // child: Container(
-                                //   height: 100,
-                                //   decoration: BoxDecoration(
-                                //     color: Colors.white,
-                                //     borderRadius: BorderRadius.circular(10),
-                                //   ),
-                                //   child: Center(
-                                //     child: ListTile(
-                                //       visualDensity: VisualDensity(
-                                //           horizontal: 0, vertical: -4),
-                                //       horizontalTitleGap: 20.0,
-                                //       leading: Text(
-                                //           '${price['active_symbols'][index]['market_display_name']}'
-                                //           "      ",
-                                //           textAlign: TextAlign.end),
-                                //       trailing: Text(
-                                //         '${price['active_symbols'][index]['display_name']}',
-                                //         textAlign: TextAlign.center,
-                                //       ),
-                                //       title: Text(
-                                //         '${price['active_symbols'][index]['quoted_currency_symbol']}'
-                                //         " "
-                                //         '${price['active_symbols'][index]['spot']}',
-                                //         textAlign: TextAlign.center,
-                                //       ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: <Widget>[
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          '${price['active_symbols'][index]['market_display_name']}'
-                                          "      ",
-                                        ),
-                                      ],
+                                child: Container(
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Center(
+                                    child: ListTile(
+                                      visualDensity: VisualDensity(
+                                          horizontal: 0, vertical: -4),
+                                      horizontalTitleGap: 20.0,
+                                      leading: Text(
+                                          '${price['active_symbols'][index]['market_display_name']}'),
+                                      trailing: Container(
+                                        width: 70,
+                                        child: Wrap(children: [
+                                          Text(
+                                            '${price['active_symbols'][index]['display_name']}',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ]),
+                                      ),
+                                      title: Text(
+                                        '${formatPrice} ${price['active_symbols'][index]['quoted_currency_symbol']} ',
+                                        textAlign: TextAlign.start,
+                                      ),
                                     ),
                                     Container(
                                       color: Colors.white,
@@ -498,9 +512,7 @@ class _MarketScreenState extends State<MarketScreen> {
             }
 
             return const Center(
-              child: CircularProgressIndicator(
-                color: Colors.amber,
-              ),
+              child: CircularProgressIndicator(),
             );
           }),
     );
