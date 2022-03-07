@@ -216,6 +216,7 @@ class _ContractDetailsState extends State<ContractDetails> {
                               fontWeight: FontWeight.bold, 
                               fontFamily:'DM Sans',
                               ),
+
                             ),
                           ),
                           Spacer(),

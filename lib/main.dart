@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drc/Authorization/auth_helper.dart';
 import 'package:drc/screens/active_transactions.dart';
+import 'package:drc/screens/history_page.dart';
 import 'package:drc/screens/landing_page.dart';
 import 'package:drc/screens/main_nav_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,6 +23,7 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   @override
+
   Widget build(BuildContext context) => ChangeNotifierProvider(
     create: (context)=> ThemeProvider(),
     builder: (context, _) {

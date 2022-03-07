@@ -8,12 +8,17 @@ import 'package:web_socket_channel/io.dart';
 import 'package:intl/intl.dart';
 
 class HistoryScreen extends StatefulWidget {
+  // final String value1;
+
+  // const HistoryScreen(this.value1, {Key? key}) : super(key: key);
 
   @override
   _HistoryScreenState createState() => _HistoryScreenState();
 }
 
 class _HistoryScreenState extends State<HistoryScreen> { 
+  // _HistoryScreenState(this.value1);
+  // String value1;
 
   List<transDetails> listData = [];
   List<transDetails> dataHistory = [];
@@ -144,6 +149,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
          setState(() {
            listData.addAll(dataHistory);
          });
+
+
        }
     });
   }
@@ -230,6 +237,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         //   onPressed: () => Navigator.of(context).pop(),
         // ),
         //backgroundColor: Color(0xFF1F96B0),
+
         title: const Text(
           'Transaction History',
           style: TextStyle(
