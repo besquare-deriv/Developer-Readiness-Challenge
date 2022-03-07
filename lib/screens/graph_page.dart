@@ -55,6 +55,7 @@ class _GraphScreenState extends State<GraphScreen> {
   int? _inputAmount;
   int? contractTime;
   String? contractType;
+  String? value1;
 
   void getPriceProposal() {
     String request =
@@ -63,7 +64,7 @@ class _GraphScreenState extends State<GraphScreen> {
   }
 
   void sendAuth() {
-    authChannel.sink.add('{"authorize": "$apiToken"}');
+    authChannel.sink.add('{"authorize": "$value1"}');
   }
 
   void listenWS() {

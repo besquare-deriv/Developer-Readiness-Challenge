@@ -389,7 +389,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                     child: ListTile(
                                       visualDensity: VisualDensity(
                                           horizontal: 0, vertical: -4),
-                                      horizontalTitleGap: 20.0,
+                                      horizontalTitleGap: 50.0,
                                       leading: Text(
                                           '${price['active_symbols'][index]['market_display_name']}',
                                           style:TextStyle(color: Colors.black),

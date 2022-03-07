@@ -123,7 +123,6 @@ class _ContractDetailsState extends State<ContractDetails> {
                 '${duration!.inSeconds.remainder(60)} seconds');
           } else {
             printDuration = ('${duration!.inHours} hours');
-
           }
         } else {
           if (duration!.inMinutes.remainder(60) != 0 ||

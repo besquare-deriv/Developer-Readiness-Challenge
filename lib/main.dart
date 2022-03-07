@@ -72,20 +72,20 @@ class MainScreen extends StatelessWidget {
                               .snapshots(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
-                            if (snapshot.hasData) {
-                              if (snapshot.data!.docs.length == 0) {
-                                return AddNote();
-                              } else {
-                                final docs = snapshot.data!.docs;
-                                final v = docs[0].data() as Map;
+                                if (snapshot.hasData) {
+                                  if (snapshot.data!.docs.length == 0) {
+                                    return AddNote();
+                                  } else {
+                                    final docs = snapshot.data!.docs;
+                                    final v = docs[0].data() as Map;
 
-                                value = v['token'];
-                                return NavigationPage(value!);
+                                    value = v['token'];
+                                    return NavigationPage(value!);
+                                  }
+                                }
+                                return SizedBox.shrink();
                               }
-                            } else {
-                              return AddNote();
-                            }
-                          });
+                      );
                     } else {
                       return AddNote();
                     }
