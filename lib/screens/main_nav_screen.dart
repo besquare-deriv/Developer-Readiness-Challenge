@@ -31,7 +31,7 @@ class _NavigationPageState extends State<NavigationPage> {
       ProfilePage(widget.value1),
 
     ];
-    
+
     value1 = widget.value1;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -77,7 +77,7 @@ class _NavigationPageState extends State<NavigationPage> {
               height: 30,
               width: 30,
             ),
-            label: 'Transactions',
+            label: 'History',
           ),
           BottomNavigationBarItem(
             icon: Image.asset(

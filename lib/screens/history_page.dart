@@ -11,7 +11,6 @@ import 'package:intl/intl.dart';
 import 'contract_page.dart';
 
 class HistoryScreen extends StatefulWidget {
-
   final String value1;
 
   const HistoryScreen(this.value1, {Key? key}) : super(key: key);
@@ -20,8 +19,7 @@ class HistoryScreen extends StatefulWidget {
   _HistoryScreenState createState() => _HistoryScreenState(value1);
 }
 
-
-class _HistoryScreenState extends State<HistoryScreen> { 
+class _HistoryScreenState extends State<HistoryScreen> {
   _HistoryScreenState(this.value1);
   String value1;
   var channel;
@@ -37,7 +35,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   initialConnection() {
     channel = IOWebSocketChannel.connect(
-      Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
+        Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
   }
 
   sendMessageAuthorize() {
@@ -48,32 +46,30 @@ class _HistoryScreenState extends State<HistoryScreen> {
     channel.sink.add('{"statement": 1, "description": 1, "limit": 999}');
   }
 
-  getActiveSymbol(){
+  getActiveSymbol() {
     channel.sink.add('{"active_symbols": "brief","product_type": "basic"}');
   }
 
-  void getSymbol(data){
+  void getSymbol(data) {
     activeSymbol = [];
-    if(data['msg_type'] == 'active_symbols'){       
-      for(int j = 0; j <= data['active_symbols'].length -1; j ++){
+    if (data['msg_type'] == 'active_symbols') {
+      for (int j = 0; j <= data['active_symbols'].length - 1; j++) {
         symbol_id = data['active_symbols'][j]['symbol'];
         setState(() {
-            activeSymbol.add(
-              symbolDetails(
+          activeSymbol.add(
+            symbolDetails(
                 symbol: symbol_id.toUpperCase(),
-                displayName: data['active_symbols'][j]['display_name']
-                ),
-              );
-            }
-         );
-        }
+                displayName: data['active_symbols'][j]['display_name']),
+          );
+        });
+      }
     }
   }
 
   void getAuthorize() {
     channel.stream.listen((event) {
       final data = jsonDecode(event);
-      
+
       dataHistory = [];
       listData = [];
       List<dynamic> time = [];
@@ -82,73 +78,79 @@ class _HistoryScreenState extends State<HistoryScreen> {
       List<String> typeCurrency = [];
       List<String> displayName = [];
 
-
-      if(data['msg_type'] == 'active_symbols'){
+      if (data['msg_type'] == 'active_symbols') {
         getSymbol(data);
         sendMessageAuthorize();
       }
-      
+
       if (data['msg_type'] == 'authorize') {
-         sendMessageStatement();
-       }
-            
+        sendMessageStatement();
+      }
+
       if (data['msg_type'] == 'statement') {
-         for (int i = 0; i <= data['statement']['transactions'].length -1; i ++) {
-          
-           time.add(DateTime.fromMillisecondsSinceEpoch(
-            data['statement']['transactions'][i]['transaction_time'] * 1000));
-          
-          String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(time[i]);
+        try {
+          for (int i = 0;
+              i <= data['statement']['transactions'].length - 1;
+              i++) {
+            time.add(DateTime.fromMillisecondsSinceEpoch(data['statement']
+                    ['transactions'][i]['transaction_time'] *
+                1000));
 
-          currency.add(data['statement']['transactions'][i]['shortcode'].toString());
+            String formattedDate =
+                DateFormat('yyyy-MM-dd HH:mm:ss').format(time[i]);
 
-          if (currency[i].contains('R_')){
-            String a = currency[i].split('_')[1];
-            String b = currency[i].split('_')[2];
-            String output = a + '_' + b;
-            typeCurrency.add(output);
-          } else if (currency[i].contains('null')){
-            typeCurrency.add(currency[i]);
-          }
-          else{
-            String output = currency[i].split('_')[1];
-            typeCurrency.add(output);
-          }
+            currency.add(
+                data['statement']['transactions'][i]['shortcode'].toString());
 
-           for(int j = 0; j <= activeSymbol.length -1; j ++){
-              if(typeCurrency[i] == activeSymbol[j].symbol){
+            if (currency[i].contains('R_')) {
+              String a = currency[i].split('_')[1];
+              String b = currency[i].split('_')[2];
+              String output = a + '_' + b;
+              typeCurrency.add(output);
+            } else if (currency[i].contains('null')) {
+              typeCurrency.add(currency[i]);
+            } else {
+              String output = currency[i].split('_')[1];
+              typeCurrency.add(output);
+            }
+
+            for (int j = 0; j <= activeSymbol.length - 1; j++) {
+              if (typeCurrency[i] == activeSymbol[j].symbol) {
                 displayName.add(activeSymbol[j].displayName);
                 break;
               }
-              if(typeCurrency[i] == 'null'){
+              if (typeCurrency[i] == 'null') {
                 displayName.add('null');
                 break;
               }
-            }  
+            }
 
-          setState(() {
-            dataHistory.add(
-              transDetails(
-                action: data['statement']['transactions'][i]['action_type'],
-                time: formattedDate,
-                id: data['statement']['transactions'][i]['transaction_id'],
-                amount: data['statement']['transactions'][i]['amount'],
-                balance: data['statement']['transactions'][i]['balance_after'],
-
-                contract_id: data['statement']['transactions'][i]['contract_id'],
-                payout: data['statement']['transactions'][i]['payout'],
-                crypto: typeCurrency[i],
-                symbolName: displayName[i],
+            setState(() {
+              dataHistory.add(
+                transDetails(
+                  action: data['statement']['transactions'][i]['action_type'],
+                  time: formattedDate,
+                  id: data['statement']['transactions'][i]['transaction_id'],
+                  amount: data['statement']['transactions'][i]['amount'],
+                  balance: data['statement']['transactions'][i]
+                      ['balance_after'],
+                  contract_id: data['statement']['transactions'][i]
+                      ['contract_id'],
+                  payout: data['statement']['transactions'][i]['payout'],
+                  crypto: typeCurrency[i],
+                  symbolName: displayName[i],
                 ),
               );
-            }
-          );
+            });
+          }
+        } catch (error) {
+          debugPrint(error.toString());
         }
+
         setState(() {
           listData.addAll(dataHistory);
         });
-       }
-
+      }
     });
   }
 
@@ -171,7 +173,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     });
   }
 
-  getData() async{
+  getData() async {
     await initialConnection();
     getActiveSymbol();
     getAuthorize();
@@ -224,173 +226,199 @@ class _HistoryScreenState extends State<HistoryScreen> {
     sortedList = [];
 
     return Scaffold(
-      appBar: AppBar(
-
-        backgroundColor: Color(0xFF1F96B0),
-        title: const Text(
-          'Transaction History',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Color(0xFF1F96B0),
+          title: const Text(
+            'Transaction History',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
+          centerTitle: true,
+          actions: [],
         ),
-        centerTitle: true,
-        actions: [],
-      ),
-
-      body: 
-          SafeArea(
-            child: (_isLoading) ? Center (
-                child: Column(
-              children: <Widget>[
-                Row(mainAxisAlignment: MainAxisAlignment.end, 
-                children: [
-                  Expanded(
-                    flex: 8,
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10),
-                      alignment: Alignment.centerLeft,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (data) => activeOptions()));
-                        },
-                        child: Text(
-                          "Active Contracts",
-                        ),
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: Image.asset('assets/icons/sync.png'),
-                    iconSize: 1,
-                    onPressed: () { getData(); },
-                  ),
-                  IconButton(
-                    icon: Image.asset('assets/icons/sort.png'),
-                    iconSize: 1,
-                    onPressed: () {
-                      setState(() {
-                        listData = listData.reversed.toList();
-                      });
-                    },
-                  ),
-                  IconButton(
-                    icon: Image.asset('assets/icons/filter.png'),
-                    iconSize: 1,
-                    onPressed: () => showDialog(context: context, builder: (BuildContext context){
-                      return AlertDialog(
-                        scrollable: true,
-                        title: Text('Filter by:'),
-                        insetPadding: EdgeInsets.zero,
-      
-                        actions: [
-                          ElevatedButton(onPressed: () { filterSearchResults('buy');}, 
-                          child: Text('Buy'),),
-      
-                          ElevatedButton(onPressed: () { filterSearchResults('sell');}, 
-                          child: Text('Sell'),),
-      
-                          ElevatedButton(onPressed: () { filterSearchResults('');}, 
-                          child: Text('Clear Filter'),),
-                        ]
-                      );
-                    }),
-                  ),
-                ]),
-      
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: listData.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-      
-                          onTap: () => {Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ContractDetails(data: listData[index], info: dataHistory)))
-                            },
+        body: SafeArea(
+            child: (_isLoading)
+                ? Center(
+                    child: Column(
+                    children: <Widget>[
+                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                        Expanded(
+                          flex: 8,
                           child: Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 8.0, vertical: 4.0),
-                            child: Card(
-                              color: Colors.white70,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0)),
-                              margin: EdgeInsets.symmetric(horizontal: 5),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10.0,
-                                  vertical: 20.0,
-                                ),
-                                child: Row(children: [
-                                  Container(
-                                    height: 60,
-                                    width: 60,
-                                    child: Image.asset('assets/icons/btc.png'),
-                                  ),
-                                  const SizedBox(width: 7),
-                                  Expanded(
-                                    child: Row(
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(listData[index].action,
-                                                style: TextStyle(
-                                                    fontSize: 23,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: listData[index].action == 'buy' ? Color.fromRGBO(54, 98, 43, 1) : Color.fromRGBO(232, 69, 69,1))),
-                                            Text('BTCAUSD',
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold)),
-                                            Text('TransactionID: ${listData[index].id}',
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold)),
-                                            Text('${listData[index].time}',
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold)),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    '${listData[index].amount}',
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                      color: listData[index].amount < 0 ? Color.fromRGBO(232, 69, 69,1) : Color.fromRGBO(54, 98, 43, 1),
-                                    ),
-                                  ),
-                                ]),
+                            padding: EdgeInsets.only(left: 10),
+                            alignment: Alignment.centerLeft,
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (data) => activeOptions()));
+                              },
+                              child: Text(
+                                "Active Contracts",
                               ),
                             ),
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            )
-            ): Center(
-              child: CircularProgressIndicator()
-            )
-          )
-    );
+                        ),
+                        IconButton(
+                          icon: Image.asset('assets/icons/sync.png'),
+                          iconSize: 1,
+                          onPressed: () {
+                            getData();
+                          },
+                        ),
+                        IconButton(
+                          icon: Image.asset('assets/icons/sort.png'),
+                          iconSize: 1,
+                          onPressed: () {
+                            setState(() {
+                              listData = listData.reversed.toList();
+                            });
+                          },
+                        ),
+                        IconButton(
+                          icon: Image.asset('assets/icons/filter.png'),
+                          iconSize: 1,
+                          onPressed: () => showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    scrollable: true,
+                                    title: Text('Filter by:'),
+                                    insetPadding: EdgeInsets.zero,
+                                    actions: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          filterSearchResults('buy');
+                                        },
+                                        child: Text('Buy'),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          filterSearchResults('sell');
+                                        },
+                                        child: Text('Sell'),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          filterSearchResults('');
+                                        },
+                                        child: Text('Clear Filter'),
+                                      ),
+                                    ]);
+                              }),
+                        ),
+                      ]),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: ListView.builder(
+                            physics: BouncingScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: listData.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () => {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ContractDetails(
+                                              data: listData[index],
+                                              info: dataHistory)))
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 4.0),
+                                  child: Card(
+                                    color: Colors.white70,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
+                                    margin: EdgeInsets.symmetric(horizontal: 5),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0,
+                                        vertical: 20.0,
+                                      ),
+                                      child: Row(children: [
+                                        Container(
+                                          height: 60,
+                                          width: 60,
+                                          child: Image.asset(
+                                              'assets/icons/btc.png'),
+                                        ),
+                                        const SizedBox(width: 7),
+                                        Expanded(
+                                          child: Row(
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(listData[index].action,
+                                                      style: TextStyle(
+                                                          fontSize: 23,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: listData[index]
+                                                                      .action ==
+                                                                  'buy'
+                                                              ? Color.fromRGBO(
+                                                                  54, 98, 43, 1)
+                                                              : Color.fromRGBO(
+                                                                  232,
+                                                                  69,
+                                                                  69,
+                                                                  1))),
+                                                  Text('BTCAUSD',
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                  Text(
+                                                      'TransactionID: ${listData[index].id}',
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                  Text(
+                                                      '${listData[index].time}',
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          '${listData[index].amount}',
+                                          style: TextStyle(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold,
+                                            color: listData[index].amount < 0
+                                                ? Color.fromRGBO(232, 69, 69, 1)
+                                                : Color.fromRGBO(54, 98, 43, 1),
+                                          ),
+                                        ),
+                                      ]),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ))
+                : Center(child: CircularProgressIndicator())));
   }
 }
 
@@ -418,8 +446,8 @@ class transDetails {
   });
 
   @override
-
-  String toString() => '[ $action , $time , $id , $amount, $balance , $contract_id, $payout, $crypto , $symbolName]';
+  String toString() =>
+      '[ $action , $time , $id , $amount, $balance , $contract_id, $payout, $crypto , $symbolName]';
 }
 
 class symbolDetails {
@@ -427,8 +455,8 @@ class symbolDetails {
   final String displayName;
 
   symbolDetails({
-  required this.symbol,
-  required this.displayName,
+    required this.symbol,
+    required this.displayName,
   });
-   String toString() => '[ $symbol, $displayName]';
+  String toString() => '[ $symbol, $displayName]';
 }
