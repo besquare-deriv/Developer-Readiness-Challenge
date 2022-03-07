@@ -263,15 +263,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           ),
                         ),
                         IconButton(
-                          icon: Image.asset('assets/icons/sync.png'),
-                          iconSize: 1,
+                          icon: Icon(Icons.refresh_rounded, size: 40),
                           onPressed: () {
                             getData();
                           },
                         ),
                         IconButton(
-                          icon: Image.asset('assets/icons/sort.png'),
-                          iconSize: 1,
+                          icon: Icon(Icons.sort_rounded, size: 40),
                           onPressed: () {
                             setState(() {
                               listData = listData.reversed.toList();
@@ -279,8 +277,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           },
                         ),
                         IconButton(
-                          icon: Image.asset('assets/icons/filter.png'),
-                          iconSize: 1,
+                          icon: Icon(Icons.sort_rounded, size: 40),
                           onPressed: () => showDialog(
                               context: context,
                               builder: (BuildContext context) {
