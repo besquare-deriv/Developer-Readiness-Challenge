@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          decoration: BoxDecoration(color: Color(0xFF1F96B0)),
+          decoration: BoxDecoration(color: Color(0xFF1F96B0) ),
           child: ListView(
             children: [
               CustomPaint(

@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables, camel_case_types
 
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 
@@ -61,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                 height: 250,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Color(0xFF1F96B0),
+                  color: Theme.of(context).appBarTheme.color,
                   borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(50),
                     bottomLeft: Radius.circular(50),
@@ -84,6 +83,7 @@ class _HomePageState extends State<HomePage> {
                             child: Icon(
                               Icons.settings,
                               size: 50,
+                              color: Colors.black,
                             ),
                           ),
                         ],
@@ -114,6 +114,7 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
+                            color: Theme.of(context).textTheme.subtitle1?.color ,
                           ),
                         ),
                       ),
@@ -157,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                                   Text(
                                     assetList[index],
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: Theme.of(context).primaryColor,
                                     ),
                                   )
                                 ]),
@@ -236,12 +237,16 @@ class _HomePageState extends State<HomePage> {
                           leading: Text(
                             "Wins    ",
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                                fontSize: 20, 
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                ),
                           ),
                           subtitle: Text(
                             "$winsCount",
                             style: TextStyle(
                               fontSize: 28,
+                              color: Colors.black,
                             ),
                           ),
                         ),
@@ -262,12 +267,15 @@ class _HomePageState extends State<HomePage> {
                           leading: Text(
                             "Losses",
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                                fontSize: 20, 
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
                           ),
                           subtitle: Text(
                             "$lossCount",
                             style: TextStyle(
                               fontSize: 28,
+                              color: Colors.black,
                             ),
                           ),
                         ),

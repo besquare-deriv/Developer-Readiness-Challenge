@@ -67,7 +67,7 @@ class _activeOptionsState extends State<activeOptions> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color(0xFF1F96B0),
+          backgroundColor: Theme.of(context).appBarTheme.color ,
           title: const Text("Active Transactions"),
           centerTitle: true,
         ),

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:drc/screens/contract_details.dart';
-
 import 'package:drc/screens/active_transactions.dart';
 import 'package:drc/screens/contract_page.dart';
 import 'package:flutter/material.dart';
@@ -230,12 +229,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
         //   icon: Icon(Icons.arrow_back, color: Colors.black),
         //   onPressed: () => Navigator.of(context).pop(),
         // ),
-        backgroundColor: Color(0xFF1F96B0),
+        //backgroundColor: Color(0xFF1F96B0),
         title: const Text(
           'Transaction History',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            //color: Colors.white,
           ),
         ),
         centerTitle: true,
@@ -261,6 +260,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     },
                     child: Text(
                       "Active Contracts",
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface
+                      ),
                     ),
                   ),
                 ),
@@ -275,8 +277,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 },
               ),
               IconButton(
-                icon: Image.asset('assets/icons/filter.png'),
-                iconSize: 1,
+                icon: Icon(Icons.filter_alt, /* size:40 */ color: Theme.of(context).iconTheme.color),
+                iconSize: 40,
                 onPressed: () => showDialog(context: context, builder: (BuildContext context){
                   return AlertDialog(
                     scrollable: true,
@@ -316,7 +318,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         margin: EdgeInsets.symmetric(
                             horizontal: 8.0, vertical: 4.0),
                         child: Card(
-                          color: Colors.white70,
+                          color: Theme.of(context).colorScheme.tertiaryContainer,//Colors.white70,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0)),
                           margin: EdgeInsets.symmetric(horizontal: 5),
@@ -346,14 +348,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                 color: listData[index].action == 'buy' ? Color.fromRGBO(54, 98, 43, 1) : Color.fromRGBO(232, 69, 69,1))),
                                         Text('${listData[index].symbolName}',
                                             style: TextStyle(
+                                                color: Colors.black,
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold)),
                                         Text('TransactionID: ${listData[index].id}',
                                             style: TextStyle(
+                                                color: Colors.black,
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold)),
                                         Text('${listData[index].time}',
                                             style: TextStyle(
+                                                color: Colors.black,
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold)),
                                       ],

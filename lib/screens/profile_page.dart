@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:drc/screens/faq_page.dart';
 import 'package:drc/Authorization/auth_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:web_socket_channel/io.dart';
 import '../components/button_widget.dart';
 import '../components/profile_widget.dart';
 import '../constants.dart';
@@ -8,19 +11,85 @@ import '../utils/user_information.dart';
 import 'settings_page.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  final String value1;
+
+  const ProfilePage(this.value1, {Key? key}) : super(key: key);
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _ProfilePageState createState() => _ProfilePageState(value1);
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  String value1;
+  _ProfilePageState(this.value1, {Key? key});
+
+  String email = 'hello@email.com';
+  String username = 'JohnDoe';
+  num balance = 0.0;
+
+  final channel = IOWebSocketChannel.connect(
+        Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
+
+    void sendMessageAuthorize() {
+      channel.sink.add('{"authorize": "$value1"}');
+    }
+
+    void sendMessageStatement() {
+      channel.sink.add('{"statement": 1, "description": 1, "limit": 999}');
+    }
+
+    void initState() {
+        sendMessageAuthorize();
+        sendMessageStatement();
+        getAuthorize();
+        super.initState();
+      }
+
+
+    void getAuthorize() {
+    channel.stream.listen((event) {
+      final data = jsonDecode(event);
+      
+      List<dynamic> time = [];
+      List<String> currency = [];
+      List<String> typeCurrency = [];
+      List<String> displayName = [];
+
+
+      
+      if (data['msg_type'] == 'authorize') {
+         sendMessageStatement();
+       }
+
+      if (data['msg_type'] == 'authorize') {
+        sendMessageStatement();
+        setState(() {
+          balance = data['authorize']['balance'];
+
+          email = data['authorize']['email'];
+
+          username = data['authorize']['email']
+              .substring(0, data['authorize']['email'].indexOf('@'));
+        });
+      }
+    
+
+      if (data['msg_type'] == 'statement') {
+        // initialize the length of contracts
+        int loopCount = data['statement']['count'];
+
+        // Starts the first for loop
+        int i = loopCount - 1;
+        balance = data['statement']['transaction'][i]['balance'];
+      }
+    });
+    }
   @override
   Widget build(BuildContext context) {
     const user = UserInformation.myUser;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.white,
 
       //appBar: buildAppBar(context),
       body: SingleChildScrollView(
@@ -32,7 +101,8 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             Container(
               height: 200,
-              decoration: BoxDecoration(color: Color(0xFF1F96B0)),
+              decoration: BoxDecoration(
+                color: Theme.of(context).appBarTheme.color),
               child: Row(
                 children: [
                   const SizedBox(
@@ -106,7 +176,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFFFC4C4C4),
+                    primary: Theme.of(context).colorScheme.tertiaryContainer,
                     onPrimary: Colors.black,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 32, vertical: 12),
@@ -114,7 +184,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                      MaterialPageRoute(builder: (context) => Setting(),
+                      MaterialPageRoute(builder: (context) => SettingsPage(value: value1),
                       ),
                     );
                   }),
@@ -126,7 +196,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFFFC4C4C4),
+                    primary: Theme.of(context).colorScheme.tertiaryContainer,
                     onPrimary: Colors.black,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 32, vertical: 12),
@@ -158,20 +228,20 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
       ),
-
     );
   }
+    
 
   Widget buildName(User user) => Column(
         children: <Widget>[
           Text(
-            user.name,
+            '$username',
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
           const SizedBox(height: 4),
           Text(
-            user.email,
-            style: const TextStyle(color: Colors.white),
+            '$email',
+            //style: const TextStyle(color: Colors.white),
           )
         ],
       );
@@ -181,7 +251,7 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+             Text(
               'Account Balance:',
               style: TextStyle(fontSize: 18),
             ),
@@ -189,7 +259,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                user.accbalance,
+                '$balance',
                 textAlign: TextAlign.center,
                 style:
                     const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
