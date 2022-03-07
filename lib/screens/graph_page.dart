@@ -9,15 +9,17 @@ import '../components/chart.dart';
 import 'package:flutter/services.dart';
 
 class GraphScreen extends StatefulWidget {
-  const GraphScreen(
+  GraphScreen(
       {Key? key,
       required this.state,
+      this.apiToken,
       required this.symbolName,
       required this.currency_symbol,
       required this.symbol})
       : super(key: key);
   final String symbolName;
   final String symbol;
+  String? apiToken;
   final String currency_symbol;
   final int state;
 
@@ -26,6 +28,7 @@ class GraphScreen extends StatefulWidget {
       currency_symbol: currency_symbol,
       symbolName: symbolName,
       symbol: symbol,
+      apiToken: apiToken,
       state: state);
 }
 
@@ -33,6 +36,7 @@ class _GraphScreenState extends State<GraphScreen> {
   _GraphScreenState(
       {required this.symbolName,
       required this.symbol,
+      this.apiToken,
       required this.currency_symbol,
       required this.state});
 
@@ -48,8 +52,8 @@ class _GraphScreenState extends State<GraphScreen> {
 // For now initializing this data, should get this variables from Maket page
   String symbolName;
   String symbol;
+  String? apiToken;
   String currency_symbol;
-  String apiToken = "SZZ9iFcGUaAMqA5";
   String? buy_id;
   int state;
   int? _inputAmount;
@@ -91,8 +95,12 @@ class _GraphScreenState extends State<GraphScreen> {
                   onPressed: () {
                     buyContract();
                     Navigator.of(context).pop();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (data) => activeOptions()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (data) => activeOptions(
+                                  apiToken: apiToken,
+                                )));
                     // Navigator.of(context).pop();
                   },
                 ),

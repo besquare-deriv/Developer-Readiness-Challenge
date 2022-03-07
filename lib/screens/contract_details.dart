@@ -209,6 +209,7 @@ class _ContractDetailsState extends State<ContractDetails> {
                                     Navigator.pop(context);
                                 }, 
                               ),
+
                           ),
                           ),
                           
@@ -224,6 +225,7 @@ class _ContractDetailsState extends State<ContractDetails> {
                           ),
                           Spacer(),
                         ],)
+
                   ),
                   SizedBox(height:30),
                   Wrap(
@@ -475,6 +477,7 @@ class _ContractDetailsState extends State<ContractDetails> {
                               )
                         )
                     )
+
                   ),
 
                 Padding(padding: EdgeInsets.only(right: width*0.05093),
