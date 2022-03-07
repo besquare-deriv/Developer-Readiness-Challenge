@@ -19,6 +19,7 @@ class _SettingPageState extends State<SettingPage> {
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
 
+
   String? value;
   final  _phone = TextEditingController();
   final  _confirmPass = TextEditingController();
@@ -38,27 +39,33 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+    return Scaffold(
+      backgroundColor: const Color.fromRGBO(234, 230, 230, 1),
+      appBar: AppBar(
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+            size: 35,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        //toolbarHeight: 90,
+        backgroundColor: Color(0xFF1F96B0),
+        title: Text(
+          'Settings',
+          style: TextStyle(
+              color: Colors.black,
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'DM Sans'),
+        ),
+        centerTitle: true,
+      ),
 
-    return  Scaffold(
-        backgroundColor: const Color.fromRGBO(234, 230, 230, 1) ,
-        appBar:
-            AppBar( 
-              elevation: 0,
-              leading: IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),                             
-                        onPressed: () => Navigator.of(context).pop(),
-                      ), 
-              //toolbarHeight: 90,
-              backgroundColor: Color(0xFF1F96B0),
-              title: Text('Settings',
-                      style: TextStyle(
-                       color:Colors.white, 
-                       fontWeight: FontWeight.bold, 
-                      ),
-                     ),
-              centerTitle: true,
-            ),
-  
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
@@ -112,6 +119,7 @@ class _SettingPageState extends State<SettingPage> {
                       leading: IconWidget(icon: Icons.phone),
                       title: Text('Phone Number'),
                       subtitle: Text(phoneNumber),
+
                       ),
  
                   ListTile(
@@ -134,12 +142,14 @@ class _SettingPageState extends State<SettingPage> {
                     ),
                     title: Text('Country*'),
                     subtitle: Text(countryName),
+
                   ),
 
                   ListTile(
                       leading: IconWidget(icon: Icons.fingerprint),
                       title: Text('API Token*'),
                       subtitle: Text(apiToken),
+
                               ),
                 ],
               ),
@@ -148,5 +158,6 @@ class _SettingPageState extends State<SettingPage> {
         ),
       ),
     );
+
   }  
 }
