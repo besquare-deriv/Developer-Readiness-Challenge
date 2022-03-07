@@ -7,13 +7,17 @@ import 'graph_page.dart';
 import 'package:intl/intl.dart';
 
 class MarketScreen extends StatefulWidget {
-  const MarketScreen({Key? key}) : super(key: key);
+  MarketScreen({this.token, Key? key}) : super(key: key);
 
+  String? token;
   @override
-  _MarketScreenState createState() => _MarketScreenState();
+  _MarketScreenState createState() => _MarketScreenState(token: token);
 }
 
 class _MarketScreenState extends State<MarketScreen> {
+  _MarketScreenState({this.token});
+
+  String? token;
   String textname = 'Stock Indices';
   bool changeColor = false;
   bool changeColor1 = true;
@@ -45,11 +49,9 @@ class _MarketScreenState extends State<MarketScreen> {
     var symbol;
     var symbolName;
     var state;
-
     TextEditingController selectedSymbol = new TextEditingController();
 
     List<String> MarketNames = [];
-
     List<SearchFieldListItem> list = [];
     return Scaffold(
       body: StreamBuilder(
@@ -126,6 +128,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                             ['exchange_is_open'],
                                         currency_symbol: price['active_symbols']
                                             [i]['quoted_currency_symbol'],
+                                        apiToken: token,
                                       ),
                                     ),
                                   );
@@ -375,6 +378,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                             ['exchange_is_open'],
                                         currency_symbol: price['active_symbols']
                                             [index]['quoted_currency_symbol'],
+                                        apiToken: token,
                                       ),
                                     ),
                                   );
