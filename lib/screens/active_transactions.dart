@@ -34,6 +34,7 @@ class _activeOptionsState extends State<activeOptions> {
   void listenActiveContracts() {
     activeChannel.stream.listen((data) {
       var result = jsonDecode(data);
+
       if (idList.isEmpty) {
         if (result['msg_type'] == 'portfolio') {
           for (int i = 0;
@@ -67,19 +68,48 @@ class _activeOptionsState extends State<activeOptions> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).appBarTheme.color ,
-          title: const Text("Active Transactions"),
-          centerTitle: true,
+          backgroundColor: Theme.of(context).appBarTheme.color,
+          title: const Text("Open Contract Positions",
+                style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                ),
+              ),
+              centerTitle: true,
         ),
-        body: ListView.builder(
-            itemCount: idList.length,
-            itemBuilder: (context, index) {
-              if (idList.isNotEmpty) {
-                return activeCard(contract_id: idList[index]);
-              }
-              {
-                return SizedBox.shrink();
-              }
-            }));
+        body: Column(
+          children: [
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.fromLTRB(20, 20, 100, 10),
+              child: Text(
+                "Open Positions",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Divider(
+                color: Colors.black,
+                thickness: 1,
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                  itemCount: idList.length,
+                  itemBuilder: (context, index) {
+                    if (idList.isNotEmpty) {
+                      return activeCard(contract_id: idList[index]);
+                    }
+                    {
+                      return LinearProgressIndicator();
+                    }
+                  }),
+            ),
+          ],
+        ));
   }
 }

@@ -1,19 +1,32 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:drc/screens/contract_details.dart';
 import 'package:drc/screens/active_transactions.dart';
 import 'package:drc/screens/contract_page.dart';
+
+import 'active_transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:intl/intl.dart';
 
+import 'contract_page.dart';
+
 class HistoryScreen extends StatefulWidget {
 
+  final String value1;
+
+  const HistoryScreen(this.value1, {Key? key}) : super(key: key);
+
   @override
-  _HistoryScreenState createState() => _HistoryScreenState();
+  _HistoryScreenState createState() => _HistoryScreenState(value1);
 }
 
+
 class _HistoryScreenState extends State<HistoryScreen> { 
+  _HistoryScreenState(this.value1);
+  String value1;
+  var channel;
 
   List<transDetails> listData = [];
   List<transDetails> dataHistory = [];
@@ -24,22 +37,24 @@ class _HistoryScreenState extends State<HistoryScreen> {
   List<transDetails> dummyList = [];
   bool _isLoading = false;
 
-  final channel = IOWebSocketChannel.connect(
+  initialConnection() {
+    channel = IOWebSocketChannel.connect(
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
-
-  void sendMessageAuthorize() {
-    channel.sink.add('{"authorize": "5dRHsXj0xsjBEJC"}');
   }
 
-  void sendMessageStatement() {
+  sendMessageAuthorize() {
+    channel.sink.add('{"authorize": "$value1"}');
+  }
+
+  sendMessageStatement() {
     channel.sink.add('{"statement": 1, "description": 1, "limit": 999}');
   }
 
-  void getActiveSymbol(){
+  getActiveSymbol(){
     channel.sink.add('{"active_symbols": "brief","product_type": "basic"}');
   }
 
-  dynamic getSymbol(data){
+  void getSymbol(data){
     activeSymbol = [];
     if(data['msg_type'] == 'active_symbols'){       
       for(int j = 0; j <= data['active_symbols'].length -1; j ++){
@@ -64,6 +79,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       dataHistory = [];
       listData = [];
       List<dynamic> time = [];
+
       List<String> currency = [];
       List<String> typeCurrency = [];
       List<String> displayName = [];
@@ -73,29 +89,20 @@ class _HistoryScreenState extends State<HistoryScreen> {
         getSymbol(data);
         sendMessageAuthorize();
       }
-      //getSymbol(data);
-      //sendMessageStatement();
       
       if (data['msg_type'] == 'authorize') {
          sendMessageStatement();
-         //print(data);
        }
             
       if (data['msg_type'] == 'statement') {
          for (int i = 0; i <= data['statement']['transactions'].length -1; i ++) {
-          //  print(data['statement']['transactions'][i]['transaction_time']);
           
            time.add(DateTime.fromMillisecondsSinceEpoch(
             data['statement']['transactions'][i]['transaction_time'] * 1000));
           
           String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(time[i]);
 
-          
           currency.add(data['statement']['transactions'][i]['shortcode'].toString());
-
-          /*final regex = RegExp (r'(?<=_)[^R_]+(?=_)');
-          String? match = regex.stringMatch(currency[i].toString());
-          typeCurrency.add(match!); */
 
           if (currency[i].contains('R_')){
             String a = currency[i].split('_')[1];
@@ -109,7 +116,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
             String output = currency[i].split('_')[1];
             typeCurrency.add(output);
           }
-          //print(typeCurrency.length);
 
            for(int j = 0; j <= activeSymbol.length -1; j ++){
               if(typeCurrency[i] == activeSymbol[j].symbol){
@@ -130,6 +136,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 id: data['statement']['transactions'][i]['transaction_id'],
                 amount: data['statement']['transactions'][i]['amount'],
                 balance: data['statement']['transactions'][i]['balance_after'],
+
                 contract_id: data['statement']['transactions'][i]['contract_id'],
                 payout: data['statement']['transactions'][i]['payout'],
                 crypto: typeCurrency[i],
@@ -138,51 +145,47 @@ class _HistoryScreenState extends State<HistoryScreen> {
               );
             }
           );
-          
-            
-         };
-         setState(() {
-           listData.addAll(dataHistory);
-         });
+        }
+        setState(() {
+          listData.addAll(dataHistory);
+        });
        }
+
     });
   }
 
   void checkData() {
-    if (listData.isEmpty){
+    if (listData.isEmpty) {
       return null;
-    } if (listData.length > 0){
+    }
+    if (listData.length > 0) {
       setState(() {
         _isLoading = true;
       });
     }
   }
 
-  timer(){Timer(Duration(seconds: 5), () {
-    setState(() {
-      checkData();
+  timer() {
+    Timer(Duration(seconds: 5), () {
+      setState(() {
+        checkData();
+      });
     });
-  });
   }
 
-  // dynamic getDetails(ref_id) {
-  //   for (int i=0; i <= dataHistory.length -1; i ++){
-  //     if (dataHistory[i].contract_id == ref_id){
-  //       setState(() {
-  //         detailsContract.add(dataHistory[i]);
-  //       });
-  //     }
-  //   }
-  //   return detailsContract;
-  // }
+  getData() async{
+    await initialConnection();
+    getActiveSymbol();
+    getAuthorize();
+    timer();
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   void initState() {
-    getActiveSymbol();
-    //sendMessageAuthorize();
-    //sendMessageStatement();
-    getAuthorize();
-    timer();
+    getData();
     super.initState();
   }
 
@@ -195,15 +198,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
     dummyList = [];
     sortedList = [];
 
-    if(query.isNotEmpty) {
-      for (int i = 0; i < dataHistory.length; i ++)
-      {
-        if (dataHistory[i].action == query){
+    if (query.isNotEmpty) {
+      for (int i = 0; i < dataHistory.length; i++) {
+        if (dataHistory[i].action == query) {
           setState(() {
             sortedList.add(dataHistory[i]);
-          }); 
+          });
         }
-      };
+      }
+      ;
       setState(() {
         listData.clear();
         listData.addAll(sortedList);
@@ -216,7 +219,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
       });
       return;
     }
-
   }
 
   @override
@@ -241,24 +243,26 @@ class _HistoryScreenState extends State<HistoryScreen> {
         actions: [],
       ),
 
-      body: SafeArea(
-        child: (_isLoading) ? Center (
-            child: Column(
-          children: <Widget>[
-            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              Expanded(
-                flex: 8,
-                child: Container(
-                  padding: EdgeInsets.only(left: 10),
-                  alignment: Alignment.centerLeft,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (data) => activeOptions()));
-                    },
-                    child: Text(
+      body: 
+          SafeArea(
+            child: (_isLoading) ? Center (
+                child: Column(
+              children: <Widget>[
+                Row(mainAxisAlignment: MainAxisAlignment.end, 
+                children: [
+                  Expanded(
+                    flex: 8,
+                    child: Container(
+                      padding: EdgeInsets.only(left: 10),
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (data) => activeOptions()));
+                        },
+                        child: Text(
                       "Active Contracts",
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurface
@@ -267,15 +271,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   ),
                 ),
               ),
-              IconButton(
-                icon: Image.asset('assets/icons/sort.png'),
-                iconSize: 1,
-                onPressed: () {
-                  setState(() {
-                    listData = listData.reversed.toList();
-                  });
-                },
-              ),
+                  IconButton(
+                    icon: Image.asset('assets/icons/sync.png'),
+                    iconSize: 1,
+                    onPressed: () { getData(); },
+                  ),
+                  IconButton(
+                    icon: Image.asset('assets/icons/sort.png'),
+                    iconSize: 1,
+                    onPressed: () {
+                      setState(() {
+                        listData = listData.reversed.toList();
+                      });
+                    },
+                  ),
+                    
               IconButton(
                 icon: Icon(Icons.filter_alt, /* size:40 */ color: Theme.of(context).iconTheme.color),
                 iconSize: 40,
@@ -363,35 +373,33 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                 fontWeight: FontWeight.bold)),
                                       ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                '${listData[index].amount}',
-                                style: TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  color: dataHistory[index].amount >= 0 ?Color.fromRGBO(54, 98, 43, 1) : Color.fromRGBO(232, 69, 69,1),
-                                ),
+                                  
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    '${listData[index].amount}',
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                      color: listData[index].amount < 0 ? Color.fromRGBO(232, 69, 69,1) : Color.fromRGBO(54, 98, 43, 1),
+                                    ),
+                                  ),
+                                ]),
                               ),
                             ]),
                           ),
-                        ),
-                      ),
-                    );
-                  },
+                        )));
+                      },
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ],
-        )
-        ):Center(
-          child: CircularProgressIndicator()
-        )
-      ),
+              ],
+            )
+            ): Center(
+              child: CircularProgressIndicator()
+            )
+          )
     );
   }
 }
@@ -420,6 +428,7 @@ class transDetails {
   });
 
   @override
+
   String toString() => '[ $action , $time , $id , $amount, $balance , $contract_id, $payout, $crypto , $symbolName]';
 }
 

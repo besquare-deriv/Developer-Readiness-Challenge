@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_dropdown.dart';
+
 import 'package:country_pickers/utils/utils.dart';
 import 'package:drc/components/change_theme_button_widget.dart';
 import 'package:drc/screens/explorer_page.dart';
@@ -33,7 +34,7 @@ class _SettingsPageState extends State<SettingsPage> {
   final  _phone = TextEditingController();
   final  _confirmPass = TextEditingController();
   final _pass = TextEditingController();
-  final  _api = TextEditingController();
+  final _api = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   String firstName = 'John';
   String lastName = 'Doe';
@@ -118,10 +119,9 @@ class _SettingsPageState extends State<SettingsPage> {
   
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        child:
-          Column(
-            children: [
-              Container(
+        child: Column(
+          children: [
+            Container(
                 alignment: Alignment.topCenter,
                 padding: EdgeInsets.symmetric(vertical:28) ,
                 child: 
@@ -207,7 +207,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
 
-                  //Phone Number
                   ListTile(
                     leading: IconWidget(icon: Icons.phone),
                     title: Text('Phone Number',
@@ -235,7 +234,6 @@ class _SettingsPageState extends State<SettingsPage> {
                           color: Colors.black
                         ),
                     ),
-                    /* trailing: IconButton(icon: const Icon(Icons.calendar_month), onPressed: () => pickDate(context) ,)    */
                   ),
                   //country
                   ListTile(
@@ -250,18 +248,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           color: Colors.black
                         ),
                     ),
-                    /* trailing: CountryPickerDropdown(
-                                  initialValue: 'ID',
-                                  itemBuilder: _buildDropdownItem,
-                                  onValuePicked: (Country country) {
-                                    setState(() {
-                                      countryName = "${country.name}";
-                                    });
-                                  },
-                                ) , */
                     ),
-
-                  //API token 
                   ListTile(
                     leading: IconWidget(icon: Icons.fingerprint),
                     title: Text('API Token*',
@@ -307,39 +294,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
              )
                 ],
-      ),
-      ),
-      );
-  }
-  pickDate(BuildContext context) async {
-    final initialDate = DateTime.now().year - 18;
-    final newDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime(initialDate),
-      firstDate: DateTime(DateTime.now().year - 100),
-      lastDate: DateTime(DateTime.now().year - 17,DateTime.now().month - 11, DateTime.now().day - 30),
-    );
-
-    if (newDate != null && newDate != date) 
-    setState(() {
-      date = newDate;
-    });
+              ),
+            )
+        );
   }
 }
-bool validateStructure(String value){
-        String  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-        RegExp regExp = new RegExp(pattern);
-        return regExp.hasMatch(value);
-  }
-
-Widget _buildDropdownItem(Country country) => Container(
-        child: Row(
-          children: <Widget>[
-            CountryPickerUtils.getDefaultFlagImage(country),
-            SizedBox(
-              width: 8.0,
-            ),
-            Text("+${country.phoneCode}(${country.isoCode})"),
-          ],
-        ),
-      );
