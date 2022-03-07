@@ -123,7 +123,6 @@ class _ContractDetailsState extends State<ContractDetails> {
                 '${duration!.inSeconds.remainder(60)} seconds');
           } else {
             printDuration = ('${duration!.inHours} hours');
-
           }
         } else {
           if (duration!.inMinutes.remainder(60) != 0 ||
@@ -177,7 +176,6 @@ class _ContractDetailsState extends State<ContractDetails> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-
       backgroundColor: const Color.fromRGBO(234, 230, 230, 1),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -187,7 +185,6 @@ class _ContractDetailsState extends State<ContractDetails> {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 40),
               height: height * 0.25,
-
               width: width,
               decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -198,9 +195,8 @@ class _ContractDetailsState extends State<ContractDetails> {
                 Padding(
                     padding: EdgeInsets.all(5),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-
                         Container(
                           alignment: Alignment.centerLeft,
                           child: IconButton(
@@ -223,7 +219,6 @@ class _ContractDetailsState extends State<ContractDetails> {
                             ),
                           ),
                         ),
-
                       ],
                     )),
                 Container(
@@ -243,7 +238,6 @@ class _ContractDetailsState extends State<ContractDetails> {
             //Contract statement
             Container(
                 margin: EdgeInsets.only(top: height * 0.3),
-zedBox(height: 0.01),
                 padding: EdgeInsets.symmetric(vertical: height * 0.06585),
                 width: width * 0.9548,
                 height: height * 0.5663,
@@ -325,7 +319,6 @@ zedBox(height: 0.01),
                       endIndent: 10,
                       color: Color.fromRGBO(196, 196, 196, 1),
                     ),
-
                     SizedBox(height: height * 0.03293),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -398,7 +391,6 @@ zedBox(height: 0.01),
                       endIndent: 10,
                       color: Color.fromRGBO(196, 196, 196, 1),
                     ),
-
                     SizedBox(height: height * 0.03293),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -475,14 +467,13 @@ zedBox(height: 0.01),
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.black, width: 1.5),
                 borderRadius: BorderRadius.circular(20),
-
                 color: const Color(0xFFC4C4C4),
               ),
               child: Column(children: <Widget>[
                 Container(
                   child: const Text(
                     'Total profit/loss',
-
+                    style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
                         fontFamily: 'IBM Plex Sans'),
