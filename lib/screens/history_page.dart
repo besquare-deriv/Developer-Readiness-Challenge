@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:drc/screens/contract_details.dart';
+import 'package:drc/screens/active_transactions.dart';
+import 'package:drc/screens/contract_page.dart';
 
 import 'active_transactions.dart';
 import 'package:flutter/material.dart';
@@ -236,12 +238,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFF1F96B0),
+          //backgroundColor: Color(0xFF1F96B0),
           title: const Text(
             'Transaction History',
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              //color: Colors.white,
             ),
           ),
           centerTitle: true,
@@ -263,22 +265,31 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (data) => activeOptions()));
+                                        builder: (data) => activeOptions(
+                                              apiToken: value1,
+                                            )));
                               },
                               child: Text(
                                 "Active Contracts",
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.onSurface
+                                ),
                               ),
                             ),
                           ),
                         ),
                         IconButton(
-                          icon: Icon(Icons.refresh_rounded, size: 40),
+                          icon: Icon(Icons.refresh_rounded, 
+                            color: Theme.of(context).iconTheme.color),
+                          iconSize: 40,
                           onPressed: () {
                             getData();
                           },
                         ),
                         IconButton(
-                          icon: Icon(Icons.sort_rounded, size: 40),
+                          icon: Icon(Icons.sort_rounded,
+                            color: Theme.of(context).iconTheme.color),
+                          iconSize: 40,
                           onPressed: () {
                             setState(() {
                               listData = listData.reversed.toList();
@@ -286,7 +297,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           },
                         ),
                         IconButton(
-                          icon: Icon(Icons.sort_rounded, size: 40),
+                          icon: Icon(Icons.filter_alt, 
+                            color: Theme.of(context).iconTheme.color),
+                          iconSize: 40,
                           onPressed: () => showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -338,7 +351,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   margin: EdgeInsets.symmetric(
                                       horizontal: 8.0, vertical: 4.0),
                                   child: Card(
-                                    color: Colors.white70,
+                                    color: Theme.of(context).colorScheme.tertiaryContainer,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0)),
@@ -378,20 +391,23 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                                   69,
                                                                   69,
                                                                   1))),
-                                                  Text('BTCAUSD',
+                                                  Text('${listData[index].symbolName}',
                                                       style: TextStyle(
+                                                          color: Colors.black,
                                                           fontSize: 12,
                                                           fontWeight:
                                                               FontWeight.bold)),
                                                   Text(
                                                       'TransactionID: ${listData[index].id}',
                                                       style: TextStyle(
+                                                          color: Colors.black,
                                                           fontSize: 12,
                                                           fontWeight:
                                                               FontWeight.bold)),
                                                   Text(
                                                       '${listData[index].time}',
                                                       style: TextStyle(
+                                                          color: Colors.black,
                                                           fontSize: 12,
                                                           fontWeight:
                                                               FontWeight.bold)),
