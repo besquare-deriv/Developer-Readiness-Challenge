@@ -43,8 +43,25 @@ class _ContractDetailsState extends State<ContractDetails> {
     for (int i = 0; i < info.length; i++) {
       if (data.contract_id == info[i].contract_id) {
         output.add(info[i]);
-      } else {
-        output.add(data);
+        setInfo();
+      } else {  
+          if(data.action == 'buy'){
+            currencyType = data.symbolName;
+          }
+          else{
+          currencyType = data.action;
+          }
+          buyID =data.id;
+          buyPrice = data.amount;
+          startTime = data.time;
+          currencyType;
+          sellID = '-';
+          sellPrice = 0;
+          endTime = '-';
+          payoutLimit = 0;
+          accountBalance = data.balance;
+          printDuration = '-';
+          profitLoss = data.amount;
       }
     }
   }
@@ -67,24 +84,16 @@ class _ContractDetailsState extends State<ContractDetails> {
       currencyType = data.symbolName;
       payoutLimit = data.payout;
       calDuration();
-    }
-    if (data.action == 'withdrawal') {
-      currencyType = 'withdrawal';
-      buyID = data.id;
-      buyPrice = data.amount;
-      startTime = data.time;
-      currencyType;
-      sellID = '-';
-      sellPrice = 0;
-      endTime = '-';
-      payoutLimit = 0;
-      accountBalance = data.balance;
-      printDuration = '-';
+      calProfitLoss();
     }
   }
 
   void calDuration() {
     DateTime dt1 = DateTime.parse(startTime);
+    if(endTime == '-'){
+      printDuration = '-';
+    }
+    else{
     DateTime dt2 = DateTime.parse(endTime);
     duration = dt2.difference(dt1);
     //show days, hours, minutes and seconds
@@ -158,6 +167,7 @@ class _ContractDetailsState extends State<ContractDetails> {
         }
       }
     }
+    }
   }
 
   void calProfitLoss() {
@@ -167,8 +177,6 @@ class _ContractDetailsState extends State<ContractDetails> {
   @override
   void initState() {
     comparison();
-    setInfo();
-    calProfitLoss();
   }
 
   @override
@@ -209,7 +217,6 @@ class _ContractDetailsState extends State<ContractDetails> {
                                     Navigator.pop(context);
                                 }, 
                               ),
-
                           ),
                           ),
                           
@@ -225,7 +232,6 @@ class _ContractDetailsState extends State<ContractDetails> {
                           ),
                           Spacer(),
                         ],)
-
                   ),
                   SizedBox(height:30),
                   Wrap(
@@ -477,7 +483,6 @@ class _ContractDetailsState extends State<ContractDetails> {
                               )
                         )
                     )
-
                   ),
 
                 Padding(padding: EdgeInsets.only(right: width*0.05093),

@@ -7,26 +7,25 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:web_socket_channel/io.dart';
-import '../components/button_widget.dart';
 import '../components/profile_widget.dart';
 import '../constants.dart';
 import '../utils/user_information.dart';
 import 'settings_page.dart';
 
 class ProfilePage extends StatefulWidget {
-  final String value1;
+  final String apiToken;
 
-  const ProfilePage(this.value1, {Key? key}) : super(key: key);
+  const ProfilePage(this.apiToken, {Key? key}) : super(key: key);
 
   @override
-  _ProfilePageState createState() => _ProfilePageState(value1);
+  _ProfilePageState createState() => _ProfilePageState(apiToken);
 }
 
 class _ProfilePageState extends State<ProfilePage> {
   String? value;
   String? field_Name;
-  String value1;
-  _ProfilePageState(this.value1, {Key? key});
+  String apiToken;
+  _ProfilePageState(this.apiToken, {Key? key});
   String username = "User";
   String email = "User@gmail.com";
 
@@ -36,7 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
 
   void sendAuth() {
-    channel.sink.add('{"authorize": "$value1"}');
+    channel.sink.add('{"authorize": "$apiToken"}');
   }
 
   void getStatement() {
@@ -57,8 +56,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    String token;
-
     const user = UserInformation.myUser;
 
     return StreamBuilder(
@@ -187,28 +184,25 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
 
                       const SizedBox(height: 25),
-                      ElevatedButton(
-                          child: Text(
-                            'Settings',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context)
-                                  .colorScheme
-                                  .tertiaryContainer,
-                              onPrimary: Colors.black,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 32, vertical: 12),
-                              minimumSize: const Size(200.0, 50.0)),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      SettingsPage(value: value1),
-                                ));
-                          }),
+                      
+            ElevatedButton(
+                child: Text(
+                  'Settings',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                style: ElevatedButton.styleFrom(
+                    primary: Theme.of(context).colorScheme.tertiaryContainer,
+                    onPrimary: Colors.black,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32, vertical: 12),
+                    minimumSize: const Size(200.0, 50.0)),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                      MaterialPageRoute(builder: (context) => SettingsPage(value: apiToken),
+                      ),
+                    );
+                  }),
 
                       const SizedBox(height: 25),
                       ElevatedButton(
@@ -279,7 +273,8 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+
+            Text(
               'Account Balance:',
               style: TextStyle(fontSize: 18),
             ),

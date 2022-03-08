@@ -12,14 +12,14 @@ class GraphScreen extends StatefulWidget {
   GraphScreen(
       {Key? key,
       required this.state,
-      required this.apiToken,
+      this.apiToken,
       required this.symbolName,
       required this.currency_symbol,
       required this.symbol})
       : super(key: key);
   final String symbolName;
   final String symbol;
-  String apiToken;
+  String? apiToken;
   final String currency_symbol;
   final int state;
 

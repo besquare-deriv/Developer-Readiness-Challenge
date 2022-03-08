@@ -7,17 +7,17 @@ import 'graph_page.dart';
 import 'package:intl/intl.dart';
 
 class MarketScreen extends StatefulWidget {
-  MarketScreen({required this.token, Key? key}) : super(key: key);
+  MarketScreen(this.apiToken, {Key? key}) : super(key: key);
 
-  String token;
+  String apiToken;
   @override
-  _MarketScreenState createState() => _MarketScreenState(token: token);
+  _MarketScreenState createState() => _MarketScreenState(apiToken);
 }
 
 class _MarketScreenState extends State<MarketScreen> {
-  _MarketScreenState({required this.token});
+  _MarketScreenState(this.apiToken);
 
-  String token;
+  String apiToken;
   String textname = 'Stock Indices';
   bool changeColor = false;
   bool changeColor1 = true;
@@ -133,7 +133,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                             ['exchange_is_open'],
                                         currency_symbol: price['active_symbols']
                                             [i]['quoted_currency_symbol'],
-                                        apiToken: token,
+                                        apiToken: apiToken,
                                       ),
                                     ),
                                   );
@@ -386,7 +386,6 @@ class _MarketScreenState extends State<MarketScreen> {
                               elevation: 5,
                               child: InkWell(
                                 onTap: () {
-                                  print(token);
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -399,7 +398,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                             ['exchange_is_open'],
                                         currency_symbol: price['active_symbols']
                                             [index]['quoted_currency_symbol'],
-                                        apiToken: token,
+                                        apiToken: apiToken,
                                       ),
                                     ),
                                   );

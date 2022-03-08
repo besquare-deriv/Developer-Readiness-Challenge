@@ -1,29 +1,23 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:drc/screens/contract_details.dart';
-import 'package:drc/screens/active_transactions.dart';
-import 'package:drc/screens/contract_page.dart';
-
 import 'active_transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:intl/intl.dart';
 
-import 'contract_page.dart';
-
 class HistoryScreen extends StatefulWidget {
-  final String value1;
+  final String apiToken;
 
-  const HistoryScreen(this.value1, {Key? key}) : super(key: key);
+  const HistoryScreen(this.apiToken, {Key? key}) : super(key: key);
 
   @override
-  _HistoryScreenState createState() => _HistoryScreenState(value1);
+  _HistoryScreenState createState() => _HistoryScreenState(apiToken);
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  _HistoryScreenState(this.value1);
-  String value1;
+  _HistoryScreenState(this.apiToken);
+  String apiToken;
   var channel;
 
   List<transDetails> listData = [];
@@ -41,7 +35,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   sendMessageAuthorize() {
-    channel.sink.add('{"authorize": "$value1"}');
+    channel.sink.add('{"authorize": "$apiToken"}');
   }
 
   sendMessageStatement() {
@@ -84,76 +78,71 @@ class _HistoryScreenState extends State<HistoryScreen> {
         getSymbol(data);
         sendMessageAuthorize();
       }
-
       if (data['msg_type'] == 'authorize') {
         sendMessageStatement();
       }
 
       if (data['msg_type'] == 'statement') {
-        try {
-          for (int i = 0;
-              i <= data['statement']['transactions'].length - 1;
-              i++) {
-            time.add(DateTime.fromMillisecondsSinceEpoch(data['statement']
-                    ['transactions'][i]['transaction_time'] *
-                1000));
+        for (int i = 0;
+            i <= data['statement']['transactions'].length - 1;
+            i++) {
+          time.add(DateTime.fromMillisecondsSinceEpoch(
+              data['statement']['transactions'][i]['transaction_time'] * 1000));
 
-            String formattedDate =
-                DateFormat('yyyy-MM-dd HH:mm:ss').format(time[i]);
+          String formattedDate =
+              DateFormat('yyyy-MM-dd HH:mm:ss').format(time[i]);
 
-            currency.add(
-                data['statement']['transactions'][i]['shortcode'].toString());
+          currency.add(
+              data['statement']['transactions'][i]['shortcode'].toString());
+          // print(currency[i]);
+          // print(currency[i].contains("R_"));
+          // print(currency[i].contains(RegExp(".*?_(R_.*?)_.*?")));
 
-            if (currency[i].contains("R_")) {
-              String a = currency[i].split('_')[1];
-              String b = currency[i].split('_')[2];
-              String output = a + '_' + b;
-              typeCurrency.add(output);
-            } else if (currency[i].contains('OTC_')) {
-              String a = currency[i].split('_')[1];
-              String b = currency[i].split('_')[2];
-              String output = a + '_' + b;
-              typeCurrency.add(output);
-            } else if (currency[i].contains('null')) {
-              typeCurrency.add(currency[i]);
-            } else {
-              String output = currency[i].split('_')[1];
-              typeCurrency.add(output);
-            }
-
-            for (int j = 0; j <= activeSymbol.length - 1; j++) {
-              if (typeCurrency[i] == activeSymbol[j].symbol) {
-                displayName.add(activeSymbol[j].displayName);
-                break;
-              }
-              if (typeCurrency[i] == 'null') {
-                displayName.add('null');
-                break;
-              }
-            }
-
-            setState(() {
-              dataHistory.add(
-                transDetails(
-                  action: data['statement']['transactions'][i]['action_type'],
-                  time: formattedDate,
-                  id: data['statement']['transactions'][i]['transaction_id'],
-                  amount: data['statement']['transactions'][i]['amount'],
-                  balance: data['statement']['transactions'][i]
-                      ['balance_after'],
-                  contract_id: data['statement']['transactions'][i]
-                      ['contract_id'],
-                  payout: data['statement']['transactions'][i]['payout'],
-                  crypto: typeCurrency[i],
-                  symbolName: displayName[i],
-                ),
-              );
-            });
+          if (currency[i].contains(RegExp(".*?_(R_.*?)_.*?"))) {
+            String a = currency[i].split('_')[1];
+            String b = currency[i].split('_')[2];
+            String output = a + '_' + b;
+            typeCurrency.add(output);
+          } else if (currency[i].contains(RegExp(".*?_(OTC_.*?)_.*?"))) {
+            String a = currency[i].split('_')[1];
+            String b = currency[i].split('_')[2];
+            String output = a + '_' + b;
+            typeCurrency.add(output);
+          } else if (currency[i].contains('null')) {
+            typeCurrency.add(currency[i]);
+          } else {
+            String output = currency[i].split('_')[1];
+            typeCurrency.add(output);
           }
-        } catch (error) {
-          debugPrint(error.toString());
-        }
 
+          for (int j = 0; j <= activeSymbol.length - 1; j++) {
+            if (typeCurrency[i] == activeSymbol[j].symbol) {
+              displayName.add(activeSymbol[j].displayName);
+              break;
+            }
+            if (typeCurrency[i] == 'null') {
+              displayName.add('null');
+              break;
+            }
+          }
+
+          setState(() {
+            dataHistory.add(
+              transDetails(
+                action: data['statement']['transactions'][i]['action_type'],
+                time: formattedDate,
+                id: data['statement']['transactions'][i]['transaction_id'],
+                amount: data['statement']['transactions'][i]['amount'],
+                balance: data['statement']['transactions'][i]['balance_after'],
+                contract_id: data['statement']['transactions'][i]
+                    ['contract_id'],
+                payout: data['statement']['transactions'][i]['payout'],
+                crypto: typeCurrency[i],
+                symbolName: displayName[i],
+              ),
+            );
+          });
+        }
         setState(() {
           listData.addAll(dataHistory);
         });
@@ -262,7 +251,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (data) => activeOptions(
-                                              apiToken: value1,
+                                              apiToken: apiToken,
                                             )));
                               },
                               child: Text(

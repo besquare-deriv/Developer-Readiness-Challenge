@@ -86,11 +86,12 @@ class _ResetScreenState extends State<ResetScreen> {
                                 filled: true,
                                 //fillColor: Colors.amber,
                                 border: OutlineInputBorder(),
+                                hintText: 'Email Address',
                               ),
                               validator: MultiValidator([
-                                RequiredValidator(errorText: "REQUIRED"),
+                                RequiredValidator(errorText: "Required"),
                                 EmailValidator(
-                                    errorText: "ENTER AN VALID EMAIL ID"),
+                                    errorText: "Please enter a valid email address"),
                               ])),
                         ),
                         SizedBox(
@@ -98,7 +99,7 @@ class _ResetScreenState extends State<ResetScreen> {
                         ),
                         ElevatedButton(
                           child: const Text(
-                            'SUBMIT',
+                            'Submit',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500,
@@ -115,7 +116,7 @@ class _ResetScreenState extends State<ResetScreen> {
                                     title: new Text(e.toString()),
                                     actions: <Widget>[
                                       TextButton(
-                                        child: new Text("OK"),
+                                        child: new Text("Ok"),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
@@ -163,7 +164,7 @@ class _ResetScreenState extends State<ResetScreen> {
                                     title: new Text(e.toString()),
                                     actions: <Widget>[
                                       TextButton(
-                                        child: new Text("OK"),
+                                        child: new Text("Ok"),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
@@ -205,7 +206,7 @@ class _ResetScreenState extends State<ResetScreen> {
                         Container(
                           padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
                           child: Text(
-                            'If you don’t see the email within 12 hours, check your spam or junk folder before submitting a new request.',
+                            "If you don’t see the email within 12 hours, check your spam or junk folder before submitting a new request.",
                             textAlign: TextAlign.justify,
                             style: TextStyle(fontSize: 17, color: Colors.grey),
                           ),
@@ -233,10 +234,10 @@ class _ResetScreenState extends State<ResetScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: new Text('Enter a valid email address'),
+              title: new Text("Please enter a valid email address"),
               actions: <Widget>[
                 TextButton(
-                  child: new Text("OK"),
+                  child: new Text("Ok"),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -255,7 +256,7 @@ class _ResetScreenState extends State<ResetScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: new Text(
-              'A new password rest link has been sent to your registered email address.',
+              "A new password rest link has been sent to your registered email address.",
               style: const TextStyle(
                 fontSize: 22.0,
                 color: Colors.black,
@@ -275,7 +276,7 @@ class _ResetScreenState extends State<ResetScreen> {
               Divider(color: Colors.black),
               Center(
                 child: TextButton(
-                  child: Text("OK", style: TextStyle(fontSize: 25)),
+                  child: Text("Ok", style: TextStyle(fontSize: 25)),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -293,7 +294,7 @@ class _ResetScreenState extends State<ResetScreen> {
             title: new Text(e.toString()),
             actions: <Widget>[
               TextButton(
-                child: new Text("OK"),
+                child: new Text("Ok"),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
