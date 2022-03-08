@@ -17,8 +17,6 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-  
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
         create: (context) => ThemeProvider(),
@@ -37,17 +35,16 @@ class MyApp extends StatelessWidget {
 }
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
-
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
   String? value;
-  String? title;
-  // This widget is the root of your application.
 
+  String? title;
+
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -72,7 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ref = snapshot.data!.docs[0].reference;
 
             return Scaffold(
-              //backgroundColor: Colors.white,
+              // backgroundColor: Colors.white,
 
               //appBar: buildAppBar(context),
               body: SingleChildScrollView(
@@ -184,6 +184,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
 
                       const SizedBox(height: 25),
+                      
             ElevatedButton(
                 child: Text(
                   'Settings',
@@ -261,8 +262,8 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           const SizedBox(height: 4),
           Text(
-            '$email',
-            //style: const TextStyle(color: Colors.white),
+            "$email",
+            style: const TextStyle(color: Colors.white),
           )
         ],
       );
@@ -272,6 +273,7 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
             Text(
               'Account Balance:',
               style: TextStyle(fontSize: 18),
