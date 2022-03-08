@@ -106,12 +106,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             filled: true,
                             //fillColor: Colors.amber,
                             border: OutlineInputBorder(),
-                            hintText: 'Email',
+                            hintText: 'Email Address',
                           ),
                           validator: MultiValidator([
-                            RequiredValidator(errorText: "REQUIRED"),
+                            RequiredValidator(errorText: "Required"),
                             EmailValidator(
-                                errorText: "ENTER AN VALID EMAIL ID"),
+                                errorText: "Please enter a valid email address"),
                           ])),
                     ),
                     Container(
@@ -143,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           obscureText: visible_text,
                           validator: MultiValidator([
-                            RequiredValidator(errorText: "REQUIRED"),
+                            RequiredValidator(errorText: "Required"),
                           ])),
                     ),
                     Row(
@@ -212,7 +212,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         } else {
                           //////////////////dDOWN VALIDATION
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("ERROR IN SIGN IN"),
+                            content: Text("Error in Sign In"),
                             // duration: const Duration(seconds: 2),
                           ));
                         }
@@ -235,7 +235,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: Colors.grey,
                           ),
                         ),
-                        Text("Or Log In with",
+                        Text("Or",
                             style: TextStyle(
                               color: Colors.grey,
                             )),
@@ -262,7 +262,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 title: new Text(e.toString()),
                                 actions: <Widget>[
                                   TextButton(
-                                    child: new Text("OK"),
+                                    child: new Text("Ok"),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
@@ -289,7 +289,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Material(
                   color: Colors.transparent,
                   child: Text(
-                    'Dont have an account ?   ',
+                    "Don't have an account ?   ",
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 16,
@@ -309,7 +309,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ));
                     },
                     child: Text(
-                      'Sign Up',
+                      "Sign Up",
                       style: TextStyle(
                           color: Colors.blue[900],
                           fontFamily: 'Montserrat',

@@ -1,29 +1,23 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:drc/screens/contract_details.dart';
-import 'package:drc/screens/active_transactions.dart';
-import 'package:drc/screens/contract_page.dart';
-
 import 'active_transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:intl/intl.dart';
 
-import 'contract_page.dart';
-
 class HistoryScreen extends StatefulWidget {
-  final String value1;
+  final String apiToken;
 
-  const HistoryScreen(this.value1, {Key? key}) : super(key: key);
+  const HistoryScreen(this.apiToken, {Key? key}) : super(key: key);
 
   @override
-  _HistoryScreenState createState() => _HistoryScreenState(value1);
+  _HistoryScreenState createState() => _HistoryScreenState(apiToken);
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  _HistoryScreenState(this.value1);
-  String value1;
+  _HistoryScreenState(this.apiToken);
+  String apiToken;
   var channel;
 
   List<transDetails> listData = [];
@@ -41,7 +35,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   sendMessageAuthorize() {
-    channel.sink.add('{"authorize": "$value1"}');
+    channel.sink.add('{"authorize": "$apiToken"}');
   }
 
   sendMessageStatement() {
@@ -84,13 +78,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
         getSymbol(data);
         sendMessageAuthorize();
       }
-
       if (data['msg_type'] == 'authorize') {
         sendMessageStatement();
       }
 
       if (data['msg_type'] == 'statement') {
-        try {
           for (int i = 0;
               i <= data['statement']['transactions'].length - 1;
               i++) {
@@ -103,8 +95,16 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
             currency.add(
                 data['statement']['transactions'][i]['shortcode'].toString());
+            // print(currency[i]);
+            // print(currency[i].contains("R_"));
+            // print(currency[i].contains(RegExp(".*?_(R_.*?)_.*?")));
 
-            if (currency[i].contains('R_')) {
+            if (currency[i].contains(RegExp(".*?_(R_.*?)_.*?"))) {
+              String a = currency[i].split('_')[1];
+              String b = currency[i].split('_')[2];
+              String output = a + '_' + b;
+              typeCurrency.add(output);
+            } else if (currency[i].contains(RegExp(".*?_(OTC_.*?)_.*?"))) {
               String a = currency[i].split('_')[1];
               String b = currency[i].split('_')[2];
               String output = a + '_' + b;
@@ -115,6 +115,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               String output = currency[i].split('_')[1];
               typeCurrency.add(output);
             }
+
 
             for (int j = 0; j <= activeSymbol.length - 1; j++) {
               if (typeCurrency[i] == activeSymbol[j].symbol) {
@@ -145,10 +146,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
               );
             });
           }
-        } catch (error) {
-          debugPrint(error.toString());
-        }
-
         setState(() {
           listData.addAll(dataHistory);
         });
@@ -256,7 +253,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (data) => activeOptions()));
+                                        builder: (data) => activeOptions(
+                                              apiToken: apiToken,
+                                            )));
                               },
                               child: Text(
                                 "Active Contracts",

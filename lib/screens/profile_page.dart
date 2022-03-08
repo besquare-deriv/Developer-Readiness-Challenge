@@ -7,26 +7,25 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:web_socket_channel/io.dart';
-import '../components/button_widget.dart';
 import '../components/profile_widget.dart';
 import '../constants.dart';
 import '../utils/user_information.dart';
 import 'settings_page.dart';
 
 class ProfilePage extends StatefulWidget {
-  final String value1;
+  final String apiToken;
 
-  const ProfilePage(this.value1, {Key? key}) : super(key: key);
+  const ProfilePage(this.apiToken, {Key? key}) : super(key: key);
 
   @override
-  _ProfilePageState createState() => _ProfilePageState(value1);
+  _ProfilePageState createState() => _ProfilePageState(apiToken);
 }
 
 class _ProfilePageState extends State<ProfilePage> {
   String? value;
   String? field_Name;
-  String value1;
-  _ProfilePageState(this.value1, {Key? key});
+  String apiToken;
+  _ProfilePageState(this.apiToken, {Key? key});
   String username = "User";
   String email = "User@gmail.com";
 
@@ -36,7 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
 
   void sendAuth() {
-    channel.sink.add('{"authorize": "$value1"}');
+    channel.sink.add('{"authorize": "$apiToken"}');
   }
 
   void getStatement() {
@@ -57,10 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    String token;
-
     const user = UserInformation.myUser;
-    print(value1);
 
     return StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -76,44 +72,46 @@ class _ProfilePageState extends State<ProfilePage> {
             ref = snapshot.data!.docs[0].reference;
 
             return Scaffold(
-              //backgroundColor: Colors.white,
+              // backgroundColor: Colors.white,
 
               //appBar: buildAppBar(context),
               body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          children: <Widget>[
-            const SizedBox(
-              height: 24,
-            ),
-            Container(
-              height: 200,
-              decoration: BoxDecoration(
-                color: Theme.of(context).appBarTheme.color),
-              child: Row(
-                children: [
-                  const SizedBox(
-                    width: 24,
-                  ),
-                  ProfileWidget(
-                    imagePath: user.imagePath,
-                    onClicked: () async {},
-                  ),
-                  const SizedBox(width: 50),
-                  Column(
-                    children: [
-                      const SizedBox(height: 80),
-                      Center(child: buildName(user)),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            // SizesWidget(),
-            const SizedBox(height: 30),
-            Center(
-              child: buildBalanceAcc(user),
-            ),
+                physics: const BouncingScrollPhysics(),
+                child: Form(
+                  key: validkey,
+                  child: Column(
+                    children: <Widget>[
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      Container(
+                        height: 200,
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).appBarTheme.color),
+                        child: Row(
+                          children: [
+                            const SizedBox(
+                              width: 24,
+                            ),
+                            ProfileWidget(
+                              imagePath: user.imagePath,
+                              onClicked: () async {},
+                            ),
+                            const SizedBox(width: 50),
+                            Column(
+                              children: [
+                                const SizedBox(height: 80),
+                                Center(child: buildName(user)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      // SizesWidget(),
+                      const SizedBox(height: 30),
+                      Center(
+                        child: buildBalanceAcc(user),
+                      ),
 
                       const SizedBox(height: 20),
                       Row(
@@ -186,6 +184,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
 
                       const SizedBox(height: 25),
+                      
             ElevatedButton(
                 child: Text(
                   'Settings',
@@ -200,57 +199,60 @@ class _ProfilePageState extends State<ProfilePage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                      MaterialPageRoute(builder: (context) => SettingsPage(value: value1),
+                      MaterialPageRoute(builder: (context) => SettingsPage(value: apiToken),
                       ),
                     );
                   }),
 
-            const SizedBox(height: 25),
-            ElevatedButton(
-                child: Text(
-                  'FAQs',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).colorScheme.tertiaryContainer,
-                    onPrimary: Colors.black,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 32, vertical: 12),
-                    minimumSize: const Size(200.0, 50.0)),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MyFAQsPage(),
-                    ),
-                  );
-                }),
+                      const SizedBox(height: 25),
+                      ElevatedButton(
+                          child: Text(
+                            'FAQs',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              primary: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer,
+                              onPrimary: Colors.black,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 32, vertical: 12),
+                              minimumSize: const Size(200.0, 50.0)),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MyFAQsPage(),
+                              ),
+                            );
+                          }),
 
-            const SizedBox(height: 25),
-            ElevatedButton(
-                child: Text(
-                  'Log out',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFFF305FAD),
-                    onPrimary: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 32, vertical: 12),
-                    minimumSize: const Size(200.0, 50.0)),
-                onPressed: () {
-                  AuthHelper().logOut();
+                      const SizedBox(height: 25),
+                      ElevatedButton(
+                          child: Text(
+                            'Log out',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              primary: Color(0xFFFF305FAD),
+                              onPrimary: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 32, vertical: 12),
+                              minimumSize: const Size(200.0, 50.0)),
+                          onPressed: () {
+                            AuthHelper().logOut();
                           }),
                     ],
                   ),
                 ),
-              );
-           
+              ),
+            );
           }
           return CircularProgressIndicator();
         });
   }
-    
 
   Widget buildName(Users users) => Column(
         children: <Widget>[
@@ -260,8 +262,8 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           const SizedBox(height: 4),
           Text(
-            '$email',
-            //style: const TextStyle(color: Colors.white),
+            "$email",
+            style: const TextStyle(color: Colors.white),
           )
         ],
       );
@@ -271,7 +273,8 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-             Text(
+
+            Text(
               'Account Balance:',
               style: TextStyle(fontSize: 18),
             ),

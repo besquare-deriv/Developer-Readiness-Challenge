@@ -29,13 +29,29 @@ class _ResetScreenState extends State<ResetScreen> {
                   clipBehavior: Clip.none,
                   alignment: Alignment.center,
                   children: <Widget>[
-                    const SizedBox(height: 120),
-                    Image.asset(
-                        "assets/images/robot_forex_terbaik_di_quickpro_apps.png",
-                        width: 280,
-                        height: 180),
+                    const SizedBox(height: 60),
+                    Image.asset("assets/images/BeRad.png",
+                        width: 280, height: 190),
                   ],
                 ),
+              ),
+              Text(
+                'Account Recovery',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold, // light
+                  fontSize: 38,
+                ),
+              ),
+              Text(
+                'Recover your BeRad account',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+              SizedBox(
+                height: 30,
               ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 30),
@@ -44,11 +60,21 @@ class _ResetScreenState extends State<ResetScreen> {
                   child: Card(
                     color: Colors.white,
                     shadowColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
                     elevation: 10.0,
                     child: Column(
                       children: [
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          'Email Address:',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold, // light
+
+                            fontSize: 18,
+                          ),
+                        ),
                         Container(
                           margin: EdgeInsets.only(bottom: 5, top: 10),
                           padding:
@@ -60,12 +86,12 @@ class _ResetScreenState extends State<ResetScreen> {
                                 filled: true,
                                 //fillColor: Colors.amber,
                                 border: OutlineInputBorder(),
-                                hintText: 'EMAIL',
+                                hintText: 'Email Address',
                               ),
                               validator: MultiValidator([
-                                RequiredValidator(errorText: "REQUIRED"),
+                                RequiredValidator(errorText: "Required"),
                                 EmailValidator(
-                                    errorText: "ENTER AN VALID EMAIL ID"),
+                                    errorText: "Please enter a valid email address"),
                               ])),
                         ),
                         SizedBox(
@@ -73,7 +99,7 @@ class _ResetScreenState extends State<ResetScreen> {
                         ),
                         ElevatedButton(
                           child: const Text(
-                            'SUBMIT',
+                            'Submit',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500,
@@ -90,7 +116,7 @@ class _ResetScreenState extends State<ResetScreen> {
                                     title: new Text(e.toString()),
                                     actions: <Widget>[
                                       TextButton(
-                                        child: new Text("OK"),
+                                        child: new Text("Ok"),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
@@ -103,29 +129,91 @@ class _ResetScreenState extends State<ResetScreen> {
                             ;
                           },
                           style: ElevatedButton.styleFrom(
-                              primary: Color.fromARGB(255, 0, 94, 255),
+                              primary: Color.fromARGB(255, 1, 70, 189),
                               fixedSize: const Size(270, 50),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10))),
                         ),
-                        const SizedBox(height: 20),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          'Or',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        ElevatedButton(
+                          child: const Text(
+                            'Back to login',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20),
+                          ),
+                          onPressed: () {
+                            try {
+                              Navigator.of(context).pop();
+                            } catch (e) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: new Text(e.toString()),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: new Text("Ok"),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
                                 },
-                                child: Text(
-                                  'Back to login',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                              );
+                            }
+                            SizedBox(
+                              height: 5,
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                              primary: Color.fromARGB(255, 1, 70, 189),
+                              fixedSize: const Size(270, 50),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10.0),
+                              child: Container(
+                                height: 1.0,
+                                width: 270.0,
+                                color: Colors.black,
                               ),
-                            ]),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
+                          child: Text(
+                            "If you don’t see the email within 12 hours, check your spam or junk folder before submitting a new request.",
+                            textAlign: TextAlign.justify,
+                            style: TextStyle(fontSize: 17, color: Colors.grey),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
                       ],
                     ),
                   ),
@@ -146,10 +234,10 @@ class _ResetScreenState extends State<ResetScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: new Text('Enter a valid email address'),
+              title: new Text("Please enter a valid email address"),
               actions: <Widget>[
                 TextButton(
-                  child: new Text("OK"),
+                  child: new Text("Ok"),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -168,7 +256,7 @@ class _ResetScreenState extends State<ResetScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: new Text(
-              'A new password rest link has been sent to your registered email address.',
+              "A new password rest link has been sent to your registered email address.",
               style: const TextStyle(
                 fontSize: 22.0,
                 color: Colors.black,
@@ -188,7 +276,7 @@ class _ResetScreenState extends State<ResetScreen> {
               Divider(color: Colors.black),
               Center(
                 child: TextButton(
-                  child: Text("OK", style: TextStyle(fontSize: 25)),
+                  child: Text("Ok", style: TextStyle(fontSize: 25)),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -206,7 +294,7 @@ class _ResetScreenState extends State<ResetScreen> {
             title: new Text(e.toString()),
             actions: <Widget>[
               TextButton(
-                child: new Text("OK"),
+                child: new Text("Ok"),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
