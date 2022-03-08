@@ -9,7 +9,7 @@ import 'package:drc/screens/token_test.dart';
 import 'package:flutter/material.dart';
 
 class NavigationPage extends StatefulWidget {
-  String value1;
+  String? value1;
   NavigationPage(this.value1, {Key? key}) : super(key: key);
 
   @override
@@ -26,8 +26,8 @@ class _NavigationPageState extends State<NavigationPage> {
       HomePage(widget.value1),
       ExplorePage(),
       MarketScreen(token: widget.value1),
-      HistoryScreen(widget.value1),
-      ProfilePage(widget.value1),
+      HistoryScreen(widget.value1!),
+      ProfilePage(widget.value1!),
     ];
 
     value1 = widget.value1;

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drc/main.dart';
+import 'package:drc/screens/explorer_page.dart';
 import 'package:drc/screens/main_nav_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -64,27 +65,6 @@ class _AddNoteState extends State<AddNote> {
         ),
       ],
     );
-
-    // Scaffold(
-    //   // backgroundColor: (codeDialog == "123456") ? Colors.green : Colors.white,
-
-    //   body: Center(
-    //     child: ElevatedButton(
-    //       style: ElevatedButton.styleFrom(
-    //         primary: Colors.teal,
-    //       ),
-    //       onPressed: () {
-    //         _displayTextInputDialog(context);
-    //       },
-    //       child: Text(
-    //         'Press For Alert',
-    //         style: TextStyle(
-    //           color: Colors.white,
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 
   void add() async {
@@ -102,21 +82,17 @@ class _AddNoteState extends State<AddNote> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: new Text('Data Added Successfully'),
+          title: new Text('Token Added Successfully'),
           actions: <Widget>[
             TextButton(
               child: new Text("OK"),
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => NavigationPage(apiToken!)));
+                Navigator.of(context).pop();
               },
             ),
           ],
         );
       },
     );
-    AuthHelper().logOut();
   }
 }
