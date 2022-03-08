@@ -20,6 +20,7 @@ class _AddNoteState extends State<AddNote> {
     return showDialog(
       context: context,
       builder: (context) => CupertinoAlertDialog(
+
         title: Text('Add in token', textAlign: TextAlign.center, style: TextStyle(fontSize: 26,fontWeight: FontWeight.bold)),
         content: 
         Center(
@@ -80,118 +81,17 @@ class _AddNoteState extends State<AddNote> {
           onPressed: () {
             _displayTextInputDialog(context);
           },
-          child: Text('Press For Alert', 
-          style: TextStyle(
-            color: Colors.white,
-          ),),
+          child: Text(
+            'Press For Alert',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
         ),
       ),
     );
   }
 
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return SafeArea(
-  //     child: Scaffold(
-  //       appBar: new AppBar(
-  //         leading: GestureDetector(
-  //           onTap: () {
-  //             AuthHelper().logOut();
-  //           },
-  //           child: Icon(
-  //             Icons.menu, // add custom icons also
-  //           ),
-  //         ),
-  //         centerTitle: true,
-  //         title: Text("Token"),
-  //         backgroundColor: Colors.lightBlue,
-  //       ),
-  //       body: SingleChildScrollView(
-  //         child: Container(
-  //           padding: EdgeInsets.all(12.0),
-  //           child: Column(
-  //             children: [
-  //               Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 children: [
-  //                   ElevatedButton(
-  //                     onPressed: () {
-  //                       Navigator.of(context).pop();
-  //                     },
-  //                     child: Icon(
-  //                       Icons.arrow_back_ios_outlined,
-  //                       size: 24.0,
-  //                     ),
-  //                     style: ButtonStyle(
-  //                       backgroundColor: MaterialStateProperty.all(
-  //                         Colors.blue[700],
-  //                       ),
-  //                       padding: MaterialStateProperty.all(
-  //                         EdgeInsets.symmetric(
-  //                           horizontal: 1,
-  //                           vertical: 8.0,
-  //                         ),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   //
-  //                   ElevatedButton(
-  //                     onPressed: add,
-  //                     child: Text(
-  //                       "SAVE",
-  //                       style: TextStyle(
-  //                         fontSize: 18.0,
-  //                         fontFamily: "lato",
-  //                         color: Colors.white,
-  //                       ),
-  //                     ),
-  //                     style: ButtonStyle(
-  //                       backgroundColor: MaterialStateProperty.all(
-  //                         Colors.green,
-  //                       ),
-  //                       padding: MaterialStateProperty.all(
-  //                         EdgeInsets.symmetric(
-  //                           horizontal: 25.0,
-  //                           vertical: 8.0,
-  //                         ),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //               SizedBox(
-  //                 height: 30.0,
-  //               ),
-  //               Form(
-  //                 child: Column(
-  //                   children: [
-  //                     TextFormField(
-  //                       decoration: InputDecoration(
-  //                         border: OutlineInputBorder(),
-  //                         hintText: "Token",
-  //                       ),
-  //                       style: TextStyle(
-  //                         fontSize: 32.0,
-  //                         fontFamily: "lato",
-  //                         fontWeight: FontWeight.bold,
-  //                         color: Colors.black87,
-  //                       ),
-  //                       onChanged: (_val) {
-  //                         title = _val;
-  //                       },
-  //                     ),
-  //                     //
-  //                   ],
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   void add() async {
     FirebaseFirestore db = FirebaseFirestore.instance;
