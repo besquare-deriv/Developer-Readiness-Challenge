@@ -60,7 +60,6 @@ class _ProfilePageState extends State<ProfilePage> {
     String token;
 
     const user = UserInformation.myUser;
-    print(value1);
 
     return StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -76,44 +75,46 @@ class _ProfilePageState extends State<ProfilePage> {
             ref = snapshot.data!.docs[0].reference;
 
             return Scaffold(
-              //backgroundColor: Colors.white,
+              // backgroundColor: Colors.white,
 
               //appBar: buildAppBar(context),
               body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          children: <Widget>[
-            const SizedBox(
-              height: 24,
-            ),
-            Container(
-              height: 200,
-              decoration: BoxDecoration(
-                color: Theme.of(context).appBarTheme.color),
-              child: Row(
-                children: [
-                  const SizedBox(
-                    width: 24,
-                  ),
-                  ProfileWidget(
-                    imagePath: user.imagePath,
-                    onClicked: () async {},
-                  ),
-                  const SizedBox(width: 50),
-                  Column(
-                    children: [
-                      const SizedBox(height: 80),
-                      Center(child: buildName(user)),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            // SizesWidget(),
-            const SizedBox(height: 30),
-            Center(
-              child: buildBalanceAcc(user),
-            ),
+                physics: const BouncingScrollPhysics(),
+                child: Form(
+                  key: validkey,
+                  child: Column(
+                    children: <Widget>[
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      Container(
+                        height: 200,
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).appBarTheme.color),
+                        child: Row(
+                          children: [
+                            const SizedBox(
+                              width: 24,
+                            ),
+                            ProfileWidget(
+                              imagePath: user.imagePath,
+                              onClicked: () async {},
+                            ),
+                            const SizedBox(width: 50),
+                            Column(
+                              children: [
+                                const SizedBox(height: 80),
+                                Center(child: buildName(user)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      // SizesWidget(),
+                      const SizedBox(height: 30),
+                      Center(
+                        child: buildBalanceAcc(user),
+                      ),
 
                       const SizedBox(height: 20),
                       Row(
@@ -186,71 +187,78 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
 
                       const SizedBox(height: 25),
-            ElevatedButton(
-                child: Text(
-                  'Settings',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).colorScheme.tertiaryContainer,
-                    onPrimary: Colors.black,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 32, vertical: 12),
-                    minimumSize: const Size(200.0, 50.0)),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                      MaterialPageRoute(builder: (context) => SettingsPage(value: value1),
-                      ),
-                    );
-                  }),
+                      ElevatedButton(
+                          child: Text(
+                            'Settings',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              primary: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer,
+                              onPrimary: Colors.black,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 32, vertical: 12),
+                              minimumSize: const Size(200.0, 50.0)),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      SettingsPage(value: value1),
+                                ));
+                          }),
 
-            const SizedBox(height: 25),
-            ElevatedButton(
-                child: Text(
-                  'FAQs',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).colorScheme.tertiaryContainer,
-                    onPrimary: Colors.black,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 32, vertical: 12),
-                    minimumSize: const Size(200.0, 50.0)),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MyFAQsPage(),
-                    ),
-                  );
-                }),
+                      const SizedBox(height: 25),
+                      ElevatedButton(
+                          child: Text(
+                            'FAQs',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              primary: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer,
+                              onPrimary: Colors.black,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 32, vertical: 12),
+                              minimumSize: const Size(200.0, 50.0)),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MyFAQsPage(),
+                              ),
+                            );
+                          }),
 
-            const SizedBox(height: 25),
-            ElevatedButton(
-                child: Text(
-                  'Log out',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFFF305FAD),
-                    onPrimary: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 32, vertical: 12),
-                    minimumSize: const Size(200.0, 50.0)),
-                onPressed: () {
-                  AuthHelper().logOut();
+                      const SizedBox(height: 25),
+                      ElevatedButton(
+                          child: Text(
+                            'Log out',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              primary: Color(0xFFFF305FAD),
+                              onPrimary: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 32, vertical: 12),
+                              minimumSize: const Size(200.0, 50.0)),
+                          onPressed: () {
+                            AuthHelper().logOut();
                           }),
                     ],
                   ),
                 ),
-              );
-           
+              ),
+            );
           }
           return CircularProgressIndicator();
         });
   }
-    
 
   Widget buildName(Users users) => Column(
         children: <Widget>[
@@ -260,8 +268,8 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           const SizedBox(height: 4),
           Text(
-            '$email',
-            //style: const TextStyle(color: Colors.white),
+            "$email",
+            style: const TextStyle(color: Colors.white),
           )
         ],
       );
@@ -271,7 +279,7 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-             Text(
+            const Text(
               'Account Balance:',
               style: TextStyle(fontSize: 18),
             ),
