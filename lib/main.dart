@@ -25,8 +25,9 @@ class MyApp extends StatelessWidget {
 
 class MainScreen extends StatelessWidget {
   String? value;
-
+  String? title;
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
