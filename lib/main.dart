@@ -19,19 +19,19 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
-    create: (context)=> ThemeProvider(),
-    builder: (context, _) {
-      final themeProvider = Provider.of<ThemeProvider>(context);
+        create: (context) => ThemeProvider(),
+        builder: (context, _) {
+          final themeProvider = Provider.of<ThemeProvider>(context);
 
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        themeMode:themeProvider.themeMode,
-        theme: MyThemes.lightTheme,
-        darkTheme: MyThemes.darkTheme,
-        home: MainScreen(),
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            themeMode: themeProvider.themeMode,
+            theme: MyThemes.lightTheme,
+            darkTheme: MyThemes.darkTheme,
+            home: MainScreen(),
+          );
+        },
       );
-    },
-  );
 }
 
 class MainScreen extends StatelessWidget {
@@ -73,22 +73,21 @@ class MainScreen extends StatelessWidget {
                               .snapshots(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
-                                if (snapshot.hasData) {
-                                  if (snapshot.data!.docs.length == 0) {
-                                    return AddNote();
-                                  } else {
-                                    final docs = snapshot.data!.docs;
-                                    final v = docs[0].data() as Map;
+                            if (snapshot.hasData) {
+                              if (snapshot.data!.docs.isEmpty) {
+                                return AddNote(apiToken: value);
+                              } else {
+                                final docs = snapshot.data!.docs;
+                                final v = docs[0].data() as Map;
 
-                                    value = v['token'];
-                                    return NavigationPage(value!);
-                                  }
-                                }
-                                return SizedBox.shrink();
+                                value = v['token'];
+                                return NavigationPage(value!);
                               }
-                      );
+                            }
+                            return SizedBox.shrink();
+                          });
                     } else {
-                      return AddNote();
+                      return LinearProgressIndicator();
                     }
                   } else {
                     return Material(

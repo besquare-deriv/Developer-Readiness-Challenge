@@ -68,11 +68,6 @@ class _activeCardState extends State<activeCard> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     try {
       if (result['proposal_open_contract'] != null) {
@@ -137,7 +132,7 @@ class _activeCardState extends State<activeCard> {
                                   ),
                                 ),
                                 Text(
-                                  " ${profit}",
+                                  " $profit",
                                   style: (profit < 0)
                                       ? TextStyle(
                                           color: Colors.red,
@@ -189,7 +184,7 @@ class _activeCardState extends State<activeCard> {
                                   ),
                                 ),
                                 Text(
-                                  " ${time_remaining}",
+                                  " $time_remaining",
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
