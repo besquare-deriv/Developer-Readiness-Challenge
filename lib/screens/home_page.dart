@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: Theme.of(context).textTheme.subtitle1?.color ,
+                            color: Theme.of(context).textTheme.subtitle1?.color,
                           ),
                         ),
                       ),
@@ -237,10 +237,10 @@ class _HomePageState extends State<HomePage> {
                           leading: Text(
                             "Wins    ",
                             style: TextStyle(
-                                fontSize: 20, 
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                ),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
                           subtitle: Text(
                             "$winsCount",
@@ -267,7 +267,7 @@ class _HomePageState extends State<HomePage> {
                           leading: Text(
                             "Losses",
                             style: TextStyle(
-                                fontSize: 20, 
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
                           ),
