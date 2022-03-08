@@ -5,7 +5,6 @@ import 'package:drc/screens/history_page.dart';
 import 'package:drc/screens/home_page.dart';
 import 'package:drc/screens/market_list_page.dart';
 import 'package:drc/screens/profile_page.dart';
-import 'package:drc/screens/token_test.dart';
 import 'package:flutter/material.dart';
 
 class NavigationPage extends StatefulWidget {

@@ -7,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:web_socket_channel/io.dart';
-import '../components/button_widget.dart';
 import '../components/profile_widget.dart';
 import '../constants.dart';
 import '../utils/user_information.dart';
@@ -60,7 +59,6 @@ class _ProfilePageState extends State<ProfilePage> {
     String token;
 
     const user = UserInformation.myUser;
-    print(value1);
 
     return StreamBuilder(
         stream: FirebaseFirestore.instance

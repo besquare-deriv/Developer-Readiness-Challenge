@@ -1,14 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:drc/screens/contract_details.dart';
-
 import 'active_transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:intl/intl.dart';
-
-import 'contract_page.dart';
 
 class HistoryScreen extends StatefulWidget {
   final String value1;
@@ -82,13 +78,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
         getSymbol(data);
         sendMessageAuthorize();
       }
-
       if (data['msg_type'] == 'authorize') {
         sendMessageStatement();
       }
 
       if (data['msg_type'] == 'statement') {
-        try {
           for (int i = 0;
               i <= data['statement']['transactions'].length - 1;
               i++) {
@@ -107,12 +101,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
               String b = currency[i].split('_')[2];
               String output = a + '_' + b;
               typeCurrency.add(output);
+            } else if (currency[i].contains('OTC_')) {
+              String a = currency[i].split('_')[1];
+              String b = currency[i].split('_')[2];
+              String output = a + '_' + b;
+              typeCurrency.add(output);
             } else if (currency[i].contains('null')) {
               typeCurrency.add(currency[i]);
             } else {
               String output = currency[i].split('_')[1];
               typeCurrency.add(output);
             }
+
 
             for (int j = 0; j <= activeSymbol.length - 1; j++) {
               if (typeCurrency[i] == activeSymbol[j].symbol) {
@@ -143,10 +143,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
               );
             });
           }
-        } catch (error) {
-          debugPrint(error.toString());
-        }
-
         setState(() {
           listData.addAll(dataHistory);
         });
