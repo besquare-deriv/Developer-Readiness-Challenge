@@ -25,7 +25,7 @@ class _NavigationPageState extends State<NavigationPage> {
     List<Widget> _pageScreens = <Widget>[
       HomePage(widget.value1),
       ExplorePage(),
-      MarketScreen(),
+      MarketScreen(token: widget.value1),
       HistoryScreen(widget.value1),
       ProfilePage(widget.value1),
     ];
