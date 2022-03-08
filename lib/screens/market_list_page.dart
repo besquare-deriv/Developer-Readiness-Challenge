@@ -386,6 +386,7 @@ class _MarketScreenState extends State<MarketScreen> {
                               elevation: 5,
                               child: InkWell(
                                 onTap: () {
+                                  print(token);
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
