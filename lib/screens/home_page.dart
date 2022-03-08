@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 
 class HomePage extends StatefulWidget {
-  final String value1;
+  final String? value1;
 
   const HomePage(this.value1, {Key? key}) : super(key: key);
 
@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String value1;
+  String? value1;
   _HomePageState(this.value1, {Key? key});
 
   String username = "User";
