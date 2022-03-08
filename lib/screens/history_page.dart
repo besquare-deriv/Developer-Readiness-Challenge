@@ -104,7 +104,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               String b = currency[i].split('_')[2];
               String output = a + '_' + b;
               typeCurrency.add(output);
-            } else if (currency[i].contains('OTC_')) {
+            } else if (currency[i].contains(RegExp(".*?_(OTC_.*?)_.*?"))) {
               String a = currency[i].split('_')[1];
               String b = currency[i].split('_')[2];
               String output = a + '_' + b;

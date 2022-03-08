@@ -7,7 +7,7 @@ import 'graph_page.dart';
 import 'package:intl/intl.dart';
 
 class MarketScreen extends StatefulWidget {
-  MarketScreen(this.apiToken, { Key? key}) : super(key: key);
+  MarketScreen(this.apiToken, {Key? key}) : super(key: key);
 
   String apiToken;
   @override
@@ -386,7 +386,6 @@ class _MarketScreenState extends State<MarketScreen> {
                               elevation: 5,
                               child: InkWell(
                                 onTap: () {
-                                  print(token);
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
