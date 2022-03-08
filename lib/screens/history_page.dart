@@ -41,7 +41,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   sendMessageAuthorize() {
-    print(value1);
     channel.sink.add('{"authorize": "$value1"}');
   }
 
@@ -105,7 +104,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             currency.add(
                 data['statement']['transactions'][i]['shortcode'].toString());
 
-            if (currency[i].contains('R_')) {
+            if (currency[i].contains("R_")) {
               String a = currency[i].split('_')[1];
               String b = currency[i].split('_')[2];
               String output = a + '_' + b;
@@ -122,7 +121,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
               typeCurrency.add(output);
             }
 
-            // print(data['statement']['transactions'].length);
             for (int j = 0; j <= activeSymbol.length - 1; j++) {
               if (typeCurrency[i] == activeSymbol[j].symbol) {
                 displayName.add(activeSymbol[j].displayName);
@@ -155,11 +153,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
         } catch (error) {
           debugPrint(error.toString());
         }
-        // print(dataHistory);
 
         setState(() {
           listData.addAll(dataHistory);
-          // print(listData);
         });
       }
     });
@@ -272,15 +268,16 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               child: Text(
                                 "Active Contracts",
                                 style: TextStyle(
-                                  color: Theme.of(context).colorScheme.onSurface
-                                ),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface),
                               ),
                             ),
                           ),
                         ),
                         IconButton(
-                          icon: Icon(Icons.refresh_rounded, 
-                            color: Theme.of(context).iconTheme.color),
+                          icon: Icon(Icons.refresh_rounded,
+                              color: Theme.of(context).iconTheme.color),
                           iconSize: 40,
                           onPressed: () {
                             getData();
@@ -288,7 +285,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         ),
                         IconButton(
                           icon: Icon(Icons.sort_rounded,
-                            color: Theme.of(context).iconTheme.color),
+                              color: Theme.of(context).iconTheme.color),
                           iconSize: 40,
                           onPressed: () {
                             setState(() {
@@ -297,8 +294,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           },
                         ),
                         IconButton(
-                          icon: Icon(Icons.filter_alt, 
-                            color: Theme.of(context).iconTheme.color),
+                          icon: Icon(Icons.filter_alt,
+                              color: Theme.of(context).iconTheme.color),
                           iconSize: 40,
                           onPressed: () => showDialog(
                               context: context,
@@ -351,7 +348,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   margin: EdgeInsets.symmetric(
                                       horizontal: 8.0, vertical: 4.0),
                                   child: Card(
-                                    color: Theme.of(context).colorScheme.tertiaryContainer,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .tertiaryContainer,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0)),
@@ -391,7 +390,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                                   69,
                                                                   69,
                                                                   1))),
-                                                  Text('${listData[index].symbolName}',
+                                                  Text(
+                                                      '${listData[index].symbolName}',
                                                       style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 12,
