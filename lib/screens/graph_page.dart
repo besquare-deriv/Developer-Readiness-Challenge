@@ -9,24 +9,36 @@ import '../components/chart.dart';
 import 'package:flutter/services.dart';
 
 class GraphScreen extends StatefulWidget {
-  const GraphScreen(
+  GraphScreen(
       {Key? key,
       required this.state,
+      this.apiToken,
       required this.symbolName,
+      required this.currency_symbol,
       required this.symbol})
       : super(key: key);
   final String symbolName;
   final String symbol;
+  String? apiToken;
+  final String currency_symbol;
   final int state;
 
   @override
-  _GraphScreenState createState() =>
-      _GraphScreenState(symbolName: symbolName, symbol: symbol, state: state);
+  _GraphScreenState createState() => _GraphScreenState(
+      currency_symbol: currency_symbol,
+      symbolName: symbolName,
+      symbol: symbol,
+      apiToken: apiToken,
+      state: state);
 }
 
 class _GraphScreenState extends State<GraphScreen> {
   _GraphScreenState(
-      {required this.symbolName, required this.symbol, required this.state});
+      {required this.symbolName,
+      required this.symbol,
+      this.apiToken,
+      required this.currency_symbol,
+      required this.state});
 
   final channel = IOWebSocketChannel.connect(
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
@@ -40,12 +52,14 @@ class _GraphScreenState extends State<GraphScreen> {
 // For now initializing this data, should get this variables from Maket page
   String symbolName;
   String symbol;
-  String apiToken = "SZZ9iFcGUaAMqA5";
+  String? apiToken;
+  String currency_symbol;
   String? buy_id;
   int state;
   int? _inputAmount;
   int? contractTime;
   String? contractType;
+  String? value1;
 
   void getPriceProposal() {
     String request =
@@ -54,7 +68,7 @@ class _GraphScreenState extends State<GraphScreen> {
   }
 
   void sendAuth() {
-    authChannel.sink.add('{"authorize": "$apiToken"}');
+    authChannel.sink.add('{"authorize": "$value1"}');
   }
 
   void listenWS() {
@@ -81,8 +95,12 @@ class _GraphScreenState extends State<GraphScreen> {
                   onPressed: () {
                     buyContract();
                     Navigator.of(context).pop();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (data) => activeOptions()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (data) => activeOptions(
+                                  apiToken: apiToken,
+                                )));
                     // Navigator.of(context).pop();
                   },
                 ),
@@ -139,17 +157,17 @@ class _GraphScreenState extends State<GraphScreen> {
       return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.white),
+              icon: Icon(Icons.arrow_back, color: Theme.of(context).appBarTheme.iconTheme?.color),
               onPressed: () {
                 channel.sink.close();
                 Navigator.of(context).pop();
               }),
-          backgroundColor: Color(0xFF1F96B0),
+          backgroundColor: Theme.of(context).appBarTheme.color ,
           title: Text(
             symbolName,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           centerTitle: true,
@@ -163,6 +181,7 @@ class _GraphScreenState extends State<GraphScreen> {
                 symbol: symbol,
                 symbolName: symbolName,
                 channel2: channel,
+                currency_symbol: currency_symbol,
               ),
             ),
             Container(
@@ -203,9 +222,10 @@ class _GraphScreenState extends State<GraphScreen> {
                               alignment: Alignment.centerLeft,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                color: Color(0xFFC1C1C1),
+                                color: Theme.of(context).colorScheme.tertiaryContainer,
                               ),
                               child: TextField(
+                                style: TextStyle(color: Colors.black ),
                                 onSubmitted: (value) {
                                   if (value.isNotEmpty) {
                                     _inputAmount = int.parse(value);
@@ -240,9 +260,10 @@ class _GraphScreenState extends State<GraphScreen> {
                               // padding: EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                color: Color(0xFFC1C1C1),
+                                color: Theme.of(context).colorScheme.tertiaryContainer,
                               ),
                               child: TextField(
+                                style: TextStyle(color: Colors.black ),
                                 onSubmitted: (value) {
                                   if (value.isNotEmpty) {
                                     contractTime = int.parse(value);

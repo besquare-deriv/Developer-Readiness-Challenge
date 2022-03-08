@@ -1,7 +1,4 @@
-import 'dart:async';
 import 'dart:convert';
-
-import 'package:drc/components/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:web_socket_channel/io.dart';
@@ -13,23 +10,26 @@ class chartBuilder extends StatefulWidget {
       {required this.symbol,
       required this.channel2,
       required this.symbolName,
+      required this.currency_symbol,
       Key? key})
       : super(key: key);
-  String symbol, symbolName;
+  String symbol, symbolName, currency_symbol;
   WebSocketChannel channel2;
 
   @override
   _chartBuilderState createState() =>
-      _chartBuilderState(symbol, symbolName, channel2);
+      _chartBuilderState(symbol, symbolName, currency_symbol, channel2);
 }
 
 class _chartBuilderState extends State<chartBuilder> {
-  _chartBuilderState(this.symbol, this.symbolName, this.channel2);
+  _chartBuilderState(
+      this.symbol, this.symbolName, this.currency_symbol, this.channel2);
 
   List<tickHistory> priceTime = [];
 
   WebSocketChannel channel2;
-  String symbol, symbolName;
+  String symbol, symbolName, currency_symbol;
+
   num currentPrice = 0;
   String message = "";
   String extractedTime = "";
@@ -39,7 +39,7 @@ class _chartBuilderState extends State<chartBuilder> {
 
   void getTickHistory() {
     String request1 =
-        '{"ticks_history": "$symbol" ,"count": 112,"end": "latest"}';
+        '{"ticks_history": "$symbol" ,"count": 40,"end": "latest"}';
     channel.sink.add(request1);
   }
 
@@ -59,6 +59,8 @@ class _chartBuilderState extends State<chartBuilder> {
 
   @override
   Widget build(BuildContext context) {
+    var formatPrice =
+        NumberFormat.currency(customPattern: '##,###.0#').format(currentPrice);
     if (priceTime.isNotEmpty) {
       return Column(
         children: [
@@ -69,14 +71,19 @@ class _chartBuilderState extends State<chartBuilder> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "$symbolName :",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
+                  Container(
+                    width: 120,
+                    child: Wrap(children: [
+                      Text(
+                        "$symbolName :",
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ]),
                   ),
                   Text(
-                    "$currentPrice USD",
+                    "$formatPrice $currency_symbol",
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,

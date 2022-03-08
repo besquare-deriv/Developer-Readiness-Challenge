@@ -13,40 +13,44 @@ class AddNote extends StatefulWidget {
 }
 
 class _AddNoteState extends State<AddNote> {
+
   String? title;
 
   Future<void> _displayTextInputDialog(BuildContext context) async {
     return showDialog(
       context: context,
       builder: (context) => CupertinoAlertDialog(
-        title: Text('Add in token',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
-        content: Center(
-            child: Column(children: [
-          Text('Enter the BeRad app API token for "johndoe@gmail.com".',
-              textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
-          SizedBox(height: 8),
-          Card(
-            color: Colors.transparent,
-            elevation: 0.0,
-            child: Column(
-              children: <Widget>[
-                TextField(
-                  onChanged: (_val) {
-                    title = _val;
-                  },
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter token',
-                    filled: true,
-                    fillColor: Color(0xFFF4F4F4),
-                  ),
+
+        title: Text('Add in token', textAlign: TextAlign.center, style: TextStyle(fontSize: 26,fontWeight: FontWeight.bold)),
+        content: 
+        Center(
+          child: Column(
+            children: [
+              Text('Enter the BeRad app API token for "johndoe@gmail.com".', textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
+              SizedBox(height: 8),
+              Card(
+                color: Colors.transparent,
+                elevation: 0.0,
+                child: Column(
+                  children: <Widget>[
+                    TextField(
+                      onChanged: (_val) {
+                        title = _val;
+                      },
+                      decoration: 
+                      InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Enter token',
+                        filled: true,
+                        fillColor: Color(0xFFF4F4F4),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        ])),
+              ),
+            ]
+          )
+        ),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -87,6 +91,7 @@ class _AddNoteState extends State<AddNote> {
       ),
     );
   }
+
 
   void add() async {
     FirebaseFirestore db = FirebaseFirestore.instance;
