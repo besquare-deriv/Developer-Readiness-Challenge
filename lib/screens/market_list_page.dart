@@ -7,17 +7,17 @@ import 'graph_page.dart';
 import 'package:intl/intl.dart';
 
 class MarketScreen extends StatefulWidget {
-  MarketScreen({this.token, Key? key}) : super(key: key);
+  MarketScreen({required this.token, Key? key}) : super(key: key);
 
-  String? token;
+  String token;
   @override
   _MarketScreenState createState() => _MarketScreenState(token: token);
 }
 
 class _MarketScreenState extends State<MarketScreen> {
-  _MarketScreenState({this.token});
+  _MarketScreenState({required this.token});
 
-  String? token;
+  String token;
   String textname = 'Stock Indices';
   bool changeColor = false;
   bool changeColor1 = true;
@@ -71,7 +71,7 @@ class _MarketScreenState extends State<MarketScreen> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).appBarTheme.color ,
+                      color: Theme.of(context).appBarTheme.color,
                       borderRadius: BorderRadius.only(
                         bottomRight: Radius.circular(30.0),
                         bottomLeft: Radius.circular(30.0),
@@ -94,9 +94,14 @@ class _MarketScreenState extends State<MarketScreen> {
                               color: Colors.black,
                             ),
                             searchInputDecoration: InputDecoration(
-                              prefixIcon: Icon(Icons.search, color: Colors.black,),
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: Colors.black,
+                              ),
                               filled: true,
-                              fillColor: Theme.of(context).colorScheme.tertiaryContainer,
+                              fillColor: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer,
                               hintStyle: TextStyle(color: Colors.black),
 
                               // icon: Icon(Icons.search),
@@ -150,7 +155,8 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor
-                                                ? Theme.of(context).highlightColor
+                                                ? Theme.of(context)
+                                                    .highlightColor
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -173,7 +179,9 @@ class _MarketScreenState extends State<MarketScreen> {
                                         'Forex',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).colorScheme.onSurface,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
                                         ),
                                       ),
                                     ),
@@ -183,7 +191,8 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor1
-                                                ? Theme.of(context).highlightColor
+                                                ? Theme.of(context)
+                                                    .highlightColor
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -206,7 +215,9 @@ class _MarketScreenState extends State<MarketScreen> {
                                         'Stock Indices',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).colorScheme.onSurface,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
                                         ),
                                       ),
                                     ),
@@ -216,7 +227,8 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor2
-                                                ? Theme.of(context).highlightColor
+                                                ? Theme.of(context)
+                                                    .highlightColor
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -239,7 +251,9 @@ class _MarketScreenState extends State<MarketScreen> {
                                         'Commodities',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).colorScheme.onSurface,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
                                         ),
                                       ),
                                     ),
@@ -249,7 +263,8 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor3
-                                                ? Theme.of(context).highlightColor
+                                                ? Theme.of(context)
+                                                    .highlightColor
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -272,7 +287,9 @@ class _MarketScreenState extends State<MarketScreen> {
                                         'Synthetic Indices',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).colorScheme.onSurface,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
                                         ),
                                       ),
                                     ),
@@ -282,7 +299,8 @@ class _MarketScreenState extends State<MarketScreen> {
                                     shape: Border(
                                         bottom: BorderSide(
                                             color: changeColor4
-                                                ? Theme.of(context).highlightColor
+                                                ? Theme.of(context)
+                                                    .highlightColor
                                                 : Colors.transparent,
                                             width: 3.0)),
                                     child: TextButton(
@@ -306,7 +324,9 @@ class _MarketScreenState extends State<MarketScreen> {
                                         'Cryptocurrencies',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).colorScheme.onSurface,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
                                         ),
                                       ),
                                     ),
@@ -395,8 +415,8 @@ class _MarketScreenState extends State<MarketScreen> {
                                           horizontal: 0, vertical: -4),
                                       horizontalTitleGap: 50.0,
                                       leading: Text(
-                                          '${price['active_symbols'][index]['market_display_name']}',
-                                          style:TextStyle(color: Colors.black),
+                                        '${price['active_symbols'][index]['market_display_name']}',
+                                        style: TextStyle(color: Colors.black),
                                       ),
                                       trailing: Container(
                                         width: 70,
@@ -404,17 +424,16 @@ class _MarketScreenState extends State<MarketScreen> {
                                           Text(
                                             '${price['active_symbols'][index]['display_name']}',
                                             textAlign: TextAlign.center,
-                                            style:TextStyle(color: Colors.black
-                                          ),
+                                            style:
+                                                TextStyle(color: Colors.black),
                                           ),
                                         ]),
                                       ),
                                       title: Text(
-                                        '${formatPrice} ${price['active_symbols'][index]['quoted_currency_symbol']} ',
-                                        textAlign: TextAlign.start,
-                                        style:TextStyle(color: Colors.black
-                                          )
-                                      ),
+                                          '${formatPrice} ${price['active_symbols'][index]['quoted_currency_symbol']} ',
+                                          textAlign: TextAlign.start,
+                                          style:
+                                              TextStyle(color: Colors.black)),
                                     ),
                                   ),
                                 ),
