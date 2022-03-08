@@ -87,6 +87,7 @@ class _activeCardState extends State<activeCard> {
             Container(
               padding: EdgeInsets.only(top: 40, left: 10, right: 10),
               child: Card(
+                color: Color(0xFFFFF4F4F4),
                 elevation: 5.0,
                 child: Container(
                   height: 130,
@@ -203,7 +204,12 @@ class _activeCardState extends State<activeCard> {
                                   sellContract(contract_id);
                                   Navigator.pop(context);
                                 },
-                                child: Text("Sell"),
+                                child: Text("Sell", 
+                                          style: TextStyle(
+                                            color: Colors.white
+                                            )
+                                        ),
+                                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromRGBO(48, 95, 173, 1))),
                               )
                             : Text(""),
                       )
@@ -229,6 +235,7 @@ class _activeCardState extends State<activeCard> {
                 child: Text(
                   "${result['proposal_open_contract']['display_name']}",
                   style: TextStyle(
+                    color: Colors.black,
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                   ),

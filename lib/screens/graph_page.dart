@@ -59,6 +59,7 @@ class _GraphScreenState extends State<GraphScreen> {
   int? _inputAmount;
   int? contractTime;
   String? contractType;
+  String? value1;
 
   void getPriceProposal() {
     String request =
@@ -67,7 +68,7 @@ class _GraphScreenState extends State<GraphScreen> {
   }
 
   void sendAuth() {
-    authChannel.sink.add('{"authorize": "$apiToken"}');
+    authChannel.sink.add('{"authorize": "$value1"}');
   }
 
   void listenWS() {
@@ -156,17 +157,17 @@ class _GraphScreenState extends State<GraphScreen> {
       return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.white),
+              icon: Icon(Icons.arrow_back, color: Theme.of(context).appBarTheme.iconTheme?.color),
               onPressed: () {
                 channel.sink.close();
                 Navigator.of(context).pop();
               }),
-          backgroundColor: Color(0xFF1F96B0),
+          backgroundColor: Theme.of(context).appBarTheme.color ,
           title: Text(
             symbolName,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           centerTitle: true,
@@ -221,9 +222,10 @@ class _GraphScreenState extends State<GraphScreen> {
                               alignment: Alignment.centerLeft,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                color: Color(0xFFC1C1C1),
+                                color: Theme.of(context).colorScheme.tertiaryContainer,
                               ),
                               child: TextField(
+                                style: TextStyle(color: Colors.black ),
                                 onSubmitted: (value) {
                                   if (value.isNotEmpty) {
                                     _inputAmount = int.parse(value);
@@ -258,9 +260,10 @@ class _GraphScreenState extends State<GraphScreen> {
                               // padding: EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                color: Color(0xFFC1C1C1),
+                                color: Theme.of(context).colorScheme.tertiaryContainer,
                               ),
                               child: TextField(
+                                style: TextStyle(color: Colors.black ),
                                 onSubmitted: (value) {
                                   if (value.isNotEmpty) {
                                     contractTime = int.parse(value);

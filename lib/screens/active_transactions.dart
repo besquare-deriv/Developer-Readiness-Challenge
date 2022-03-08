@@ -72,15 +72,15 @@ class _activeOptionsState extends State<activeOptions> {
     debugPrint('Mangus + $apiToken');
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color(0xFF1F96B0),
-          title: const Text(
-            "Open Contract Positions",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          centerTitle: true,
+          backgroundColor: Theme.of(context).appBarTheme.color,
+          title: Text("Open Contract Positions",
+                style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+              centerTitle: true,
+
         ),
         body: Column(
           children: [
@@ -98,7 +98,7 @@ class _activeOptionsState extends State<activeOptions> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Divider(
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.onSurface,
                 thickness: 1,
               ),
             ),

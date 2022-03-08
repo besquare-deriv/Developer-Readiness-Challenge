@@ -5,6 +5,9 @@ import 'package:drc/screens/main_nav_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'components/theme_provider.dart';
 import 'screens/token_test.dart';
 
 Future<void> main() async {
@@ -15,12 +18,20 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MainScreen(),
-    );
-  }
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+    create: (context)=> ThemeProvider(),
+    builder: (context, _) {
+      final themeProvider = Provider.of<ThemeProvider>(context);
+
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        themeMode:themeProvider.themeMode,
+        theme: MyThemes.lightTheme,
+        darkTheme: MyThemes.darkTheme,
+        home: MainScreen(),
+      );
+    },
+  );
 }
 
 class MainScreen extends StatelessWidget {
@@ -61,20 +72,20 @@ class MainScreen extends StatelessWidget {
                               .snapshots(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
-                            if (snapshot.hasData) {
-                              if (snapshot.data!.docs.length == 0) {
-                                return AddNote();
-                              } else {
-                                final docs = snapshot.data!.docs;
-                                final v = docs[0].data() as Map;
+                                if (snapshot.hasData) {
+                                  if (snapshot.data!.docs.length == 0) {
+                                    return AddNote();
+                                  } else {
+                                    final docs = snapshot.data!.docs;
+                                    final v = docs[0].data() as Map;
 
-                                value = v['token'];
-                                return NavigationPage(value!);
+                                    value = v['token'];
+                                    return NavigationPage(value!);
+                                  }
+                                }
+                                return SizedBox.shrink();
                               }
-                            } else {
-                              return AddNote();
-                            }
-                          });
+                      );
                     } else {
                       return AddNote();
                     }
