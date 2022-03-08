@@ -7,17 +7,17 @@ import 'graph_page.dart';
 import 'package:intl/intl.dart';
 
 class MarketScreen extends StatefulWidget {
-  MarketScreen({required this.token, Key? key}) : super(key: key);
+  MarketScreen({this.token, Key? key}) : super(key: key);
 
-  String token;
+  String? token;
   @override
   _MarketScreenState createState() => _MarketScreenState(token: token);
 }
 
 class _MarketScreenState extends State<MarketScreen> {
-  _MarketScreenState({required this.token});
+  _MarketScreenState({this.token});
 
-  String token;
+  String? token;
   String textname = 'Stock Indices';
   bool changeColor = false;
   bool changeColor1 = true;
