@@ -43,8 +43,12 @@ class _ContractDetailsState extends State<ContractDetails> {
     for (int i = 0; i < info.length; i++) {
       if (data.contract_id == info[i].contract_id) {
         output.add(info[i]);
-        setInfo();
-      } else {  
+      } 
+
+    if(output.length == 2){
+      setInfo();
+    }
+    else {  
           if(data.action == 'buy'){
             currencyType = data.symbolName;
           }
