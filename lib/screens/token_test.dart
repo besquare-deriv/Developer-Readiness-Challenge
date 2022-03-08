@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:drc/screens/main_nav_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../Authorization/auth_helper.dart';
 
 class AddNote extends StatefulWidget {
   AddNote({this.apiToken});
@@ -81,15 +78,12 @@ class _AddNoteState extends State<AddNote> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: new Text("Data Added Successfully"),
+          title: new Text('Token Added Successfully'),
           actions: <Widget>[
             TextButton(
               child: new Text("OK"),
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => NavigationPage(apiToken!)));
+                Navigator.of(context).pop();
               },
             ),
           ],

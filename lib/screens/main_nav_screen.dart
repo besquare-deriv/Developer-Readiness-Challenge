@@ -8,7 +8,7 @@ import 'package:drc/screens/profile_page.dart';
 import 'package:flutter/material.dart';
 
 class NavigationPage extends StatefulWidget {
-  String value1;
+  String? value1;
   NavigationPage(this.value1, {Key? key}) : super(key: key);
 
   @override
@@ -24,9 +24,9 @@ class _NavigationPageState extends State<NavigationPage> {
     List<Widget> _pageScreens = <Widget>[
       HomePage(widget.value1),
       ExplorePage(),
-      MarketScreen(widget.value1),
-      HistoryScreen(widget.value1),
-      ProfilePage(widget.value1),
+      MarketScreen(widget.value1!),
+      HistoryScreen(widget.value1!),
+      ProfilePage(widget.value1!),
     ];
 
     value1 = widget.value1;
