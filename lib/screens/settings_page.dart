@@ -1,41 +1,40 @@
 //import 'dart:html';
 
-import 'package:drc/screens/contract_details.dart';
-import 'package:drc/screens/explorer_page.dart';
-import 'package:flutter_settings_screens/flutter_settings_screens.dart';
+import 'dart:convert';
 import 'package:country_pickers/country.dart';
+import 'package:country_pickers/country_picker_dropdown.dart';
+
+import 'package:country_pickers/utils/utils.dart';
+import 'package:drc/components/change_theme_button_widget.dart';
+import 'package:drc/screens/explorer_page.dart';
 import 'package:flutter/material.dart';
-import 'package:country_pickers/country_pickers.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
+import 'package:web_socket_channel/io.dart';
 import '../components/iconwidget.dart';
-import 'graph_page.dart';
 import 'history_page.dart';
 import 'login_page.dart';
 import 'market_list_page.dart';
 import 'profile_page.dart';
+import 'package:intl/intl.dart';
 
-class Setting extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Settings",
-      home: SettingsPage(),
-    );
-  }
-}
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({ Key? key }) : super(key: key);
+  final String? value;
+
+  const SettingsPage({Key? key, required this.value}) : super(key: key);
 
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  _SettingsPageState createState() => _SettingsPageState(value);
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  String? value;
+  _SettingsPageState(this.value);
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
-  final  _phone = TextEditingController();
-  final  _confirmPass = TextEditingController();
+  final _phone = TextEditingController();
+  final _confirmPass = TextEditingController();
   final _pass = TextEditingController();
-  final  _api = TextEditingController();
+  final _api = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   String firstName = 'John';
   String lastName = 'Doe';
@@ -43,440 +42,231 @@ class _SettingsPageState extends State<SettingsPage> {
   String phoneNumber = '+601123456789';
   String password = '********';
   String countryName = 'Indonesia';
-  String apiToken = 'XXXXXXXXXXXXXXXX';
+  String? apiToken = '***********';
   DateTime date = DateTime.now();
+
+  final channel = IOWebSocketChannel.connect(
+      Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
+
+  void sendMessageAuthorize() {
+    channel.sink.add('{"authorize": "$value"}');
+  }
+
+  void getAccountSettings() {
+    channel.sink.add('{"get_settings": 1}');
+  }
+
+  void initState() {
+    sendMessageAuthorize();
+    getAccountSettings();
+    getAuthorize();
+    super.initState();
+  }
+
+  void getAuthorize() {
+    channel.stream.listen((event) {
+      final data = jsonDecode(event);
+
+      if (data['msg_type'] == 'authorize') {
+        getAccountSettings();
+      }
+
+      if (data['msg_type'] == 'get_settings') {
+        setState(() {
+          firstName = data['get_settings']['first_name'];
+          lastName = data['get_settings']['last_name'];
+          email = data['get_settings']['email'];
+          phoneNumber = data['get_settings']['phone'];
+          countryName = data['get_settings']['country'];
+          apiToken = value;
+          date = (DateTime.fromMillisecondsSinceEpoch(
+              data['get_settings']['date_of_birth'] * 1000));
+          // String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(time);
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    return  Scaffold(
-        backgroundColor: const Color.fromRGBO(234, 230, 230, 1) ,
-        appBar:
-            AppBar( 
-              elevation: 0,
-              leading: IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35,),                                   
-                        onPressed: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ProfilePage()));
-                        }, 
-                      ),
-              //toolbarHeight: 90,
-              backgroundColor: Color(0xFF1F96B0),
-              title: Text('Settings',
-                      style: TextStyle(
-                       color:Colors.black, 
-                       fontSize: 28, 
-                       fontWeight: FontWeight.bold, 
-                       fontFamily:'DM Sans'
-                      ),
-                     ),
-              centerTitle: true,
+    return Scaffold(
+        //backgroundColor: Theme.of(context).backgroundColor,//const Color.fromRGBO(234, 230, 230, 1) ,
+        appBar: AppBar(
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back, /* color: Colors.black, size: 35, */
             ),
-  
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child:
-          Column(
+            onPressed: () => {Navigator.pop(context)},
+          ),
+          //toolbarHeight: 90,
+          //backgroundColor: Color(0xFF1F96B0),
+          title: Text(
+            'Settings',
+            style: TextStyle(
+                //color: Theme.of(context).colorScheme.onSurface,
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'DM Sans'),
+          ),
+          centerTitle: true,
+        ),
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
             children: [
               Container(
-                alignment: Alignment.topCenter,
-                padding: EdgeInsets.symmetric(vertical:28) ,
-                child: 
-              Text('Account Infomation',
-                style: TextStyle(
-                color:Colors.black, 
-                fontSize: 24,
-                fontFamily:'DM Sans'))),
+                  alignment: Alignment.topCenter,
+                  padding: EdgeInsets.symmetric(vertical: 28),
+                  child: Text('Account Infomation',
+                      style: TextStyle(
+                          //color:Theme.of(context).colorScheme.onSurface,
+                          fontSize: 24,
+                          fontFamily: 'DM Sans'))),
               Card(
+                color: Color(0xFFFFF4F4F4),
                 elevation: 4.0,
-                  //margin: const EdgeInsets.only(left:10, right:10),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)), 
-                  //padding: const EdgeInsets.all(0.5),
-                    child: Column(
-                    children: <Widget>[
+                margin: const EdgeInsets.only(left: 10, right: 10),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                //padding: const EdgeInsets.all(0.5),
+                child: Column(children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(left: 15, top: 10),
+                    child: Text('GENERAL',
+                        style: TextStyle(
+                            color: Colors.black.withOpacity(0.8),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13)),
+                    alignment: Alignment.centerLeft,
+                  ),
+
                   //username
                   ListTile(
-                    leading: IconWidget(icon:Icons.account_circle),
-                    title: Row(
-                      children: [
-                        Container(
-                          width: width*0.3819,    
-                          child:  
-                              Text('First Name *', 
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontFamily:'DM Sans'
-                                      ),
-                              ),
+                    leading: IconWidget(icon: Icons.account_circle),
+                    title: Row(children: [
+                      Container(
+                        width: width * 0.3819,
+                        child: Text(
+                          'First Name *',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              fontFamily: 'DM Sans', color: Colors.black),
                         ),
-                        Text ('Last Name *')
-                      ]
-                    ),
-                    subtitle: Row(
-                        children: [
-                          Container(
-                            width: width*0.3819, 
-                            child: 
-                              Text(firstName),
-                              ),
-                          Text (lastName) ,
-                        ]
-                    ),
-                ),
+                      ),
+                      Text(
+                        'Last Name *',
+                        style: TextStyle(color: Colors.black),
+                      )
+                    ]),
+                    subtitle: Row(children: [
+                      Container(
+                        width: width * 0.3819,
+                        child: Text(
+                          '$firstName',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                      Text(
+                        '$lastName',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ]),
+                  ),
                   //email
                   ListTile(
                     leading: IconWidget(icon: Icons.email),
-                    title: Text('Email*'),
-                    subtitle: Text(email),
+                    title: Text(
+                      'Email*',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    subtitle: Text(
+                      '$email',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
 
-                  //Phone Number
                   ListTile(
                     leading: IconWidget(icon: Icons.phone),
-                    title: Text('Phone Number'),
-                    subtitle: Text(phoneNumber),
-                    trailing: IconButton(
-                      icon: Icon(Icons.edit), 
-                      onPressed: () => 
-                        showDialog(context: context, builder: (BuildContext context){
-                          return AlertDialog(
-                            //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0),),
-                            scrollable: true,
-                            title: Text('Phone Number'),
-                            insetPadding: EdgeInsets.zero,
-                            content: /* Padding(
-                              padding: const EdgeInsets.all(8.0),  */
-                              Container(
-                              width: width*0.7639,
-                              height: height*0.1119,
-                              child: Form(
-                                key: _formKey,
-                                child: Column(
-                                  children: <Widget>[
-                                    TextFormField(
-                                      controller: _phone,
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        labelText: 'Phone Number',
-                                        hintText: phoneNumber
-                                      ),
-                                      validator: (phoneNumber) {
-                                        if (phoneNumber != null && phoneNumber.length > 9) {
-                                          return null;
-                                        }
-                                        return "Phone number can't be smaller than 9 digits";
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ),
-                          actions: [
-                            TextButton(
-                                style: TextButton.styleFrom(
-                                  textStyle: const TextStyle(fontSize: 15),
-                                ),
-                                onPressed: () {
-                                    Navigator.pop(context);
-                                },
-                                child: const Text('CANCEL'),
-                              ),
-                            TextButton(
-                                style: TextButton.styleFrom(
-                                  textStyle: const TextStyle(fontSize: 15),
-                                ),
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    return setState(() {
-                                    phoneNumber = (_phone.text);
-                                    Navigator.pop(context);
-                                  }); 
-                                  }                         
-                                },
-                                child: const Text('CHANGE'),
-                            ),
-                          ],
-                          );
-                        }
-                        )
-                    )
+                    title: Text(
+                      'Phone Number',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    subtitle: Text(
+                      '$phoneNumber',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
-                    //password()
-                  ListTile(
-                    leading: IconWidget(icon: Icons.password),
-                    title: Text('Password*'),
-                    subtitle: Text('${password.replaceAll(RegExp(r"."), "*")}'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.edit), 
-                      onPressed: () => 
-                        showDialog(context: context, builder: (BuildContext context){
-                          return AlertDialog(
-                            //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0),),
-                            scrollable: true,
-                            title: Text('Password'),
-                            insetPadding: EdgeInsets.zero,
-                            content: /* Padding(
-                              padding: const EdgeInsets.all(8.0),  */
-                              Container(
-                              width: width*0.7639,
-                              height: height*0.2239,
-                              child: Form(
-                                key: _formKey,
-                                child: ListView(
-                                      children: <Widget>[
-                                            TextFormField(
-                                                  obscureText: true,
-                                                  controller: _pass,
-                                                  decoration: InputDecoration(
-                                                    border: OutlineInputBorder(),
-                                                    labelText: 'New Password',
-                                                    hintText: 'New password',
-                                                  ),
-                                                  validator: (val){
-                                                      if(val!.isEmpty)
-                                                          return 'Password is required';
-                                                      else if(validateStructure (_pass.text))
-                                                          return null;
-                                                      }
-                                            ),
-                                            SizedBox(height: 10,),
-                                            TextFormField(
-                                                obscureText: true,
-                                                controller: _confirmPass,
-                                                decoration: InputDecoration(
-                                                                  border: OutlineInputBorder(),
-                                                                  labelText: 'Re-type Password',
-                                                                  hintText: 'Re-type password',
-                                                                ),
-                                                validator: (val){
-                                                    if(val!.isEmpty){
-                                                        return 'Password is required';
-                                                    }
-                                                    if(validateStructure (_pass.text))
-                                                                if(val != _pass.text){
-                                                                    return 'Not Match';
-                                                                }
-                                                                else return null;
-                                                        return 'Please input at least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 Special Character';
-                                                }
-                                            ),
-                                      ]
-                                  )
-                             )
-                             ),
-                    actions: [
-                     TextButton(
-                        style: TextButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 15),
-                        ),
-                        onPressed: () {
-                            Navigator.pop(context);
-                        },
-                        child: const Text('CANCEL'),
-                      ),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 15),
-                        ),
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            return setState(() {
-                            password = (_api.text);
-                            Navigator.pop(context);
-                          }); 
-                          }                         
-                        },
-                        child: const Text('CONFIRM'),
-                      ),
-                    ],
-                  );
-                }))),
-                  
+
                   //calendar
                   ListTile(
                     leading: IconWidget(icon: Icons.calendar_today),
-                    title: Text('Date of Birth*'),
-                    subtitle: Text('${date.month}/${date.day}/${date.year}'),
-                    trailing: IconButton(icon: Icon(Icons.calendar_month), onPressed: () => pickDate(context) ,)   
+                    title: Text(
+                      'Date of Birth*',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    subtitle: Text(
+                      '${date.month}/${date.day}/${date.year}',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
                   //country
                   ListTile(
-                    leading: Tab(icon: Image.asset('assets/icons/country.png'), iconMargin: EdgeInsets.only(right: 100) ,),
-                    title: Text('Country*'),
-                    subtitle: Text(countryName),
-                    trailing: CountryPickerDropdown(
-                                  initialValue: 'ID',
-                                  itemBuilder: _buildDropdownItem,
-                                  onValuePicked: (Country country) {
-                                    setState(() {
-                                      countryName = "${country.name}";
-                                    });
-                                  },
-                                ) ,
+                    leading: Tab(
+                      icon: Image.asset('assets/icons/country.png'),
+                      iconMargin: EdgeInsets.only(right: 100),
                     ),
-
-                  //API token 
+                    title: Text(
+                      'Country*',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    subtitle: Text(
+                      countryName,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
                   ListTile(
                     leading: IconWidget(icon: Icons.fingerprint),
-                    title: Text('API Token*'),
-                    subtitle: Text(apiToken),
-                    trailing: IconButton(icon: Icon(Icons.edit), onPressed: () => showDialog(context: context, builder: (BuildContext context){
-                  return AlertDialog(
-                    //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0),),
-                    scrollable: true,
-                    title: Text('API Token'),
-                    insetPadding: EdgeInsets.zero,
-                    content: /* Padding(
-                      padding: const EdgeInsets.all(8.0),  */
-                      Container(
-                      width: width*0.7639,
-                      height: height*0.1119,
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: <Widget>[
-                            TextFormField(
-                              controller: _api,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'API Token',
-                                hintText: apiToken
-                              ),
-                              validator: (value) {
-                                if (value != null && value.length > 9) {
-                                  return null;
-                                }
-                                return "API token must contains at least 9 letters";
-                              },
-                            ),
-                          ],
-                        ),
-                      )
+                    title: Text(
+                      'API Token*',
+                      style: TextStyle(color: Colors.black),
                     ),
-                   actions: [
-                     TextButton(
-                        style: TextButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 15),
-                        ),
-                        onPressed: () {
-                            Navigator.pop(context);
-                        },
-                        child: const Text('CANCEL'),
-                      ),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 15),
-                        ),
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            return setState(() {
-                            apiToken = (_api.text);
-                            Navigator.pop(context);
-                          }); 
-                          }                         
-                        },
-                        child: const Text('ADD'),
-                      ),
-                    ],
-                  );
-                }))),
-                ],
-                ),
-             )
-                ],
-      ),
-      ),
-      
-         bottomNavigationBar: BottomAppBar(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(icon: const Icon(Icons.home), 
-                          iconSize: 40,
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()));
-                          }
-                        ),
-              
-              IconButton(icon: Image.asset('assets/icons/explore.png'), 
-                          iconSize: 40,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ExplorePage()));
-                          }
-                        ),
-                        
-              IconButton(icon: Image.asset('assets/icons/plus.png'), 
-                          iconSize: 70,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MarketScreen()));
-                          }
-                        ),
-        
-              IconButton(icon: Image.asset('assets/icons/history.png'), 
-                          iconSize: 40,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => HistoryScreen()));
-                          }
-                        ),
+                    subtitle: Text(
+                      '$apiToken',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Divider(
+                    height: 0,
+                    thickness: 1,
+                    indent: 10,
+                    endIndent: 10,
+                    color: Color.fromRGBO(196, 196, 196, 1),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, top: 10),
+                    child: Text('THEME',
+                        style: TextStyle(
+                            color: Colors.black.withOpacity(0.8),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13)),
+                    alignment: Alignment.centerLeft,
+                  ),
 
-              IconButton(icon: Image.asset('assets/icons/user.png'), 
-                          iconSize: 40,
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ProfilePage()));
-                          }
-                        ),
+                  ListTile(
+                      leading: IconWidget(icon: Icons.dark_mode),
+                      title: Text(
+                        'Dark mode',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      trailing: ChangeThemeButtonWidget()),
+                ]),
+              )
             ],
           ),
-          shape: CircularNotchedRectangle(),
-          color: Colors.black,
-        ),
-        
-      );
-  }
-  pickDate(BuildContext context) async {
-    final initialDate = DateTime.now().year - 18;
-    final newDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime(initialDate),
-      firstDate: DateTime(DateTime.now().year - 100),
-      lastDate: DateTime(DateTime.now().year - 17,DateTime.now().month - 11, DateTime.now().day - 30),
-    );
-
-    if (newDate != null && newDate != date) 
-    setState(() {
-      date = newDate;
-    });
+        ));
   }
 }
-bool validateStructure(String value){
-        String  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-        RegExp regExp = new RegExp(pattern);
-        return regExp.hasMatch(value);
-  }
-
-Widget _buildDropdownItem(Country country) => Container(
-        child: Row(
-          children: <Widget>[
-            CountryPickerUtils.getDefaultFlagImage(country),
-            SizedBox(
-              width: 8.0,
-            ),
-            Text("+${country.phoneCode}(${country.isoCode})"),
-          ],
-        ),
-      );

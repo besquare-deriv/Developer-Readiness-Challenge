@@ -2,19 +2,25 @@
 
 import 'dart:convert';
 
+import 'package:drc/screens/token_test.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final String? value1;
+
+  const HomePage(this.value1, {Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState(value1);
 }
 
 class _HomePageState extends State<HomePage> {
+  String? value1;
+  _HomePageState(this.value1, {Key? key});
+
   String username = "User";
-  String apiToken = "5dRHsXj0xsjBEJC";
+
   num balance = 0.0;
   int winsCount = 0;
   int lossCount = 0;
@@ -26,7 +32,7 @@ class _HomePageState extends State<HomePage> {
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
 
   void sendAuth() {
-    channel.sink.add('{"authorize": "$apiToken"}');
+    channel.sink.add('{"authorize": "$value1"}');
   }
 
   void getStatement() {
@@ -54,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                 height: 250,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Color(0xFF1F96B0),
+                  color: Theme.of(context).appBarTheme.color,
                   borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(50),
                     bottomLeft: Radius.circular(50),
@@ -77,6 +83,7 @@ class _HomePageState extends State<HomePage> {
                             child: Icon(
                               Icons.settings,
                               size: 50,
+                              color: Colors.black,
                             ),
                           ),
                         ],
@@ -107,6 +114,7 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
+                            color: Theme.of(context).textTheme.subtitle1?.color,
                           ),
                         ),
                       ),
@@ -150,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                                   Text(
                                     assetList[index],
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: Theme.of(context).primaryColor,
                                     ),
                                   )
                                 ]),
@@ -229,12 +237,16 @@ class _HomePageState extends State<HomePage> {
                           leading: Text(
                             "Wins    ",
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
                           subtitle: Text(
                             "$winsCount",
                             style: TextStyle(
                               fontSize: 28,
+                              color: Colors.black,
                             ),
                           ),
                         ),
@@ -255,12 +267,15 @@ class _HomePageState extends State<HomePage> {
                           leading: Text(
                             "Losses",
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
                           ),
                           subtitle: Text(
                             "$lossCount",
                             style: TextStyle(
                               fontSize: 28,
+                              color: Colors.black,
                             ),
                           ),
                         ),
