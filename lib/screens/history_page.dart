@@ -7,17 +7,17 @@ import 'package:web_socket_channel/io.dart';
 import 'package:intl/intl.dart';
 
 class HistoryScreen extends StatefulWidget {
-  final String value1;
+  final String apiToken;
 
-  const HistoryScreen(this.value1, {Key? key}) : super(key: key);
+  const HistoryScreen(this.apiToken, {Key? key}) : super(key: key);
 
   @override
-  _HistoryScreenState createState() => _HistoryScreenState(value1);
+  _HistoryScreenState createState() => _HistoryScreenState(apiToken);
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  _HistoryScreenState(this.value1);
-  String value1;
+  _HistoryScreenState(this.apiToken);
+  String apiToken;
   var channel;
 
   List<transDetails> listData = [];
@@ -35,7 +35,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   sendMessageAuthorize() {
-    channel.sink.add('{"authorize": "$value1"}');
+    channel.sink.add('{"authorize": "$apiToken"}');
   }
 
   sendMessageStatement() {
@@ -95,8 +95,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
             currency.add(
                 data['statement']['transactions'][i]['shortcode'].toString());
+            // print(currency[i]);
+            // print(currency[i].contains("R_"));
+            // print(currency[i].contains(RegExp(".*?_(R_.*?)_.*?")));
 
-            if (currency[i].contains('R_')) {
+            if (currency[i].contains(RegExp(".*?_(R_.*?)_.*?"))) {
               String a = currency[i].split('_')[1];
               String b = currency[i].split('_')[2];
               String output = a + '_' + b;
@@ -223,12 +226,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFF1F96B0),
+          //backgroundColor: Color(0xFF1F96B0),
           title: const Text(
             'Transaction History',
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              //color: Colors.white,
             ),
           ),
           centerTitle: true,
@@ -250,22 +253,31 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (data) => activeOptions()));
+                                        builder: (data) => activeOptions(
+                                              apiToken: apiToken,
+                                            )));
                               },
                               child: Text(
                                 "Active Contracts",
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.onSurface
+                                ),
                               ),
                             ),
                           ),
                         ),
                         IconButton(
-                          icon: Icon(Icons.refresh_rounded, size: 40),
+                          icon: Icon(Icons.refresh_rounded, 
+                            color: Theme.of(context).iconTheme.color),
+                          iconSize: 40,
                           onPressed: () {
                             getData();
                           },
                         ),
                         IconButton(
-                          icon: Icon(Icons.sort_rounded, size: 40),
+                          icon: Icon(Icons.sort_rounded,
+                            color: Theme.of(context).iconTheme.color),
+                          iconSize: 40,
                           onPressed: () {
                             setState(() {
                               listData = listData.reversed.toList();
@@ -273,7 +285,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           },
                         ),
                         IconButton(
-                          icon: Icon(Icons.sort_rounded, size: 40),
+                          icon: Icon(Icons.filter_alt, 
+                            color: Theme.of(context).iconTheme.color),
+                          iconSize: 40,
                           onPressed: () => showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -325,7 +339,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   margin: EdgeInsets.symmetric(
                                       horizontal: 8.0, vertical: 4.0),
                                   child: Card(
-                                    color: Colors.white70,
+                                    color: Theme.of(context).colorScheme.tertiaryContainer,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0)),
@@ -365,20 +379,23 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                                   69,
                                                                   69,
                                                                   1))),
-                                                  Text('BTCAUSD',
+                                                  Text('${listData[index].symbolName}',
                                                       style: TextStyle(
+                                                          color: Colors.black,
                                                           fontSize: 12,
                                                           fontWeight:
                                                               FontWeight.bold)),
                                                   Text(
                                                       'TransactionID: ${listData[index].id}',
                                                       style: TextStyle(
+                                                          color: Colors.black,
                                                           fontSize: 12,
                                                           fontWeight:
                                                               FontWeight.bold)),
                                                   Text(
                                                       '${listData[index].time}',
                                                       style: TextStyle(
+                                                          color: Colors.black,
                                                           fontSize: 12,
                                                           fontWeight:
                                                               FontWeight.bold)),

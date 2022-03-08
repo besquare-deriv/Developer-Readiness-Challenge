@@ -24,7 +24,7 @@ class _NavigationPageState extends State<NavigationPage> {
     List<Widget> _pageScreens = <Widget>[
       HomePage(widget.value1),
       ExplorePage(),
-      MarketScreen(),
+      MarketScreen(widget.value1),
       HistoryScreen(widget.value1),
       ProfilePage(widget.value1),
     ];
@@ -42,7 +42,7 @@ class _NavigationPageState extends State<NavigationPage> {
         onTap: changePage,
         iconSize: 20,
         currentIndex: _selectedIndex,
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         // elevation: 10.0,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(

@@ -4,8 +4,10 @@ import 'package:drc/screens/landing_page.dart';
 import 'package:drc/screens/main_nav_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'components/theme_provider.dart';
 import 'screens/token_test.dart';
 
 Future<void> main() async {
@@ -18,12 +20,20 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MainScreen(),
-    );
-  }
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+        create: (context) => ThemeProvider(),
+        builder: (context, _) {
+          final themeProvider = Provider.of<ThemeProvider>(context);
+
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            themeMode: themeProvider.themeMode,
+            theme: MyThemes.lightTheme,
+            darkTheme: MyThemes.darkTheme,
+            home: MainScreen(),
+          );
+        },
+      );
 }
 
 class MainScreen extends StatefulWidget {
@@ -36,86 +46,8 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   String? value;
   String? title;
-
-  tokenAlert(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) => CupertinoAlertDialog(
-        title: Text('Add in token', textAlign: TextAlign.center, style: TextStyle(fontSize: 26,fontWeight: FontWeight.bold)),
-        content: 
-        Center(
-          child: Column(
-            children: [
-              Text('Enter the BeRad app API token for "johndoe@gmail.com".', textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
-              SizedBox(height: 8),
-              Card(
-                color: Colors.transparent,
-                elevation: 0.0,
-                child: Column(
-                  children: <Widget>[
-                    TextField(
-                      onChanged: (_val) {
-                        title = _val;
-                      },
-                      decoration: 
-                      InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter token',
-                        filled: true,
-                        fillColor: Color(0xFFF4F4F4),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ]
-          )
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('Cancel', style: TextStyle(fontSize: 17)),
-          ),
-          TextButton(
-            onPressed: () => add(),
-            child: const Text('Verify', style: TextStyle(fontSize: 17)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void add() async {
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    db
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('notes')
-        .add({
-      'token': title,
-      'created': DateTime.now(),
-    });
-    // save to db
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: new Text('Data Added Successfully'),
-          actions: <Widget>[
-            TextButton(
-              child: new Text("Ok"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-    AuthHelper().logOut();
-  }
-
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,22 +82,21 @@ class _MainScreenState extends State<MainScreen> {
                               .snapshots(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
-                                if (snapshot.hasData) {
-                                  if (snapshot.data!.docs.length == 0) {
-                                    return AddNote();
-                                  } else {
-                                    final docs = snapshot.data!.docs;
-                                    final v = docs[0].data() as Map;
+                            if (snapshot.hasData) {
+                              if (snapshot.data!.docs.isEmpty) {
+                                return AddNote(apiToken: value);
+                              } else {
+                                final docs = snapshot.data!.docs;
+                                final v = docs[0].data() as Map;
 
-                                    value = v['token'];
-                                    return NavigationPage(value!);
-                                  }
-                                }
-                                return SizedBox.shrink();
+                                value = v['token'];
+                                return NavigationPage(value!);
                               }
-                      );
+                            }
+                            return SizedBox.shrink();
+                          });
                     } else {
-                      return AddNote();
+                      return LinearProgressIndicator();
                     }
                   } else {
                     return Material(
