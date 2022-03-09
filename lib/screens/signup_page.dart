@@ -153,8 +153,8 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                 },
                                 child: Icon(
                                   visible_text
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
                                   color: Colors.black87,
                                   size: 24.0,
                                 ),
@@ -185,8 +185,8 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                               },
                               child: Icon(
                                 visible_text
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                                 color: Colors.black87,
                                 size: 24.0,
                               ),
@@ -337,12 +337,17 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                 children: <Widget>[
                   Text(
                     'Already have an account ?',
-                    style: TextStyle(fontFamily: 'Montserrat', fontSize: 15),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Montserrat',
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   SizedBox(width: 5.0),
                   InkWell(
                     onTap: () async {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (_) => LoginScreen(),
@@ -351,7 +356,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                     child: Text(
                       'Login',
                       style: TextStyle(
-                          color: Color(0xFF305FAD),
+                          color: Colors.blue[900],
                           fontFamily: 'Montserrat',
                           fontWeight: FontWeight.bold,
                           fontSize: 15,

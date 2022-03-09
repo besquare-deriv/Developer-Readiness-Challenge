@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drc/Authorization/auth_helper.dart';
+import 'package:drc/screens/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,6 @@ class _AddNoteState extends State<AddNote> {
 
   @override
   Widget build(BuildContext context) {
-    print(email);
     return CupertinoAlertDialog(
       title: Text("Add in token",
           textAlign: TextAlign.center,
@@ -56,7 +56,13 @@ class _AddNoteState extends State<AddNote> {
       actions: <Widget>[
         TextButton(
           onPressed: () {
-            AuthHelper().logOut();
+            FirebaseAuth.instance.signOut();
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (_) => LoginScreen(),
+              ),
+            );
           },
           child: const Text("Cancel", style: TextStyle(fontSize: 17)),
         ),
