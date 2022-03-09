@@ -44,7 +44,7 @@ class _ResetScreenState extends State<ResetScreen> {
                 ),
               ),
               Text(
-                'Recover your BeRad account',
+                'Recover your BeRAD account',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 18,
@@ -129,7 +129,7 @@ class _ResetScreenState extends State<ResetScreen> {
                             ;
                           },
                           style: ElevatedButton.styleFrom(
-                              primary: Color.fromARGB(255, 1, 70, 189),
+                              primary: Color(0xFF305FAD),
                               fixedSize: const Size(270, 50),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10))),
@@ -179,13 +179,13 @@ class _ResetScreenState extends State<ResetScreen> {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                              primary: Color.fromARGB(255, 1, 70, 189),
+                              primary: Color(0xFF305FAD),
                               fixedSize: const Size(270, 50),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10))),
                         ),
                         SizedBox(
-                          height: 5,
+                          height: 15,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

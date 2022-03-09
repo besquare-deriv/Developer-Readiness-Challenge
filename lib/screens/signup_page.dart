@@ -351,7 +351,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                     child: Text(
                       'Login',
                       style: TextStyle(
-                          color: Color(0xFF1F96B0),
+                          color: Color(0xFF305FAD),
                           fontFamily: 'Montserrat',
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
