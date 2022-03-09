@@ -259,8 +259,8 @@ class _ContractDetailsState extends State<ContractDetails> {
         Container(
           margin: EdgeInsets.only(top: height*0.35),
           padding: EdgeInsets.only(top: height*0.05885),
-          width:width*0.9548,
-          height: height*0.6163,
+          width: 374.98,
+          height: 467.94,
           decoration: BoxDecoration(
                borderRadius: BorderRadius.circular(20), 
                color: Color(0xFFFFF4F4F4)),
