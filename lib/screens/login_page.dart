@@ -303,7 +303,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () async {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (_) => SignupScreen(),
