@@ -128,7 +128,8 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                             validator: MultiValidator([
                               RequiredValidator(errorText: "Required"),
                               EmailValidator(
-                                  errorText: "Please enter a valid email address"),
+                                  errorText:
+                                      "Please enter a valid email address"),
                             ])),
                       ),
                       Container(
@@ -251,14 +252,13 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                               });
                             }
                           } else {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(SnackBar(
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text("Error occurred"),
                             ));
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                            primary: Color.fromARGB(255, 0, 94, 255),
+                            primary: Color(0xFF305FAD),
                             fixedSize: const Size(270, 50),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10))),
@@ -356,7 +356,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
           ],
         ),
       ),
-    ); 
+    );
   }
 }
 
