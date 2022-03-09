@@ -104,14 +104,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           controller: _emailController,
                           decoration: InputDecoration(
                             filled: true,
-                            //fillColor: Colors.amber,
+                            fillColor: Colors.white,
                             border: OutlineInputBorder(),
                             hintText: 'Email Address',
                           ),
                           validator: MultiValidator([
                             RequiredValidator(errorText: "Required"),
                             EmailValidator(
-                                errorText: "Please enter a valid email address"),
+                                errorText:
+                                    "Please enter a valid email address"),
                           ])),
                     ),
                     Container(
@@ -123,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           controller: _passwordController,
                           decoration: InputDecoration(
                             filled: true,
-                            //fillColor: Colors.amber,
+                            fillColor: Colors.white,
                             border: OutlineInputBorder(),
                             hintText: 'Password',
                             suffixIcon: GestureDetector(
@@ -147,9 +148,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ])),
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        SizedBox(width: 5.0),
                         InkWell(
                           onTap: () async {
                             Navigator.push(
@@ -160,13 +160,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                           child: Text(
                             "Forgot Password ?",
-                            textAlign: TextAlign.left,
+                            textAlign: TextAlign.right,
                             style: TextStyle(
                                 color: Colors.red,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14),
                           ),
                         ),
+                        SizedBox(width: 30.0),
                       ],
                     ),
                     SizedBox(
@@ -176,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: const Text(
                         'Login',
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Color.fromRGBO(255, 255, 255, 1),
                             fontWeight: FontWeight.w500,
                             fontSize: 20),
                       ),
@@ -218,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                          primary: Colors.blueAccent,
+                          primary: Color(0xFF305FAD),
                           fixedSize: const Size(270, 50),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10))),
@@ -274,7 +275,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                       },
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
