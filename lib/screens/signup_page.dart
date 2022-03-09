@@ -153,8 +153,8 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                 },
                                 child: Icon(
                                   visible_text
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
                                   color: Colors.black87,
                                   size: 24.0,
                                 ),
@@ -185,8 +185,8 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                               },
                               child: Icon(
                                 visible_text
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                                 color: Colors.black87,
                                 size: 24.0,
                               ),

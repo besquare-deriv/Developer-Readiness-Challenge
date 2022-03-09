@@ -188,6 +188,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ])),
                       ),
                       const SizedBox(height: 25),
+
                       ElevatedButton(
                           child: Text(
                             'Settings',
@@ -211,6 +212,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             );
                           }),
+
                       const SizedBox(height: 25),
                       ElevatedButton(
                           child: Text(

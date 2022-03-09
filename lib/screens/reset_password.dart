@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:drc/screens/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -71,7 +72,29 @@ class _ResetScreenState extends State<ResetScreen> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold, // light
 
-                          fontSize: 18,
+
+                            fontSize: 18,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(bottom: 5, top: 10),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                          width: 300.0,
+                          child: TextFormField(
+                              controller: email_controller,
+                              decoration: InputDecoration(
+                                filled: true,
+                                //fillColor: Colors.amber,
+                                border: OutlineInputBorder(),
+                                hintText: 'Email Address',
+                              ),
+                              validator: MultiValidator([
+                                RequiredValidator(errorText: "Required"),
+                                EmailValidator(
+                                    errorText:
+                                        "Please enter a valid email address"),
+                              ])),
                         ),
                       ),
                       Container(
@@ -277,7 +300,11 @@ class _ResetScreenState extends State<ResetScreen> {
                 child: TextButton(
                   child: Text("Ok", style: TextStyle(fontSize: 25)),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => LoginScreen(),
+                        ));
                   },
                 ),
               ),
