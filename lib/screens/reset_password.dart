@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:drc/screens/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -91,7 +92,8 @@ class _ResetScreenState extends State<ResetScreen> {
                               validator: MultiValidator([
                                 RequiredValidator(errorText: "Required"),
                                 EmailValidator(
-                                    errorText: "Please enter a valid email address"),
+                                    errorText:
+                                        "Please enter a valid email address"),
                               ])),
                         ),
                         SizedBox(
@@ -278,7 +280,11 @@ class _ResetScreenState extends State<ResetScreen> {
                 child: TextButton(
                   child: Text("Ok", style: TextStyle(fontSize: 25)),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => LoginScreen(),
+                        ));
                   },
                 ),
               ),

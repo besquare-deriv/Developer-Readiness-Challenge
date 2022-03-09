@@ -184,25 +184,30 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
 
                       const SizedBox(height: 25),
-                      
-            ElevatedButton(
-                child: Text(
-                  'Settings',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).colorScheme.tertiaryContainer,
-                    onPrimary: Colors.black,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 32, vertical: 12),
-                    minimumSize: const Size(200.0, 50.0)),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                      MaterialPageRoute(builder: (context) => SettingsPage(value: apiToken),
-                      ),
-                    );
-                  }),
+
+                      ElevatedButton(
+                          child: Text(
+                            'Settings',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              primary: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer,
+                              onPrimary: Colors.black,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 32, vertical: 12),
+                              minimumSize: const Size(200.0, 50.0)),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    SettingsPage(value: apiToken),
+                              ),
+                            );
+                          }),
 
                       const SizedBox(height: 25),
                       ElevatedButton(
@@ -273,7 +278,6 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
             Text(
               'Account Balance:',
               style: TextStyle(fontSize: 18),
