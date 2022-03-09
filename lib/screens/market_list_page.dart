@@ -18,9 +18,9 @@ class _MarketScreenState extends State<MarketScreen> {
   _MarketScreenState(this.apiToken);
 
   String apiToken;
-  String textname = 'Stock Indices';
-  bool changeColor = false;
-  bool changeColor1 = true;
+  String textname = 'Forex';
+  bool changeColor = true;
+  bool changeColor1 = false;
   bool changeColor2 = false;
   bool changeColor3 = false;
   bool changeColor4 = false;

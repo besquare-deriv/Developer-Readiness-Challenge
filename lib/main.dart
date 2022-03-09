@@ -43,6 +43,7 @@ class _MainScreenState extends State<MainScreen> {
   String? value;
 
   String? title;
+  String? email;
 
   // This widget is the root of your application.
   @override
@@ -69,7 +70,8 @@ class _MainScreenState extends State<MainScreen> {
 
                     final userDoc = snapshot.data;
                     final user = userDoc!.data() as Map;
-
+                    email = user['email'];
+                    print(email);
                     if (user['role'] == 'user') {
                       return StreamBuilder(
                           stream: FirebaseFirestore.instance
@@ -81,7 +83,7 @@ class _MainScreenState extends State<MainScreen> {
                               AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (snapshot.hasData) {
                               if (snapshot.data!.docs.isEmpty) {
-                                return AddNote(apiToken: value);
+                                return AddNote(apiToken: value, email: email);
                               } else {
                                 final docs = snapshot.data!.docs;
                                 final v = docs[0].data() as Map;
