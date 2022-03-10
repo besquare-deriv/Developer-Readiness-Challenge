@@ -42,6 +42,7 @@ class _AddNoteState extends State<AddNote> {
                 onChanged: (_val) {
                   title = _val;
                 },
+                style: TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: "Enter token",
