@@ -71,7 +71,6 @@ class _ResetScreenState extends State<ResetScreen> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontWeight: FontWeight.bold, // light
-
                             fontSize: 18,
                           ),
                         ),
