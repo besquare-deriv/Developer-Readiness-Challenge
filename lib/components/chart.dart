@@ -33,6 +33,9 @@ class _chartBuilderState extends State<chartBuilder> {
   num currentPrice = 0;
   String message = "";
   String extractedTime = "";
+  num firstPrice = 0;
+  double interval = 0.1;
+  int decimalPlace = 2;
 
   final channel = IOWebSocketChannel.connect(
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
@@ -60,7 +63,9 @@ class _chartBuilderState extends State<chartBuilder> {
   @override
   Widget build(BuildContext context) {
     var formatPrice =
-        NumberFormat.currency(customPattern: '##,###.0#').format(currentPrice);
+        NumberFormat.currency(customPattern: '##,##0.0####', decimalDigits: 5).format(currentPrice);
+        RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
+        String ongoingPrice = formatPrice.toString().replaceAll(regex, '');
     if (priceTime.isNotEmpty) {
       return Column(
         children: [
@@ -83,9 +88,9 @@ class _chartBuilderState extends State<chartBuilder> {
                     ]),
                   ),
                   Text(
-                    "$formatPrice $currency_symbol",
+                    "$ongoingPrice $currency_symbol",
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -112,8 +117,10 @@ class _chartBuilderState extends State<chartBuilder> {
               labelPosition: ChartDataLabelPosition.inside,
             ),
             primaryYAxis: NumericAxis(
-              maximumLabels: 5,
-              interval: 0.1,
+              maximumLabels: 1,
+              interval: interval,
+              decimalPlaces: decimalPlace,
+              desiredIntervals: 1,
               majorGridLines: MajorGridLines(width: 0),
               labelPosition: ChartDataLabelPosition.inside,
               labelStyle: TextStyle(color: Colors.white),
@@ -186,6 +193,8 @@ class _chartBuilderState extends State<chartBuilder> {
           ),
         );
       }
+      firstPrice = priceTime[0].price;
+      calInterval();
 
       channel.sink.close();
     });
@@ -210,10 +219,52 @@ class _chartBuilderState extends State<chartBuilder> {
             price: currentPrice,
           ),
         );
-
         priceTime.removeAt(0);
       });
     });
+  }
+
+  void calInterval(){
+    print(firstPrice);
+    if(firstPrice <= 2){
+      interval = 0.00005;
+      decimalPlace = 5;
+    }
+    else if(firstPrice <= 5){
+      interval = 0.001;
+      decimalPlace = 4;
+    }
+    else if(firstPrice <= 25){
+      interval = 0.001;
+      decimalPlace = 3;
+    }
+    else if(firstPrice <= 150){
+      interval = 0.005;
+      decimalPlace = 3;
+    } 
+    else if(firstPrice <= 1000){
+      interval = 0.025;
+      decimalPlace = 3;
+    }
+    else if(firstPrice <= 2000){
+      interval = 0.05;
+      decimalPlace = 3;
+    } 
+    else if(firstPrice <= 3000){
+      interval = 0.1;
+    } 
+    else if(firstPrice <= 10000){
+      interval = 0.5;
+    } 
+    else if(firstPrice <= 400000){
+      interval = 2.5;
+    } 
+    else if(firstPrice <= 600000){
+      interval = 10;
+    }
+    else{
+      interval = 100;
+    }
   }
 }
 
