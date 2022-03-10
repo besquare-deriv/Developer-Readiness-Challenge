@@ -71,7 +71,7 @@ class _MainScreenState extends State<MainScreen> {
                     final userDoc = snapshot.data;
                     final user = userDoc!.data() as Map;
                     email = user['email'];
-                    print(email);
+
                     if (user['role'] == 'user') {
                       return StreamBuilder(
                           stream: FirebaseFirestore.instance
@@ -109,6 +109,7 @@ class _MainScreenState extends State<MainScreen> {
             }
 
             return MaterialApp(
+              debugShowCheckedModeBanner: false,
               title: 'Flutter Demo',
               theme: ThemeData(
                 primarySwatch: Colors.blue,

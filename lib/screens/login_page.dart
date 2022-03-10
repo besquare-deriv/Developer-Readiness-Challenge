@@ -135,8 +135,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               child: Icon(
                                 visible_text
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                                 color: Colors.black87,
                                 size: 24.0,
                               ),
@@ -303,7 +303,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () async {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (_) => SignupScreen(),
