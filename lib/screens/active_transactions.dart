@@ -88,12 +88,12 @@ class _activeOptionsState extends State<activeOptions> {
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.fromLTRB(20, 20, 100, 10),
               child: Text(
-                "Open Positions",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
+                  "Open Positions",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                  ),
                 ),
-              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
