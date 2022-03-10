@@ -256,7 +256,7 @@ class _ResetScreenState extends State<ResetScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: new Text(
-              "A new password rest link has been sent to your registered email address.",
+              "A new password reset link has been sent to your registered email address.",
               style: const TextStyle(
                 fontSize: 22.0,
                 color: Colors.black,
@@ -278,11 +278,7 @@ class _ResetScreenState extends State<ResetScreen> {
                 child: TextButton(
                   child: Text("Ok", style: TextStyle(fontSize: 25)),
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => LoginScreen(),
-                        ));
+                    Navigator.of(context).pop();
                   },
                 ),
               ),

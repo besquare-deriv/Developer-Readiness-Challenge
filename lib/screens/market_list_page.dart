@@ -379,8 +379,10 @@ class _MarketScreenState extends State<MarketScreen> {
                                   ['market_display_name'] ==
                               textname) {
                             var formatPrice = NumberFormat.currency(
-                                    customPattern: '##,###.0#')
+                                    customPattern: '##,##0.0####', decimalDigits: 5)
                                 .format(price['active_symbols'][index]['spot']);
+                                RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
+                                String ongoingPrice = formatPrice.toString().replaceAll(regex, '');
                             return Card(
                               elevation: 5,
                               child: InkWell(
@@ -438,7 +440,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                         ]),
                                       ),
                                       title: Text(
-                                          '${formatPrice} ${price['active_symbols'][index]['quoted_currency_symbol']} ',
+                                          '${ongoingPrice} ${price['active_symbols'][index]['quoted_currency_symbol']} ',
                                           textAlign: TextAlign.start,
                                           style:
                                               TextStyle(color: Colors.black)),

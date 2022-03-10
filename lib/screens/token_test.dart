@@ -42,6 +42,7 @@ class _AddNoteState extends State<AddNote> {
                 onChanged: (_val) {
                   title = _val;
                 },
+                style: TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: "Enter token",
@@ -56,13 +57,15 @@ class _AddNoteState extends State<AddNote> {
       actions: <Widget>[
         TextButton(
           onPressed: () {
-            FirebaseAuth.instance.signOut();
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (_) => LoginScreen(),
-              ),
-            );
+            AuthHelper().logOut();
+
+            // FirebaseAuth.instance.signOut();
+            // Navigator.pushReplacement(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (_) => LoginScreen(),
+            //   ),
+            // );
           },
           child: const Text("Cancel", style: TextStyle(fontSize: 17)),
         ),
