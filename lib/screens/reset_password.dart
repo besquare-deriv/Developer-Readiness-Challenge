@@ -72,29 +72,7 @@ class _ResetScreenState extends State<ResetScreen> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold, // light
 
-
-                            fontSize: 18,
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 5, top: 10),
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                          width: 300.0,
-                          child: TextFormField(
-                              controller: email_controller,
-                              decoration: InputDecoration(
-                                filled: true,
-                                //fillColor: Colors.amber,
-                                border: OutlineInputBorder(),
-                                hintText: 'Email Address',
-                              ),
-                              validator: MultiValidator([
-                                RequiredValidator(errorText: "Required"),
-                                EmailValidator(
-                                    errorText:
-                                        "Please enter a valid email address"),
-                              ])),
+                          fontSize: 18,
                         ),
                       ),
                       Container(
