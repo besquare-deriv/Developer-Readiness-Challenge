@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:drc/Authorization/auth_helper.dart';
 import 'package:drc/screens/login_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import '../constants.dart';
 
@@ -150,8 +151,8 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                 },
                                 child: Icon(
                                   visible_text
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
                                   color: Colors.black87,
                                   size: 24.0,
                                 ),
@@ -180,8 +181,8 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                               },
                               child: Icon(
                                 visible_text
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                                 color: Colors.black87,
                                 size: 24.0,
                               ),
@@ -254,7 +255,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                            primary: Color.fromARGB(255, 0, 94, 255),
+                            primary: Color(0xFF305FAD),
                             fixedSize: const Size(270, 50),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10))),
@@ -268,16 +269,21 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                             child: Container(
                               height: 1.0,
                               width: 80.0,
-                              color: Colors.black,
+                              color: Colors.grey,
                             ),
                           ),
-                          Text("Or"),
+                          Text(
+                            "Or",
+                            style: TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10.0),
                             child: Container(
                               height: 1.0,
                               width: 80.0,
-                              color: Colors.black,
+                              color: Colors.grey,
                             ),
                           ),
                         ],
@@ -285,8 +291,9 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          InkWell(
-                            onTap: () async {
+                          SignInButton(
+                            Buttons.Google,
+                            onPressed: () async {
                               try {
                                 await AuthHelper.signInWithGoogle();
                               } catch (e) {
@@ -308,11 +315,6 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                 );
                               }
                             },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
-                              child: Image.asset("assets/icons/google.png",
-                                  width: 70, height: 70),
-                            ),
                           ),
                         ],
                       ),
@@ -321,33 +323,44 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                 ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Already have an account ?',
-                  style: TextStyle(fontFamily: 'Montserrat', fontSize: 15),
-                ),
-                SizedBox(width: 5.0),
-                InkWell(
-                  onTap: () async {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => LoginScreen(),
-                        ));
-                  },
-                  child: Text(
-                    'Login',
+            SizedBox(
+              height: 10,
+            ),
+            Material(
+              color: Colors.transparent,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Already have an account ?',
                     style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                        decoration: TextDecoration.underline),
+                      color: Colors.white,
+                      fontFamily: 'Montserrat',
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ],
+                  SizedBox(width: 5.0),
+                  InkWell(
+                    onTap: () async {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => LoginScreen(),
+                          ));
+                    },
+                    child: Text(
+                      'Login',
+                      style: TextStyle(
+                          color: Colors.blue[900],
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          decoration: TextDecoration.underline),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

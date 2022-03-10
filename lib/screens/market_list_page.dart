@@ -18,9 +18,9 @@ class _MarketScreenState extends State<MarketScreen> {
   _MarketScreenState(this.apiToken);
 
   String apiToken;
-  String textname = 'Stock Indices';
-  bool changeColor = false;
-  bool changeColor1 = true;
+  String textname = 'Forex';
+  bool changeColor = true;
+  bool changeColor1 = false;
   bool changeColor2 = false;
   bool changeColor3 = false;
   bool changeColor4 = false;
@@ -66,22 +66,215 @@ class _MarketScreenState extends State<MarketScreen> {
                   }
                 }
                 list = MarketNames.map((e) => SearchFieldListItem(e)).toList();
-              } catch (e) {}
+              } catch (e) {
+                debugPrint(e.toString());
+              }
               return Column(
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).appBarTheme.color,
-                      borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(30.0),
-                        bottomLeft: Radius.circular(30.0),
-                      ),
+                      color: Theme.of(context).appBarTheme.backgroundColor,
                     ),
                     height: 200,
                     width: double.infinity,
                     padding: const EdgeInsets.fromLTRB(5, 30, 5, 10),
                     child: Column(
                       children: [
+                        Container(
+                          height: 50,
+                          width: double.infinity,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              Row(
+                                children: [
+                                  Material(
+                                    color: Colors.transparent,
+                                    shape: Border(
+                                        bottom: BorderSide(
+                                            color: changeColor
+                                                ? Theme.of(context)
+                                                    .highlightColor
+                                                : Colors.transparent,
+                                            width: 3.0)),
+                                    child: TextButton(
+                                      style: TextButton.styleFrom(
+                                        primary: Colors.black, // foreground
+
+                                        // foreground
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          changeColor1 = false;
+                                          changeColor2 = false;
+                                          changeColor3 = false;
+                                          changeColor4 = false;
+                                          changeColor = true;
+                                          textname = 'Forex';
+                                        });
+                                      },
+                                      child: Text(
+                                        'Forex',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Material(
+                                    color: Colors.transparent,
+                                    shape: Border(
+                                        bottom: BorderSide(
+                                            color: changeColor1
+                                                ? Theme.of(context)
+                                                    .highlightColor
+                                                : Colors.transparent,
+                                            width: 3.0)),
+                                    child: TextButton(
+                                      style: TextButton.styleFrom(
+                                        primary: Colors.black, // foreground
+
+                                        // foreground
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          changeColor2 = false;
+                                          changeColor = false;
+                                          changeColor3 = false;
+                                          changeColor4 = false;
+                                          changeColor1 = true;
+                                          textname = 'Stock Indices';
+                                        });
+                                      },
+                                      child: Text(
+                                        'Stock Indices',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Material(
+                                    color: Colors.transparent,
+                                    shape: Border(
+                                        bottom: BorderSide(
+                                            color: changeColor2
+                                                ? Theme.of(context)
+                                                    .highlightColor
+                                                : Colors.transparent,
+                                            width: 3.0)),
+                                    child: TextButton(
+                                      style: TextButton.styleFrom(
+                                        primary: Colors.black, // foreground
+
+                                        // foreground
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          changeColor1 = false;
+                                          changeColor = false;
+                                          changeColor3 = false;
+                                          changeColor4 = false;
+                                          changeColor2 = true;
+                                          textname = 'Commodities';
+                                        });
+                                      },
+                                      child: Text(
+                                        'Commodities',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Material(
+                                    color: Colors.transparent,
+                                    shape: Border(
+                                        bottom: BorderSide(
+                                            color: changeColor3
+                                                ? Theme.of(context)
+                                                    .highlightColor
+                                                : Colors.transparent,
+                                            width: 3.0)),
+                                    child: TextButton(
+                                      style: TextButton.styleFrom(
+                                        primary: Colors.black, // foreground
+
+                                        // foreground
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          changeColor1 = false;
+                                          changeColor = false;
+                                          changeColor2 = false;
+                                          changeColor4 = false;
+                                          changeColor3 = true;
+                                          textname = 'Synthetic Indices';
+                                        });
+                                      },
+                                      child: Text(
+                                        'Synthetic Indices',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Material(
+                                    color: Colors.transparent,
+                                    shape: Border(
+                                        bottom: BorderSide(
+                                            color: changeColor4
+                                                ? Theme.of(context)
+                                                    .highlightColor
+                                                : Colors.transparent,
+                                            width: 3.0)),
+                                    child: TextButton(
+                                      style: TextButton.styleFrom(
+                                        primary: Colors.black, // foreground
+
+                                        // foreground
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          changeColor1 = false;
+                                          changeColor = false;
+                                          changeColor3 = false;
+                                          changeColor2 = false;
+
+                                          changeColor4 = true;
+                                          textname = 'Cryptocurrencies';
+                                        });
+                                      },
+                                      child: Text(
+                                        'Cryptocurrencies',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 5),
                         SearchField(
                             marginColor: Colors.black,
                             controller: selectedSymbol,
@@ -142,200 +335,6 @@ class _MarketScreenState extends State<MarketScreen> {
                               }
                               ;
                             }),
-                        Container(
-                          height: 50,
-                          width: double.infinity,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              Row(
-                                children: [
-                                  Material(
-                                    color: Colors.transparent,
-                                    shape: Border(
-                                        bottom: BorderSide(
-                                            color: changeColor
-                                                ? Theme.of(context)
-                                                    .highlightColor
-                                                : Colors.transparent,
-                                            width: 3.0)),
-                                    child: TextButton(
-                                      style: TextButton.styleFrom(
-                                        primary: Colors.black, // foreground
-
-                                        // foreground
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          changeColor1 = false;
-                                          changeColor2 = false;
-                                          changeColor3 = false;
-                                          changeColor4 = false;
-                                          changeColor = !changeColor;
-                                          textname = 'Forex';
-                                        });
-                                      },
-                                      child: Text(
-                                        'Forex',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Material(
-                                    color: Colors.transparent,
-                                    shape: Border(
-                                        bottom: BorderSide(
-                                            color: changeColor1
-                                                ? Theme.of(context)
-                                                    .highlightColor
-                                                : Colors.transparent,
-                                            width: 3.0)),
-                                    child: TextButton(
-                                      style: TextButton.styleFrom(
-                                        primary: Colors.black, // foreground
-
-                                        // foreground
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          changeColor2 = false;
-                                          changeColor = false;
-                                          changeColor3 = false;
-                                          changeColor4 = false;
-                                          changeColor1 = !changeColor1;
-                                          textname = 'Stock Indices';
-                                        });
-                                      },
-                                      child: Text(
-                                        'Stock Indices',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Material(
-                                    color: Colors.transparent,
-                                    shape: Border(
-                                        bottom: BorderSide(
-                                            color: changeColor2
-                                                ? Theme.of(context)
-                                                    .highlightColor
-                                                : Colors.transparent,
-                                            width: 3.0)),
-                                    child: TextButton(
-                                      style: TextButton.styleFrom(
-                                        primary: Colors.black, // foreground
-
-                                        // foreground
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          changeColor1 = false;
-                                          changeColor = false;
-                                          changeColor3 = false;
-                                          changeColor4 = false;
-                                          changeColor2 = !changeColor2;
-                                          textname = 'Commodities';
-                                        });
-                                      },
-                                      child: Text(
-                                        'Commodities',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Material(
-                                    color: Colors.transparent,
-                                    shape: Border(
-                                        bottom: BorderSide(
-                                            color: changeColor3
-                                                ? Theme.of(context)
-                                                    .highlightColor
-                                                : Colors.transparent,
-                                            width: 3.0)),
-                                    child: TextButton(
-                                      style: TextButton.styleFrom(
-                                        primary: Colors.black, // foreground
-
-                                        // foreground
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          changeColor1 = false;
-                                          changeColor = false;
-                                          changeColor2 = false;
-                                          changeColor4 = false;
-                                          changeColor3 = !changeColor3;
-                                          textname = 'Synthetic Indices';
-                                        });
-                                      },
-                                      child: Text(
-                                        'Synthetic Indices',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Material(
-                                    color: Colors.transparent,
-                                    shape: Border(
-                                        bottom: BorderSide(
-                                            color: changeColor4
-                                                ? Theme.of(context)
-                                                    .highlightColor
-                                                : Colors.transparent,
-                                            width: 3.0)),
-                                    child: TextButton(
-                                      style: TextButton.styleFrom(
-                                        primary: Colors.black, // foreground
-
-                                        // foreground
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          changeColor1 = false;
-                                          changeColor = false;
-                                          changeColor3 = false;
-                                          changeColor2 = false;
-
-                                          changeColor4 = !changeColor4;
-                                          textname = 'Cryptocurrencies';
-                                        });
-                                      },
-                                      child: Text(
-                                        'Cryptocurrencies',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        )
                       ],
                     ),
                   ),
@@ -414,11 +413,20 @@ class _MarketScreenState extends State<MarketScreen> {
                                       visualDensity: VisualDensity(
                                           horizontal: 0, vertical: -4),
                                       horizontalTitleGap: 50.0,
-                                      leading: Text(
-                                        '${price['active_symbols'][index]['market_display_name']}',
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      trailing: Container(
+                                      leading: (price['active_symbols'][index]
+                                                  ['market_display_name'] ==
+                                              'Forex')
+                                          ? Text(
+                                              '${price['active_symbols'][index]['market_display_name']}                ',
+                                              style: const TextStyle(
+                                                  color: Colors.black),
+                                            )
+                                          : Text(
+                                              '${price['active_symbols'][index]['market_display_name']}',
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                      trailing: SizedBox(
                                         width: 70,
                                         child: Wrap(children: [
                                           Text(

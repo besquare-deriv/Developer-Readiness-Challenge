@@ -1,58 +1,69 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drc/Authorization/auth_helper.dart';
+import 'package:drc/screens/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AddNote extends StatefulWidget {
-  AddNote({this.apiToken});
+  AddNote({this.apiToken, this.email});
   String? apiToken;
+  String? email;
+
   @override
-  _AddNoteState createState() => _AddNoteState(apiToken: apiToken);
+  _AddNoteState createState() =>
+      _AddNoteState(apiToken: apiToken, email: email);
 }
 
 class _AddNoteState extends State<AddNote> {
-  _AddNoteState({this.apiToken});
+  _AddNoteState({this.apiToken, this.email});
 
   String? title;
   String? apiToken;
+  String? email;
 
   @override
   Widget build(BuildContext context) {
-    
     return CupertinoAlertDialog(
-      title: Text("Add in token", textAlign: TextAlign.center, style: TextStyle(fontSize: 26,fontWeight: FontWeight.bold)),
-      content: 
-      Center(
-        child: Column(
-          children: [
-            Text('Enter the BeRad app API token for "johndoe@gmail.com".', textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
-            SizedBox(height: 8),
-            Card(
-              color: Colors.transparent,
-              elevation: 0.0,
-              child: Column(
-                children: <Widget>[
-                  TextField(
-                    onChanged: (_val) {
-                      title = _val;
-                    },
-                    decoration: 
-                    InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: "Enter token",
-                      filled: true,
-                      fillColor: Color(0xFFF4F4F4),
-                    ),
-                  ),
-                ],
+      title: Text("Add in token",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+      content: Center(
+          child: Column(children: [
+        Text('Enter the BeRad app API token for "$email".',
+            textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
+        SizedBox(height: 8),
+        Card(
+          color: Colors.transparent,
+          elevation: 0.0,
+          child: Column(
+            children: <Widget>[
+              TextField(
+                onChanged: (_val) {
+                  title = _val;
+                },
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Enter token",
+                  filled: true,
+                  fillColor: Color(0xFFF4F4F4),
+                ),
               ),
-            ),
-          ]
-        )
-      ),
+            ],
+          ),
+        ),
+      ])),
       actions: <Widget>[
         TextButton(
-          onPressed: () => Navigator.pop(context, 'Cancel'),
+          onPressed: () {
+            FirebaseAuth.instance.signOut();
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (_) => LoginScreen(),
+              ),
+            );
+          },
           child: const Text("Cancel", style: TextStyle(fontSize: 17)),
         ),
         TextButton(
@@ -62,7 +73,7 @@ class _AddNoteState extends State<AddNote> {
       ],
     );
   }
-  
+
   void add() async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     db
