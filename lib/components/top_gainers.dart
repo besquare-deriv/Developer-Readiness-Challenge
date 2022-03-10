@@ -47,7 +47,7 @@ class _topListState extends State<topList> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: const [
                     Text(
-                      "Ticker",
+                      "Ticker          ",
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.black,
