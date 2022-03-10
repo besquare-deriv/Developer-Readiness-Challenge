@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_unnecessary_containers, camel_case_types, prefer_const_constructors
+import 'package:drc/components/news.dart';
 import 'package:drc/components/top_gainers.dart';
 import 'package:flutter/material.dart';
 
@@ -43,15 +44,30 @@ class _ExplorePageState extends State<ExplorePage> {
             topList(name: "LOSERS", toplist: loserList),
             SizedBox(height: 20),
             Container(
-              height: 500,
-              padding: EdgeInsets.only(left: 30, right: 30),
-              child: ListView(
+              height: 300,
+              margin: EdgeInsets.only(left: 30, right: 30),
+              child: Column(
                 children: [
                   Container(
+                    alignment: Alignment.centerLeft,
+                    width: double.infinity,
+                    child: Text(
+                      "NEWS",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                      ),
+                    ),
+                  ),
+                  Container(
                       width: double.infinity,
-                      height: 500,
-                      color: Colors.red,
-                      child: Text("Hi")),
+                      height: 250,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: newList()),
                 ],
               ),
             ),
