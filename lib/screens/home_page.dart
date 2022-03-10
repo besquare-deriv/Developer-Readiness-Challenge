@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                 height: 250,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).appBarTheme.color,
+                  color: Theme.of(context).appBarTheme.backgroundColor,
                   borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(50),
                     bottomLeft: Radius.circular(50),

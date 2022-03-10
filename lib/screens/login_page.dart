@@ -135,8 +135,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               child: Icon(
                                 visible_text
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                                 color: Colors.black87,
                                 size: 24.0,
                               ),
