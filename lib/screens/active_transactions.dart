@@ -69,7 +69,7 @@ class _activeOptionsState extends State<activeOptions> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('Mangus + $apiToken');
+    // debugPrint('Mangus + $apiToken');
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).appBarTheme.color,

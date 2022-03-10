@@ -87,74 +87,79 @@ class _ProfilePageState extends State<ProfilePage> {
                       Container(
                         height: 200,
                         decoration: BoxDecoration(
-                            color: Theme.of(context).appBarTheme.color),
+                            color:
+                                Theme.of(context).appBarTheme.backgroundColor),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            const SizedBox(
-                              width: 24,
-                            ),
                             ProfileWidget(
                               imagePath: user.imagePath,
                               onClicked: () async {},
                             ),
-                            const SizedBox(width: 50),
                             Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const SizedBox(height: 80),
-                                Center(child: buildName(user)),
+                                buildName(user),
                               ],
                             ),
                           ],
                         ),
                       ),
-                      // SizesWidget(),
                       const SizedBox(height: 30),
                       Center(
                         child: buildBalanceAcc(user),
                       ),
-
                       const SizedBox(height: 20),
-                      Row(
-                        children: <Widget>[
-                          const SizedBox(width: 50),
-                          Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'API Token:',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            const Text(
+                              'API Token:',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          Container(),
-                          const SizedBox(width: 120),
-                          Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: TextButton(
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Save',
-                                    style: TextStyle(color: Color(0xFFF3F72AF)),
-                                  ),
-                                ],
+                            TextButton(
+                              child: const Text(
+                                'Save',
+                                style: TextStyle(color: Color(0xFFF3F72AF)),
                               ),
                               //style: TextButton.styleFrom(),
-                              onPressed: save,
-                            ),
-                          ),
-                        ],
-                      ),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext ctxt) {
+                                    return AlertDialog(
+                                      title: Text(
+                                          "Are you sure you want to change API Token ?"),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: Text("Cancel"),
+                                          onPressed: () {
+                                            Navigator.of(ctxt).pop();
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: Text("Confirm"),
+                                          onPressed: () {
+                                            saveAPI();
+                                            Navigator.of(ctxt).pop();
 
+                                            // Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                       Container(
                         margin: EdgeInsets.fromLTRB(30, 0, 30, 0),
                         decoration: BoxDecoration(
@@ -182,27 +187,31 @@ class _ProfilePageState extends State<ProfilePage> {
                                   errorText: "Workfield Column is Required"),
                             ])),
                       ),
-
                       const SizedBox(height: 25),
-                      
-            ElevatedButton(
-                child: Text(
-                  'Settings',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).colorScheme.tertiaryContainer,
-                    onPrimary: Colors.black,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 32, vertical: 12),
-                    minimumSize: const Size(200.0, 50.0)),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                      MaterialPageRoute(builder: (context) => SettingsPage(value: apiToken),
-                      ),
-                    );
-                  }),
+
+                      ElevatedButton(
+                          child: Text(
+                            'Settings',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              primary: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer,
+                              onPrimary: Colors.black,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 32, vertical: 12),
+                              minimumSize: const Size(200.0, 50.0)),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    SettingsPage(value: apiToken),
+                              ),
+                            );
+                          }),
 
                       const SizedBox(height: 25),
                       ElevatedButton(
@@ -227,7 +236,6 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             );
                           }),
-
                       const SizedBox(height: 25),
                       ElevatedButton(
                           child: Text(
@@ -273,7 +281,6 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
             Text(
               'Account Balance:',
               style: TextStyle(fontSize: 18),
@@ -292,22 +299,6 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
 
-  void save() async {
-    if (validkey.currentState!.validate()) {
-      await ref!.update(
-        {
-          'token': field_Name,
-          'created': DateTime.now(),
-          'user_id': FirebaseAuth.instance.currentUser!.uid,
-        },
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Error occurred"),
-      ));
-    }
-  }
-
   void getProfileInfo() {
     channel.stream.listen((data) {
       var response = jsonDecode(data);
@@ -324,5 +315,23 @@ class _ProfilePageState extends State<ProfilePage> {
         });
       }
     });
+  }
+
+  void saveAPI() async {
+    if (validkey.currentState!.validate()) {
+      await ref!.update(
+        {
+          'token': field_Name,
+          'created': DateTime.now(),
+          'user_id': FirebaseAuth.instance.currentUser!.uid,
+        },
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Error occurred"),
+        ),
+      );
+    }
   }
 }

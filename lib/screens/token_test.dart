@@ -1,21 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drc/Authorization/auth_helper.dart';
+import 'package:drc/screens/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AddNote extends StatefulWidget {
-  AddNote({this.apiToken});
+  AddNote({this.apiToken, this.email});
   String? apiToken;
+  String? email;
+
   @override
-  _AddNoteState createState() => _AddNoteState(apiToken: apiToken);
+  _AddNoteState createState() =>
+      _AddNoteState(apiToken: apiToken, email: email);
 }
 
 class _AddNoteState extends State<AddNote> {
-  _AddNoteState({this.apiToken});
+  _AddNoteState({this.apiToken, this.email});
 
   String? title;
   String? apiToken;
+  String? email;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +30,7 @@ class _AddNoteState extends State<AddNote> {
           style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
       content: Center(
           child: Column(children: [
-        Text('Enter the BeRad app API token for "johndoe@gmail.com".',
+        Text('Enter the BeRad app API token for "$email".',
             textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
         SizedBox(height: 8),
         Card(
@@ -37,6 +42,7 @@ class _AddNoteState extends State<AddNote> {
                 onChanged: (_val) {
                   title = _val;
                 },
+                style: TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: "Enter token",
@@ -51,7 +57,13 @@ class _AddNoteState extends State<AddNote> {
       actions: <Widget>[
         TextButton(
           onPressed: () {
-            AuthHelper().logOut();
+            FirebaseAuth.instance.signOut();
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (_) => LoginScreen(),
+              ),
+            );
           },
           child: const Text("Cancel", style: TextStyle(fontSize: 17)),
         ),
