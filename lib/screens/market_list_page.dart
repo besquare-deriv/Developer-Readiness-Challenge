@@ -360,8 +360,7 @@ class _MarketScreenState extends State<MarketScreen> {
                               flex: 3,
                               child: Text(
                                 'Name',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                style: TextStyle(fontSize: 18),
                                 textAlign: TextAlign.start,
                               ),
                             ),
@@ -369,8 +368,7 @@ class _MarketScreenState extends State<MarketScreen> {
                               flex: 4,
                               child: Text(
                                 'Last Price',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                style: TextStyle(fontSize: 18),
                                 textAlign: TextAlign.center,
                               ),
                             ),
