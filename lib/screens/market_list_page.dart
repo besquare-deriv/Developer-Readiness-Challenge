@@ -47,9 +47,9 @@ class _MarketScreenState extends State<MarketScreen> {
   @override
   Widget build(BuildContext context) {
     var state;
-
     TextEditingController selectedSymbol = new TextEditingController();
-    List<String> marketNames = [];
+
+    List<String> MarketNames = [];
     List<SearchFieldListItem> list = [];
     return Scaffold(
       body: StreamBuilder(
@@ -60,10 +60,10 @@ class _MarketScreenState extends State<MarketScreen> {
               try {
                 for (int i = 0; i <= 76; i++) {
                   if (price['active_symbols'][i]['exchange_is_open'] == 1) {
-                    marketNames.add(price['active_symbols'][i]['display_name']);
+                    MarketNames.add(price['active_symbols'][i]['display_name']);
                   }
                 }
-                list = marketNames.map((e) => SearchFieldListItem(e)).toList();
+                list = MarketNames.map((e) => SearchFieldListItem(e)).toList();
               } catch (e) {
                 debugPrint(e.toString());
               }
@@ -73,13 +73,13 @@ class _MarketScreenState extends State<MarketScreen> {
                     decoration: BoxDecoration(
                       color: Theme.of(context).appBarTheme.backgroundColor,
                     ),
-                    height: 150,
+                    height: 160,
                     width: double.infinity,
                     padding: const EdgeInsets.fromLTRB(5, 30, 5, 10),
                     child: Column(
                       children: [
                         Container(
-                          height: 40,
+                          height: 50,
                           width: double.infinity,
                           child: ListView(
                             scrollDirection: Axis.horizontal,
@@ -334,11 +334,14 @@ class _MarketScreenState extends State<MarketScreen> {
                                     ),
                                   );
                                 }
+                                ;
                               }
+                              ;
                             }),
                       ],
                     ),
                   ),
+                  SizedBox(height: 5),
                   Card(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     elevation: 5,
@@ -360,7 +363,8 @@ class _MarketScreenState extends State<MarketScreen> {
                               flex: 3,
                               child: Text(
                                 'Name',
-                                style: TextStyle(fontSize: 18),
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.start,
                               ),
                             ),
@@ -368,7 +372,8 @@ class _MarketScreenState extends State<MarketScreen> {
                               flex: 4,
                               child: Text(
                                 'Last Price',
-                                style: TextStyle(fontSize: 18),
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -394,7 +399,6 @@ class _MarketScreenState extends State<MarketScreen> {
                               formatPrice.toString().replaceAll(regex, '');
 
                           return Card(
-                            elevation: 5,
                             child: InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -415,7 +419,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                 );
                               },
                               child: Container(
-                                height: 100,
+                                height: 80,
                                 decoration: BoxDecoration(
                                   color: Color(0xFFFFF4F4F4),
                                   borderRadius: BorderRadius.circular(10),
@@ -432,7 +436,9 @@ class _MarketScreenState extends State<MarketScreen> {
                                         child: Text(
                                           '${price['active_symbols'][index]['display_name']}',
                                           textAlign: TextAlign.start,
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 18),
                                         ),
                                       ),
                                       Expanded(
@@ -440,8 +446,9 @@ class _MarketScreenState extends State<MarketScreen> {
                                         child: Text(
                                             '${ongoingPrice} ${price['active_symbols'][index]['quoted_currency_symbol']} ',
                                             textAlign: TextAlign.center,
-                                            style:
-                                                TextStyle(color: Colors.black)),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18)),
                                       ),
                                     ],
                                   ),
