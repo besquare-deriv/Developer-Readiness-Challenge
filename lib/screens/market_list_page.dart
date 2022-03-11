@@ -46,6 +46,8 @@ class _MarketScreenState extends State<MarketScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var symbol;
+    var symbolName;
     var state;
     TextEditingController selectedSymbol = new TextEditingController();
 
@@ -114,7 +116,6 @@ class _MarketScreenState extends State<MarketScreen> {
                                       child: Text(
                                         'Forex',
                                         style: TextStyle(
-                                          fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                           color: Theme.of(context)
                                               .colorScheme
@@ -151,7 +152,6 @@ class _MarketScreenState extends State<MarketScreen> {
                                       child: Text(
                                         'Stock Indices',
                                         style: TextStyle(
-                                          fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                           color: Theme.of(context)
                                               .colorScheme
@@ -188,7 +188,6 @@ class _MarketScreenState extends State<MarketScreen> {
                                       child: Text(
                                         'Commodities',
                                         style: TextStyle(
-                                          fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                           color: Theme.of(context)
                                               .colorScheme
@@ -225,7 +224,6 @@ class _MarketScreenState extends State<MarketScreen> {
                                       child: Text(
                                         'Synthetic Indices',
                                         style: TextStyle(
-                                          fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                           color: Theme.of(context)
                                               .colorScheme
@@ -263,7 +261,6 @@ class _MarketScreenState extends State<MarketScreen> {
                                       child: Text(
                                         'Cryptocurrencies',
                                         style: TextStyle(
-                                          fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                           color: Theme.of(context)
                                               .colorScheme
@@ -453,16 +450,15 @@ class _MarketScreenState extends State<MarketScreen> {
                                     ],
                                   ),
                                 ),
+                                ),
                               ),
-                              // priceChangeEvaluator
-                            ),
-                          );
-                        } else {
-                          return SizedBox.shrink();
-                        }
-                      },
+                            );
+                          } else {
+                            return SizedBox.shrink();
+                          }
+                        },
+                      ),
                     ),
-                  ),
                 ],
               );
             }
