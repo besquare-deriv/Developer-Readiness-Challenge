@@ -360,6 +360,8 @@ class _MarketScreenState extends State<MarketScreen> {
                               flex: 3,
                               child: Text(
                                 'Name',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.start,
                               ),
                             ),
@@ -367,6 +369,8 @@ class _MarketScreenState extends State<MarketScreen> {
                               flex: 4,
                               child: Text(
                                 'Last Price',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -376,39 +380,38 @@ class _MarketScreenState extends State<MarketScreen> {
                     ),
                   ),
                   Expanded(
+                    child: ListView.builder(
+                      itemCount: 78,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (price['active_symbols'][index]
+                                ['market_display_name'] ==
+                            textname) {
+                          var formatPrice = NumberFormat.currency(
+                                  customPattern: '##,##0.0####',
+                                  decimalDigits: 5)
+                              .format(price['active_symbols'][index]['spot']);
 
-                    child: Container(
-                      child: ListView.builder(
-                        padding: EdgeInsets.all(0),
-                        itemCount: 78,
-                        itemBuilder: (BuildContext context, int index) {
-                          if (price['active_symbols'][index]
-                                  ['market_display_name'] ==
-                              textname) {
-                            var formatPrice = NumberFormat.currency(
-                                    customPattern: '##,##0.0####', decimalDigits: 5)
-                                .format(price['active_symbols'][index]['spot']);
-                                RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
-                                String ongoingPrice = formatPrice.toString().replaceAll(regex, '');
-                            return Card(
-                              elevation: 5,
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => GraphScreen(
-                                        symbolName: price['active_symbols']
-                                            [index]['display_name'],
-                                        symbol: price['active_symbols'][index]
-                                            ['symbol'],
-                                        state: price['active_symbols'][index]
-                                            ['exchange_is_open'],
-                                        currency_symbol: price['active_symbols']
-                                            [index]['quoted_currency_symbol'],
-                                        apiToken: apiToken,
-                                      ),
+                          RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
+                          String ongoingPrice =
+                              formatPrice.toString().replaceAll(regex, '');
 
+                          return Card(
+                            elevation: 5,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => GraphScreen(
+                                      symbolName: price['active_symbols'][index]
+                                          ['display_name'],
+                                      symbol: price['active_symbols'][index]
+                                          ['symbol'],
+                                      state: price['active_symbols'][index]
+                                          ['exchange_is_open'],
+                                      currency_symbol: price['active_symbols']
+                                          [index]['quoted_currency_symbol'],
+                                      apiToken: apiToken,
                                     ),
                                   ),
                                 );
@@ -442,9 +445,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                             style:
                                                 TextStyle(color: Colors.black)),
                                       ),
-
                                     ],
-
                                   ),
                                 ),
                               ),
