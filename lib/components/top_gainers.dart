@@ -3,19 +3,27 @@
 import 'package:flutter/material.dart';
 
 class topList extends StatefulWidget {
-  topList({required this.name, required this.toplist, Key? key})
+  topList(
+      {required this.isReverse,
+      required this.name,
+      required this.toplist,
+      Key? key})
       : super(key: key);
   var name = 'assets';
   var toplist = [];
+  bool isReverse;
   @override
-  _topListState createState() => _topListState(name: name, toplist: toplist);
+  _topListState createState() =>
+      _topListState(isReverse: isReverse, name: name, toplist: toplist);
 }
 
 class _topListState extends State<topList> {
-  _topListState({required this.name, required this.toplist});
+  _topListState(
+      {required this.isReverse, required this.name, required this.toplist});
 
   var name = 'assets';
   var toplist = [];
+  bool isReverse;
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +84,7 @@ class _topListState extends State<topList> {
               Flexible(
                 flex: 7,
                 child: ListView.builder(
+                  reverse: isReverse,
                   itemCount: toplist.length,
                   itemBuilder: (context, index) {
                     return Container(
@@ -83,20 +92,13 @@ class _topListState extends State<topList> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('${toplist[index]['name']}',
+                          Text('${toplist[index]['symbol']}',
                               style: TextStyle(
                                 fontSize: 16,
                               )),
                           Text('\$ ${toplist[index]['price']}'),
                           Text(
-                            '${toplist[index]['change']}%',
-                            style: (toplist[index]['change'] >= 0)
-                                ? TextStyle(
-                                    color: Colors.green,
-                                  )
-                                : TextStyle(
-                                    color: Colors.red,
-                                  ),
+                            '${toplist[index]['changesPercentage']}%',
                           ),
                         ],
                       ),
