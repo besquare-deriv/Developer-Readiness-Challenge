@@ -278,11 +278,7 @@ class _ResetScreenState extends State<ResetScreen> {
                 child: TextButton(
                   child: Text("Ok", style: TextStyle(fontSize: 25)),
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => LoginScreen(),
-                        ));
+                    Navigator.of(context).pop();
                   },
                 ),
               ),
