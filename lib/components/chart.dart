@@ -64,7 +64,7 @@ class _chartBuilderState extends State<chartBuilder> {
   Widget build(BuildContext context) {
     var formatPrice =
         NumberFormat.currency(customPattern: '##,##0.0####', decimalDigits: 5).format(currentPrice);
-        RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
+        RegExp regex = RegExp(r"([.]*0+)(?!.*\d)");
         String ongoingPrice = formatPrice.toString().replaceAll(regex, '');
     if (priceTime.isNotEmpty) {
       return Column(
@@ -96,71 +96,77 @@ class _chartBuilderState extends State<chartBuilder> {
                   ),
                 ],
               )),
-          SfCartesianChart(
-            // margin: EdgeInsets.only(top: 20.0, left: 8.0),
-            enableAxisAnimation: true,
-            plotAreaBackgroundColor: Colors.black,
+          Container(
+            color: Theme.of(context).colorScheme.onPrimaryContainer,
+            width: double.infinity,
+            child: SfCartesianChart(
+              // margin: EdgeInsets.only(top: 20.0, left: 8.0),
+              enableAxisAnimation: true,
+              plotAreaBackgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
 
-            zoomPanBehavior: ZoomPanBehavior(
-              selectionRectColor: Colors.red,
-              zoomMode: ZoomMode.x,
-              enablePanning: true,
-              enableDoubleTapZooming: true,
-              enablePinching: true,
-            ),
-            primaryXAxis: CategoryAxis(
-              maximumLabels: 5,
-              isVisible: true,
-              majorGridLines: MajorGridLines(width: 0),
-              labelStyle: TextStyle(color: Colors.white),
-              labelPlacement: LabelPlacement.onTicks,
-              labelPosition: ChartDataLabelPosition.inside,
-            ),
-            primaryYAxis: NumericAxis(
-              maximumLabels: 1,
-              interval: interval,
-              decimalPlaces: decimalPlace,
-              desiredIntervals: 1,
-              majorGridLines: MajorGridLines(width: 0),
-              labelPosition: ChartDataLabelPosition.inside,
-              labelStyle: TextStyle(color: Colors.white),
-              opposedPosition: true,
-            ),
-
-            // Chart title
-
-            tooltipBehavior: TooltipBehavior(
-              tooltipPosition: TooltipPosition.auto,
-              color: Colors.red,
-              elevation: 10,
-              enable: true,
-              format: 'point.y at point.x',
-              shouldAlwaysShow: true,
-              canShowMarker: true,
-            ),
-            series: <ChartSeries<tickHistory, String>>[
-              AreaSeries<tickHistory, String>(
-                opacity: 0.3,
-                borderWidth: 4,
-                borderGradient: LinearGradient(
-                  colors: <Color>[
-                    Color.fromRGBO(230, 0, 180, 1),
-                    Color.fromRGBO(8, 217, 217, 1)
-                  ],
-                ),
-                onRendererCreated: (ChartSeriesController controller) {
-                  _chartSeriesController:
-                  controller;
-                },
-                color: Colors.grey,
-                enableTooltip: true,
-                dataSource: priceTime,
-                xValueMapper: (tickHistory ticks, _) => ticks.time,
-                yValueMapper: (tickHistory ticks, _) => ticks.price,
-                name: 'Ticks',
-                // Enable data label
+              zoomPanBehavior: ZoomPanBehavior(
+                selectionRectColor: Colors.red,
+                zoomMode: ZoomMode.x,
+                enablePanning: true,
+                enableDoubleTapZooming: true,
+                enablePinching: true,
               ),
-            ],
+              primaryXAxis: CategoryAxis(
+                maximumLabels: 5,
+                isVisible: true,
+                majorGridLines: MajorGridLines(width: 0),
+                labelStyle: TextStyle(color: Colors.white),
+                labelPlacement: LabelPlacement.onTicks,
+                //labelPosition: ChartDataLabelPosition.inside,
+              ),
+              primaryYAxis: NumericAxis(
+                maximumLabels: 1,
+                interval: interval,
+                decimalPlaces: decimalPlace,
+                desiredIntervals: 1,
+                majorGridLines: MajorGridLines(width: 0),
+                // labelPosition: ChartDataLabelPosition.inside,
+                labelStyle: TextStyle(color: Colors.white),
+                opposedPosition: true,
+              ),
+
+              // Chart title
+
+              tooltipBehavior: TooltipBehavior(
+                tooltipPosition: TooltipPosition.auto,
+                color: Colors.red,
+                elevation: 10,
+                enable: true,
+                format: 'point.y at point.x',
+                shouldAlwaysShow: true,
+                canShowMarker: true,
+              ),
+              series: <ChartSeries<tickHistory, String>>[
+                AreaSeries<tickHistory, String>(
+                  opacity: 0.3,
+                  borderWidth: 4,
+                  borderColor: Color.fromRGBO(8, 217, 217, 1) ,
+                  /* borderGradient: LinearGradient(
+                    colors: <Color>[
+                      Color.fromRGBO(230, 0, 180, 1),
+                      Color.fromRGBO(8, 217, 217, 1)
+                    ],
+                  ), */
+                  animationDuration: 1,
+                  onRendererCreated: (ChartSeriesController controller) {
+                    _chartSeriesController:
+                    controller;
+                  },
+                  color: Colors.grey,
+                  enableTooltip: true,
+                  dataSource: priceTime,
+                  xValueMapper: (tickHistory ticks, _) => ticks.time,
+                  yValueMapper: (tickHistory ticks, _) => ticks.price,
+                  name: 'Ticks',
+                  // Enable data label
+                ),
+              ],
+            ),
           ),
         ],
       );
@@ -225,7 +231,6 @@ class _chartBuilderState extends State<chartBuilder> {
   }
 
   void calInterval(){
-    print(firstPrice);
     if(firstPrice <= 2){
       interval = 0.00005;
       decimalPlace = 5;
@@ -256,6 +261,18 @@ class _chartBuilderState extends State<chartBuilder> {
     else if(firstPrice <= 10000){
       interval = 0.5;
     } 
+    else if(symbolName == 'Boom 1000 Index'){
+      interval = 1.0;
+    }
+    else if(symbolName == 'Jump 10 Index'){
+      interval = 10;
+    }
+    else if(symbolName == 'Jump 75 Index' || symbolName == 'Jump 25 Index'){
+      interval = 25;
+    }
+    else if(symbolName == 'Jump 100 Index'|| symbolName == 'Jump 50 Index'){
+      interval = 50;
+    }
     else if(firstPrice <= 400000){
       interval = 2.5;
     } 

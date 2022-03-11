@@ -60,6 +60,7 @@ class MyThemes {
         //tertiary: Color(0xFFFF37721),         //index type selection
         //onTertiary: Colors.teal,       //logout button
         primaryContainer: Color(0xFFFF252A34), //bottom navigation bar
+        onPrimaryContainer: Colors.black,   //chart
         secondaryContainer: Colors.purple, //market_list:market_name
         tertiaryContainer: Color(
             0xFFFFF4F4F4) //transaction_history container, settings, faqs button, amount & mins on details page, search bar
@@ -91,6 +92,7 @@ class MyThemes {
         //tertiary: Colors.teal,
         //onTertiary: Colors.teal,     //logout button
         primaryContainer: Colors.black, //bottom navigation bar
+        onPrimaryContainer: Colors.black,   //chart
         secondaryContainer: Colors.amberAccent, //market_list:market_name
         tertiaryContainer: Color(
             0xFFFFC4C4C4) //transaction_history container, settings, faqs button, amount & mins on details page, search bar
