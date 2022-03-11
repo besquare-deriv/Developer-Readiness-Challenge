@@ -100,7 +100,9 @@ class _chartBuilderState extends State<chartBuilder> {
             color: Theme.of(context).colorScheme.onPrimaryContainer,
             width: double.infinity,
             child: SfCartesianChart(
+             // onZoomReset:  ,
               // margin: EdgeInsets.only(top: 20.0, left: 8.0),
+              borderWidth: 1,
               enableAxisAnimation: true,
               plotAreaBackgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
 
@@ -110,15 +112,27 @@ class _chartBuilderState extends State<chartBuilder> {
                 enablePanning: true,
                 enableDoubleTapZooming: true,
                 enablePinching: true,
+                maximumZoomLevel: 0.01
               ),
-              primaryXAxis: CategoryAxis(
+              primaryXAxis: DateTimeAxis(
+                dateFormat: DateFormat.Hms(),
+                intervalType: DateTimeIntervalType.seconds,
+                interval: 5,
+                //visibleMaximum: DateTime(priceTime.last.time.T),
+                //rangePadding: ChartRangePadding.auto,
+                majorGridLines: MajorGridLines(width: 0),
+                tickPosition: TickPosition.outside,
+                enableAutoIntervalOnZooming: true,
+                labelStyle: TextStyle(color: Colors.white),    
+              ),
+              /* primaryXAxis: CategoryAxis(
                 maximumLabels: 5,
                 isVisible: true,
                 majorGridLines: MajorGridLines(width: 0),
                 labelStyle: TextStyle(color: Colors.white),
                 labelPlacement: LabelPlacement.onTicks,
                 //labelPosition: ChartDataLabelPosition.inside,
-              ),
+              ), */
               primaryYAxis: NumericAxis(
                 maximumLabels: 1,
                 interval: interval,
@@ -128,11 +142,27 @@ class _chartBuilderState extends State<chartBuilder> {
                 // labelPosition: ChartDataLabelPosition.inside,
                 labelStyle: TextStyle(color: Colors.white),
                 opposedPosition: true,
+                enableAutoIntervalOnZooming: true
               ),
 
               // Chart title
+              trackballBehavior: TrackballBehavior(
+                enable: true,
+               // activationMode: ActivationMode.longPress,
+                tooltipSettings: InteractiveTooltip(
+                  color: Colors.red,
+                  format: 'point.y at point.x' 
+                  ),
+                lineColor: Colors.red,
+                shouldAlwaysShow: true,
+                lineWidth: 1,
+    lineType: TrackballLineType.horizontal,
+    tooltipAlignment: ChartAlignment.near,
+    tooltipDisplayMode: TrackballDisplayMode.nearestPoint
+                
 
-              tooltipBehavior: TooltipBehavior(
+              ),
+              /* tooltipBehavior: TooltipBehavior(
                 tooltipPosition: TooltipPosition.auto,
                 color: Colors.red,
                 elevation: 10,
@@ -140,9 +170,12 @@ class _chartBuilderState extends State<chartBuilder> {
                 format: 'point.y at point.x',
                 shouldAlwaysShow: true,
                 canShowMarker: true,
-              ),
-              series: <ChartSeries<tickHistory, String>>[
-                AreaSeries<tickHistory, String>(
+              ), */
+              onZoomStart: (ZoomPanArgs args){
+                args.currentZoomPosition = 20;
+              },
+              series: <ChartSeries<tickHistory, DateTime>>[
+                AreaSeries<tickHistory, DateTime>(
                   opacity: 0.3,
                   borderWidth: 4,
                   borderColor: Color.fromRGBO(8, 217, 217, 1) ,
@@ -154,8 +187,7 @@ class _chartBuilderState extends State<chartBuilder> {
                   ), */
                   animationDuration: 1,
                   onRendererCreated: (ChartSeriesController controller) {
-                    _chartSeriesController:
-                    controller;
+                    _chartSeriesController : controller;
                   },
                   color: Colors.grey,
                   enableTooltip: true,
@@ -191,10 +223,10 @@ class _chartBuilderState extends State<chartBuilder> {
             price['history']['times'][i] * 1000));
 
         // extract time only
-        String extractedTime = DateFormat.Hms().format(timeConverted[i]);
+        //extractedTime = DateFormat.Hms().format(timeConverted[i]);
         priceTime.add(
           tickHistory(
-            time: extractedTime,
+            time: timeConverted[i],
             price: price['history']['prices'][i],
           ),
         );
@@ -216,12 +248,12 @@ class _chartBuilderState extends State<chartBuilder> {
 
       timeConverted = DateTime.fromMillisecondsSinceEpoch(
           tickStream['tick']['epoch'] * 1000);
-      extractedTime = DateFormat.Hms().format(timeConverted);
+      //extractedTime = DateFormat.Hms().format(timeConverted);
       currentPrice = tickStream['tick']['quote'];
       setState(() {
         priceTime.add(
           tickHistory(
-            time: extractedTime,
+            time: timeConverted,
             price: currentPrice,
           ),
         );
@@ -231,6 +263,7 @@ class _chartBuilderState extends State<chartBuilder> {
   }
 
   void calInterval(){
+
     if(firstPrice <= 2){
       interval = 0.00005;
       decimalPlace = 5;
@@ -286,7 +319,7 @@ class _chartBuilderState extends State<chartBuilder> {
 }
 
 class tickHistory {
-  final String time;
+  final DateTime time;
   final num price;
 
   tickHistory({
