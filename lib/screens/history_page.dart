@@ -258,7 +258,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                             )));
                               },
                               child: Text(
-                                "Active Contracts",
+                                "Open Positions",
                                 style: TextStyle(
                                   color: Theme.of(context).colorScheme.onSurface
                                 ),
