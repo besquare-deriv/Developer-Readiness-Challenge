@@ -381,7 +381,7 @@ class _MarketScreenState extends State<MarketScreen> {
                             var formatPrice = NumberFormat.currency(
                                     customPattern: '##,##0.0####', decimalDigits: 5)
                                 .format(price['active_symbols'][index]['spot']);
-                                RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
+                                RegExp regex = RegExp(r"([.]*0+)(?!.*\d)");
                                 String ongoingPrice = formatPrice.toString().replaceAll(regex, '');
                             return Card(
                               elevation: 5,
