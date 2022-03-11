@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drc/components/error_dialog.dart';
 import 'package:drc/screens/faq_page.dart';
 import 'package:drc/Authorization/auth_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:web_socket_channel/io.dart';
 import '../components/profile_widget.dart';
@@ -23,7 +25,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   String? value;
-  String? field_Name;
+  String field_Name = 'ABCDEFGHIJKL';
   String apiToken;
   _ProfilePageState(this.apiToken, {Key? key});
   String username = "User";
@@ -129,32 +131,56 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               //style: TextButton.styleFrom(),
                               onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext ctxt) {
-                                    return AlertDialog(
-                                      title: Text(
-                                          "Are you sure you want to change API Token ?"),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: Text("Cancel"),
-                                          onPressed: () {
-                                            Navigator.of(ctxt).pop();
-                                          },
-                                        ),
-                                        TextButton(
-                                          child: Text("Confirm"),
-                                          onPressed: () {
-                                            saveAPI();
-                                            Navigator.of(ctxt).pop();
+                                String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+                                RegExp regExp = new RegExp(pattern);
+                                print(field_Name.length);
+                                (validator(field_Name.toString()))
+                                    ? showDialog(
+                                        context: context,
+                                        builder: (BuildContext ctxt) {
+                                          return AlertDialog(
+                                            title: Text(
+                                                "Are you sure you want to change API Token ?"),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: Text("Cancel"),
+                                                onPressed: () {
+                                                  Navigator.of(ctxt).pop();
+                                                },
+                                              ),
+                                              TextButton(
+                                                child: Text("Confirm"),
+                                                onPressed: () {
+                                                  saveAPI();
+                                                  Navigator.of(ctxt).pop();
 
-                                            // Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
+                                                  // Navigator.of(context).pop();
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      )
+                                    : showDialog(
+                                        context: context,
+                                        builder: (BuildContext ctxt) {
+                                          return AlertDialog(
+                                            title: Text(
+                                                "API Token must be alphanumeric with less than 20 characters and cannot be empty.",
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                )),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: Text("OK"),
+                                                onPressed: () {
+                                                  Navigator.of(ctxt).pop();
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                               },
                             ),
                           ],
@@ -188,7 +214,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             ])),
                       ),
                       const SizedBox(height: 25),
-
                       ElevatedButton(
                           child: Text(
                             'Settings',
@@ -212,7 +237,6 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             );
                           }),
-
                       const SizedBox(height: 25),
                       ElevatedButton(
                           child: Text(
@@ -333,5 +357,16 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
     }
+  }
+
+  bool validator(String value) {
+    if (value.length > 20) {
+      return false;
+    } else if (value.isNotEmpty) {
+      bool mobileValid = RegExp(r'^[a-zA-Z0-9]+$').hasMatch(value);
+      return mobileValid;
+    }
+
+    return false;
   }
 }

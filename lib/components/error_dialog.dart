@@ -19,6 +19,5 @@ class errorDialog extends StatelessWidget {
         ),
       ],
     );
-    ;
   }
 }
