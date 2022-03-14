@@ -202,8 +202,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
-<<<<<<< HEAD
-=======
   flutter_settings_screens:
     dependency: "direct main"
     description:
@@ -211,7 +209,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.2-null-safety"
->>>>>>> 22c30aaceea78d001e2ee0833026b566ccfe3695
   flutter_signin_button:
     dependency: "direct main"
     description:
