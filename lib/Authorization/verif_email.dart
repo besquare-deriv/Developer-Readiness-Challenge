@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drc/Authorization/auth_helper.dart';
+import 'package:drc/constants.dart';
 import 'package:drc/screens/landing_page.dart';
 import 'package:drc/screens/login_page.dart';
 import 'package:drc/screens/signup_page.dart';
@@ -73,36 +74,120 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   Widget build(BuildContext context) => isEmailVerified
       ? AddNote(apiToken: apiToken, email: email1)
       : Scaffold(
-          appBar: new AppBar(
-            centerTitle: true,
-            title: Text("Verify Email"),
-            backgroundColor: Colors.lightBlue,
-          ),
-          body: Center(
-            child: Column(
-              children: [
-                ElevatedButton(
-                    child: const Text(
-                      'Resend',
-                      style: TextStyle(
-                          color: Color.fromRGBO(255, 255, 255, 1),
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20),
+          body: SafeArea(
+            child: Container(
+              decoration: BoxDecoration(color: Color(0xFF1F96B0)),
+              child: ListView(
+                children: [
+                  SizedBox(height: 40),
+                  CustomPaint(
+                    painter: ShapePainter2(),
+                    child: Container(
+                      width: 100,
+                      height: 200,
+                      child: Image.asset(
+                        "assets/images/mail-removebg-preview.png",
+                        fit: BoxFit.contain,
+                      ),
                     ),
-                    onPressed: canResendEmail ? sendverificationEmail : null),
-                ElevatedButton(
-                  child: const Text(
-                    'Cancel',
-                    style: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, 1),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20),
                   ),
-                  onPressed: () {
-                    AuthHelper().logOut();
-                  },
-                )
-              ],
+                  SizedBox(
+                    child: Center(
+                      child: Text('Email Confimation',
+                          style: TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(30),
+                    child: Card(
+                        elevation: 20,
+                        child: Container(
+                          height: 300,
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    "We have sent an email to:",
+                                    style: TextStyle(fontSize: 24),
+                                  ),
+                                  Text(
+                                    (email1 != null)
+                                        ? "$email1"
+                                        : "No email provided",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  ),
+                                  Wrap(
+                                    children: [
+                                      Text(
+                                        "Check your email and click on the confirmation link to continue.",
+                                        style: TextStyle(fontSize: 24),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Color(0xFF305FAD),
+                                            fixedSize: Size.fromHeight(50),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            'Resend Link',
+                                            style: TextStyle(
+                                                color: Color.fromRGBO(
+                                                    255, 255, 255, 1),
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 20),
+                                          ),
+                                          onPressed: canResendEmail
+                                              ? sendverificationEmail
+                                              : null),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.grey,
+                                          fixedSize: Size.fromHeight(50),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                        child: const Text(
+                                          'Cancel',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 20),
+                                        ),
+                                        onPressed: () {
+                                          AuthHelper().logOut();
+                                        },
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        )),
+                  )
+                ],
+              ),
             ),
           ),
         );
