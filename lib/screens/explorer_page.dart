@@ -255,8 +255,7 @@ class _ExplorePageState extends State<ExplorePage> {
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: null)
-                  // newList()),
+                      child: newList()),
                 ],
               ),
             ),
