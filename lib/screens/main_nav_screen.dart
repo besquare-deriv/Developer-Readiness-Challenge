@@ -48,6 +48,7 @@ class _NavigationPageState extends State<NavigationPage> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
+              size: 30,
               color: Colors.white,
             ),
             label: 'Home',
@@ -55,31 +56,31 @@ class _NavigationPageState extends State<NavigationPage> {
           BottomNavigationBarItem(
             icon: Image.asset(
               'assets/icons/explore.png',
-              height: 20,
-              width: 20,
+              height: 30,
+              width: 30,
             ),
             label: 'Explore',
           ),
           BottomNavigationBarItem(
               icon: Image.asset(
                 'assets/icons/plus.png',
-                height: 40,
-                width: 40,
+                height: 55,
+                width: 55,
               ),
               label: ""),
           BottomNavigationBarItem(
             icon: Image.asset(
               'assets/icons/history.png',
-              height: 20,
-              width: 20,
+              height: 30,
+              width: 30,
             ),
             label: 'History',
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
               'assets/icons/user.png',
-              height: 20,
-              width: 20,
+              height: 30,
+              width: 30,
             ),
             label: 'Profile',
           ),

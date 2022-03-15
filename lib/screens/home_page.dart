@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                       title: Text(
                         "Hi, $username",
                         style: TextStyle(
-                          fontSize: 34,
+                          fontSize: 30,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -112,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                         child: Text(
                           "Dashboard",
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).textTheme.subtitle1?.color,
                           ),
@@ -259,7 +259,7 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Color(0xFF1F96B0),
+                        color: Color(0xFF73B8C8),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(

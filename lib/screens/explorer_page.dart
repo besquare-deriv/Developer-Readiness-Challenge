@@ -1,10 +1,10 @@
 // ignore_for_file: avoid_unnecessary_containers, camel_case_types, prefer_const_constructors
 import 'dart:convert';
 
-import 'package:drc/components/news.dart';
-import 'package:drc/components/top_gainers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import '../components/news.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class _ExplorePageState extends State<ExplorePage> {
     var data = await http.get(Uri.parse(
         'https://financialmodelingprep.com/api/v3/stock_market/gainers?apikey=34487577b4e7dcfe4b35aed0415b2f43'));
     var result = json.decode(data.body);
-    print(result);
+    
     setState(() {
       for (int i = 0; i <= result.length - 1; i++) {
         toplist.add(result[i]);
