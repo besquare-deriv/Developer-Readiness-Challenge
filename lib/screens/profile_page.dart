@@ -71,6 +71,7 @@ class _ProfilePageState extends State<ProfilePage> {
             field_Name = v['token'];
             ref = snapshot.data!.docs[0].reference;
 
+            var hiddenToken = apiToken.replaceRange(0, 11, 'XXXXXXXXXXX');
             return Scaffold(
               // backgroundColor: Colors.white,
 
@@ -178,7 +179,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               color: Colors.white,
                             ),
                             textAlign: TextAlign.center,
-                            initialValue: "${v['token']}",
+                            initialValue: "$hiddenToken",
                             onChanged: (_val) {
                               field_Name = _val;
                             },
@@ -188,7 +189,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             ])),
                       ),
                       const SizedBox(height: 25),
-
                       ElevatedButton(
                           child: Text(
                             'Settings',
@@ -212,7 +212,6 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             );
                           }),
-
                       const SizedBox(height: 25),
                       ElevatedButton(
                           child: Text(
