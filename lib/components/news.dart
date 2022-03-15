@@ -17,9 +17,8 @@ class newList extends StatefulWidget {
 
 class _newListState extends State<newList> {
   news() async {
-    var url = await http.get(
-        Uri.parse("https://min-api.cryptocompare.com/data/v2/news/?lang=EN"));
-    return json.decode(url.body)['Data'];
+    var url = await http.get(Uri.parse("http://192.168.100.144:3000/news"));
+    return json.decode(url.body);
   }
 
   @override
@@ -60,12 +59,19 @@ class _newListState extends State<newList> {
                                 topLeft: Radius.circular(25),
                                 topRight: Radius.circular(25),
                               ),
-                              child: Image.network(
-                                snapshot.data[index]['imageurl'],
-                                fit: BoxFit.fitWidth,
-                                width: double.infinity,
-                                height: 110,
-                              ),
+                              child: (snapshot.data[index].runtimeType != 'int')
+                                  ? Image.network(
+                                      snapshot.data[index]['image_url'],
+                                      fit: BoxFit.fitWidth,
+                                      width: double.infinity,
+                                      height: 110,
+                                    )
+                                  : Image.network(
+                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSLx2ikECnRXDzPAAMSdJkpQ78Aqz-frGAq5Eez5Aak6X1nMhRpuFNY3Opl5Ys9BQLAEs&usqp=CAU',
+                                      fit: BoxFit.fitWidth,
+                                      width: double.infinity,
+                                      height: 110,
+                                    ),
                             ),
                             Container(
                               alignment: Alignment.centerLeft,
@@ -74,7 +80,7 @@ class _newListState extends State<newList> {
                                     const EdgeInsets.only(left: 8.0, top: 8.0),
                                 child: Text(
                                   dateFormater(
-                                      snapshot.data[index]['published_on']),
+                                      snapshot.data[index]['time_date']),
                                 ),
                               ),
                             ),
@@ -100,7 +106,7 @@ class _newListState extends State<newList> {
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 20.0),
                                 child: Text(
-                                  "- ${snapshot.data[index]['source']}",
+                                  "- ${snapshot.data[index]['author']}",
                                 ),
                               ),
                             ),

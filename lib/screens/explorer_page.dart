@@ -1,7 +1,10 @@
 // ignore_for_file: avoid_unnecessary_containers, camel_case_types, prefer_const_constructors
-import 'package:drc/components/news.dart';
-import 'package:drc/components/top_gainers.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import '../components/news.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({Key? key}) : super(key: key);
@@ -11,19 +14,32 @@ class ExplorePage extends StatefulWidget {
 }
 
 class _ExplorePageState extends State<ExplorePage> {
-  var gainerList = [
-    {"name": "ANGH", "price": 28.88, "change": 161.36},
-    {"name": "FTK", "price": 1.35, "change": 70.20},
-    {"name": "NVCT", "price": 6.75, "change": 21.18}
-  ];
-  var loserList = [
-    {"name": "AMPL", "price": 17.10, "change": -58.90},
-    {"name": "FSLY", "price": 19.20, "change": -33.63},
-    {"name": "YMTK", "price": 11.26, "change": -28.81}
-  ];
+  var toplist = [];
+  var loserList = [];
+
+  void coinList() async {
+    var data = await http.get(Uri.parse(
+        'https://financialmodelingprep.com/api/v3/stock_market/gainers?apikey=34487577b4e7dcfe4b35aed0415b2f43'));
+    var result = json.decode(data.body);
+    
+    setState(() {
+      for (int i = 0; i <= result.length - 1; i++) {
+        toplist.add(result[i]);
+      }
+      loserList = toplist.reversed.toList();
+    });
+  }
+
+  @override
+  void initState() {
+    coinList();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    print(toplist);
+    print(loserList);
     return Stack(
       children: [
         Container(
@@ -39,9 +55,183 @@ class _ExplorePageState extends State<ExplorePage> {
         ListView(
           children: [
             SizedBox(height: 80),
-            topList(name: "GAINERS", toplist: gainerList),
+            Container(
+              padding: EdgeInsets.only(left: 30, right: 30),
+              child: Column(children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  width: double.infinity,
+                  child: Text(
+                    "TOP GAINERS",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 110,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
+                    child: Column(children: [
+                      Flexible(
+                        flex: 3,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: const [
+                            Text(
+                              "Ticker          ",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "Price",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "Change(%)",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Flexible(
+                        flex: 7,
+                        child: ListView.builder(
+                          itemCount: toplist.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              padding: const EdgeInsets.fromLTRB(5, 2, 5, 2),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('${toplist[index]['symbol']}',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      )),
+                                  Text('\$ ${toplist[index]['price']}'),
+                                  Text(
+                                    '${toplist[index]['changesPercentage']}%',
+                                    style: TextStyle(
+                                      color: Colors.green[900],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                    ]),
+                  ),
+                )
+              ]),
+            ),
             SizedBox(height: 20),
-            topList(name: "LOSERS", toplist: loserList),
+            Container(
+              padding: EdgeInsets.only(left: 30, right: 30),
+              child: Column(children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  width: double.infinity,
+                  child: Text(
+                    "TOP LOSERS",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 110,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
+                    child: Column(children: [
+                      Flexible(
+                        flex: 3,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: const [
+                            Text(
+                              "Ticker          ",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "Price",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "Change(%)",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Flexible(
+                        flex: 7,
+                        child: ListView.builder(
+                          itemCount: loserList.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              padding: const EdgeInsets.fromLTRB(5, 2, 5, 2),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('${loserList[index]['symbol']}',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      )),
+                                  Text('\$ ${loserList[index]['price']}'),
+                                  Text(
+                                    '${loserList[index]['changesPercentage']}%',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                    ]),
+                  ),
+                )
+              ]),
+            ),
             SizedBox(height: 20),
             Container(
               height: 300,

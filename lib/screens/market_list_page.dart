@@ -75,7 +75,7 @@ class _MarketScreenState extends State<MarketScreen> {
                     decoration: BoxDecoration(
                       color: Theme.of(context).appBarTheme.backgroundColor,
                     ),
-                    height: 200,
+                    height: 160,
                     width: double.infinity,
                     padding: const EdgeInsets.fromLTRB(5, 30, 5, 10),
                     child: Column(
@@ -338,6 +338,7 @@ class _MarketScreenState extends State<MarketScreen> {
                       ],
                     ),
                   ),
+                  SizedBox(height: 5),
                   Card(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     elevation: 5,
@@ -350,104 +351,106 @@ class _MarketScreenState extends State<MarketScreen> {
                         color: Theme.of(context).colorScheme.secondaryContainer,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Center(
-                        child: ListTile(
-                          visualDensity:
-                              VisualDensity(horizontal: 0, vertical: -4),
-                          horizontalTitleGap: 20.0,
-                          leading: Text('Market Name' "         "),
-                          trailing: Text(
-                            'Display Name',
-                            textAlign: TextAlign.center,
-                          ),
-                          title: Text(
-                            '   Price'
-                            " ",
-                            textAlign: TextAlign.start,
-                          ),
+                      child: Container(
+                        margin: const EdgeInsets.fromLTRB(60, 0, 60, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                'Name',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                            Expanded(
+                              flex: 4,
+                              child: Text(
+                                'Last Price',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
                   Expanded(
-                    child: Container(
-                      child: ListView.builder(
-                        padding: EdgeInsets.all(0),
-                        itemCount: 78,
-                        itemBuilder: (BuildContext context, int index) {
-                          if (price['active_symbols'][index]
-                                  ['market_display_name'] ==
-                              textname) {
-                            var formatPrice = NumberFormat.currency(
-                                    customPattern: '##,##0.0####', decimalDigits: 5)
-                                .format(price['active_symbols'][index]['spot']);
-                                RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
-                                String ongoingPrice = formatPrice.toString().replaceAll(regex, '');
-                            return Card(
-                              elevation: 5,
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => GraphScreen(
-                                        symbolName: price['active_symbols']
-                                            [index]['display_name'],
-                                        symbol: price['active_symbols'][index]
-                                            ['symbol'],
-                                        state: price['active_symbols'][index]
-                                            ['exchange_is_open'],
-                                        currency_symbol: price['active_symbols']
-                                            [index]['quoted_currency_symbol'],
-                                        apiToken: apiToken,
-                                      ),
+                    child: ListView.builder(
+                      itemCount: 78,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (price['active_symbols'][index]
+                                ['market_display_name'] ==
+                            textname) {
+                          var formatPrice = NumberFormat.currency(
+                                  customPattern: '##,##0.0####',
+                                  decimalDigits: 5)
+                              .format(price['active_symbols'][index]['spot']);
+
+                          RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
+                          String ongoingPrice =
+                              formatPrice.toString().replaceAll(regex, '');
+
+                          return Card(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => GraphScreen(
+                                      symbolName: price['active_symbols'][index]
+                                          ['display_name'],
+                                      symbol: price['active_symbols'][index]
+                                          ['symbol'],
+                                      state: price['active_symbols'][index]
+                                          ['exchange_is_open'],
+                                      currency_symbol: price['active_symbols']
+                                          [index]['quoted_currency_symbol'],
+                                      apiToken: apiToken,
                                     ),
-                                  );
-                                },
-                                child: Container(
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFFFF4F4F4),
-                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                  child: Center(
-                                    child: ListTile(
-                                      visualDensity: VisualDensity(
-                                          horizontal: 0, vertical: -4),
-                                      horizontalTitleGap: 50.0,
-                                      leading: (price['active_symbols'][index]
-                                                  ['market_display_name'] ==
-                                              'Forex')
-                                          ? Text(
-                                              '${price['active_symbols'][index]['market_display_name']}                ',
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                            )
-                                          : Text(
-                                              '${price['active_symbols'][index]['market_display_name']}',
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            ),
-                                      trailing: SizedBox(
-                                        width: 70,
-                                        child: Wrap(children: [
-                                          Text(
-                                            '${price['active_symbols'][index]['display_name']}',
-                                            textAlign: TextAlign.center,
-                                            style:
-                                                TextStyle(color: Colors.black),
-                                          ),
-                                        ]),
-                                      ),
-                                      title: Text(
-                                          '${ongoingPrice} ${price['active_symbols'][index]['quoted_currency_symbol']} ',
+                                );
+                              },
+                              child: Container(
+                                height: 80,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFFFF4F4F4),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Container(
+                                  margin:
+                                      const EdgeInsets.fromLTRB(50, 0, 60, 0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        flex: 3,
+                                        child: Text(
+                                          '${price['active_symbols'][index]['display_name']}',
                                           textAlign: TextAlign.start,
-                                          style:
-                                              TextStyle(color: Colors.black)),
-                                    ),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 18),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 4,
+                                        child: Text(
+                                            '${ongoingPrice} ${price['active_symbols'][index]['quoted_currency_symbol']} ',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18)),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                // priceChangeEvaluator
+                                ),
                               ),
                             );
                           } else {
@@ -456,7 +459,6 @@ class _MarketScreenState extends State<MarketScreen> {
                         },
                       ),
                     ),
-                  ),
                 ],
               );
             }

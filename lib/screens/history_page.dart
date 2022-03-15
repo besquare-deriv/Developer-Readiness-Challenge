@@ -83,69 +83,66 @@ class _HistoryScreenState extends State<HistoryScreen> {
       }
 
       if (data['msg_type'] == 'statement') {
-          for (int i = 0;
-              i <= data['statement']['transactions'].length - 1;
-              i++) {
-            time.add(DateTime.fromMillisecondsSinceEpoch(data['statement']
-                    ['transactions'][i]['transaction_time'] *
-                1000));
+        for (int i = 0;
+            i <= data['statement']['transactions'].length - 1;
+            i++) {
+          time.add(DateTime.fromMillisecondsSinceEpoch(
+              data['statement']['transactions'][i]['transaction_time'] * 1000));
 
-            String formattedDate =
-                DateFormat('yyyy-MM-dd HH:mm:ss').format(time[i]);
+          String formattedDate =
+              DateFormat('yyyy-MM-dd HH:mm:ss').format(time[i]);
 
-            currency.add(
-                data['statement']['transactions'][i]['shortcode'].toString());
-            // print(currency[i]);
-            // print(currency[i].contains("R_"));
-            // print(currency[i].contains(RegExp(".*?_(R_.*?)_.*?")));
+          currency.add(
+              data['statement']['transactions'][i]['shortcode'].toString());
+          // print(currency[i]);
+          // print(currency[i].contains("R_"));
+          // print(currency[i].contains(RegExp(".*?_(R_.*?)_.*?")));
 
-            if (currency[i].contains(RegExp(".*?_(R_.*?)_.*?"))) {
-              String a = currency[i].split('_')[1];
-              String b = currency[i].split('_')[2];
-              String output = a + '_' + b;
-              typeCurrency.add(output);
-            } else if (currency[i].contains(RegExp(".*?_(OTC_.*?)_.*?"))) {
-              String a = currency[i].split('_')[1];
-              String b = currency[i].split('_')[2];
-              String output = a + '_' + b;
-              typeCurrency.add(output);
-            } else if (currency[i].contains('null')) {
-              typeCurrency.add(currency[i]);
-            } else {
-              String output = currency[i].split('_')[1];
-              typeCurrency.add(output);
-            }
-
-
-            for (int j = 0; j <= activeSymbol.length - 1; j++) {
-              if (typeCurrency[i] == activeSymbol[j].symbol) {
-                displayName.add(activeSymbol[j].displayName);
-                break;
-              }
-              if (typeCurrency[i] == 'null') {
-                displayName.add('null');
-                break;
-              }
-            }
-
-            setState(() {
-              dataHistory.add(
-                transDetails(
-                  action: data['statement']['transactions'][i]['action_type'],
-                  time: formattedDate,
-                  id: data['statement']['transactions'][i]['transaction_id'],
-                  amount: data['statement']['transactions'][i]['amount'],
-                  balance: data['statement']['transactions'][i]
-                      ['balance_after'],
-                  contract_id: data['statement']['transactions'][i]
-                      ['contract_id'],
-                  payout: data['statement']['transactions'][i]['payout'],
-                  crypto: typeCurrency[i],
-                  symbolName: displayName[i],
-                ),
-              );
-            });
+          if (currency[i].contains(RegExp(".*?_(R_.*?)_.*?"))) {
+            String a = currency[i].split('_')[1];
+            String b = currency[i].split('_')[2];
+            String output = a + '_' + b;
+            typeCurrency.add(output);
+          } else if (currency[i].contains(RegExp(".*?_(OTC_.*?)_.*?"))) {
+            String a = currency[i].split('_')[1];
+            String b = currency[i].split('_')[2];
+            String output = a + '_' + b;
+            typeCurrency.add(output);
+          } else if (currency[i].contains('null')) {
+            typeCurrency.add(currency[i]);
+          } else {
+            String output = currency[i].split('_')[1];
+            typeCurrency.add(output);
           }
+
+          for (int j = 0; j <= activeSymbol.length - 1; j++) {
+            if (typeCurrency[i] == activeSymbol[j].symbol) {
+              displayName.add(activeSymbol[j].displayName);
+              break;
+            }
+            if (typeCurrency[i] == 'null') {
+              displayName.add('null');
+              break;
+            }
+          }
+
+          setState(() {
+            dataHistory.add(
+              transDetails(
+                action: data['statement']['transactions'][i]['action_type'],
+                time: formattedDate,
+                id: data['statement']['transactions'][i]['transaction_id'],
+                amount: data['statement']['transactions'][i]['amount'],
+                balance: data['statement']['transactions'][i]['balance_after'],
+                contract_id: data['statement']['transactions'][i]
+                    ['contract_id'],
+                payout: data['statement']['transactions'][i]['payout'],
+                crypto: typeCurrency[i],
+                symbolName: displayName[i],
+              ),
+            );
+          });
+        }
         setState(() {
           listData.addAll(dataHistory);
         });
@@ -258,17 +255,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                             )));
                               },
                               child: Text(
-                                "Active Contracts",
+                                "Open Positions",
                                 style: TextStyle(
-                                  color: Theme.of(context).colorScheme.onSurface
-                                ),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface),
                               ),
                             ),
                           ),
                         ),
                         IconButton(
-                          icon: Icon(Icons.refresh_rounded, 
-                            color: Theme.of(context).iconTheme.color),
+                          icon: Icon(Icons.refresh_rounded,
+                              color: Theme.of(context).iconTheme.color),
                           iconSize: 40,
                           onPressed: () {
                             getData();
@@ -276,7 +274,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         ),
                         IconButton(
                           icon: Icon(Icons.sort_rounded,
-                            color: Theme.of(context).iconTheme.color),
+                              color: Theme.of(context).iconTheme.color),
                           iconSize: 40,
                           onPressed: () {
                             setState(() {
@@ -285,8 +283,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           },
                         ),
                         IconButton(
-                          icon: Icon(Icons.filter_alt, 
-                            color: Theme.of(context).iconTheme.color),
+                          icon: Icon(Icons.filter_alt,
+                              color: Theme.of(context).iconTheme.color),
                           iconSize: 40,
                           onPressed: () => showDialog(
                               context: context,
@@ -339,7 +337,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   margin: EdgeInsets.symmetric(
                                       horizontal: 8.0, vertical: 4.0),
                                   child: Card(
-                                    color: Theme.of(context).colorScheme.tertiaryContainer,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .tertiaryContainer,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0)),
@@ -379,7 +379,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                                   69,
                                                                   69,
                                                                   1))),
-                                                  Text('${listData[index].symbolName}',
+                                                  Text(
+                                                      '${listData[index].symbolName}',
                                                       style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 12,
