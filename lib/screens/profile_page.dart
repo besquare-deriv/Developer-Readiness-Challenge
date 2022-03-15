@@ -65,6 +65,10 @@ class _ProfilePageState extends State<ProfilePage> {
             final v = docs[0].data() as Map;
             field_Name = v['token'];
             ref = snapshot.data!.docs[0].reference;
+
+
+            var hiddenToken = apiToken.replaceRange(0, 11, 'XXXXXXXXXXX');
+
             return Scaffold(
               // backgroundColor: Colors.white,
               //appBar: buildAppBar(context),
@@ -195,7 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               color: Colors.white,
                             ),
                             textAlign: TextAlign.center,
-                            initialValue: "${v['token']}",
+                            initialValue: "$hiddenToken",
                             onChanged: (_val) {
                               field_Name = _val;
                             },
