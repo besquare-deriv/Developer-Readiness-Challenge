@@ -64,7 +64,6 @@ class _ExplorePageState extends State<ExplorePage> {
                   child: Text(
                     "TOP GAINERS",
                     style: TextStyle(
-                      color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
                     ),
@@ -124,8 +123,12 @@ class _ExplorePageState extends State<ExplorePage> {
                                   Text('${toplist[index]['symbol']}',
                                       style: TextStyle(
                                         fontSize: 16,
+                                        color: Colors.black,
                                       )),
-                                  Text('\$ ${toplist[index]['price']}'),
+                                  Text('\$ ${toplist[index]['price']}',
+                                      style: TextStyle(
+                                        color: Colors.black
+                                      )),
                                   Text(
                                     '${toplist[index]['changesPercentage']}%',
                                     style: TextStyle(
@@ -153,7 +156,6 @@ class _ExplorePageState extends State<ExplorePage> {
                   child: Text(
                     "TOP LOSERS",
                     style: TextStyle(
-                      color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
                     ),
@@ -213,8 +215,12 @@ class _ExplorePageState extends State<ExplorePage> {
                                   Text('${loserList[index]['symbol']}',
                                       style: TextStyle(
                                         fontSize: 16,
+                                        color: Colors.black,
                                       )),
-                                  Text('\$ ${loserList[index]['price']}'),
+                                  Text('\$ ${loserList[index]['price']}',
+                                      style: TextStyle(
+                                        color: Colors.black
+                                      )),
                                   Text(
                                     '${loserList[index]['changesPercentage']}%',
                                     style: TextStyle(
@@ -244,7 +250,6 @@ class _ExplorePageState extends State<ExplorePage> {
                     child: Text(
                       "NEWS",
                       style: TextStyle(
-                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 30,
                       ),
