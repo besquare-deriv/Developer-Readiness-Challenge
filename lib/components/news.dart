@@ -62,7 +62,7 @@ class _newListState extends State<newList> {
                               child: (snapshot.data[index].runtimeType != 'int')
                                   ? Image.network(
                                       snapshot.data[index]['image_url'],
-                                      fit: BoxFit.fitWidth,
+                                      fit: BoxFit.fill,
                                       width: double.infinity,
                                       height: 110,
                                     )
