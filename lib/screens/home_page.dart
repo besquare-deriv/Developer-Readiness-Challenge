@@ -357,7 +357,7 @@ class _HomePageState extends State<HomePage> {
 
     channel.stream.listen((data) {
       var response = jsonDecode(data);
-      debugPrint(response.toString());
+      // debugPrint(response.toString());
       if (response['msg_type'] == 'authorize' && response['error'] == null) {
         getStatement();
         setState(() {
