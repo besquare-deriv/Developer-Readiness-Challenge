@@ -116,9 +116,9 @@ class _chartBuilderState extends State<chartBuilder> {
                   enablePinching: true,
                   maximumZoomLevel: 0.01),
               primaryXAxis: DateTimeAxis(
-                dateFormat: DateFormat('dd-MMM-yy hh:mm'),
+                dateFormat: DateFormat('hh:mm \n dd-MMM-yy'),
                 zoomPosition: 1,
-                zoomFactor: 0.01,
+                zoomFactor: 0.05,
                 intervalType: DateTimeIntervalType.minutes,
                 interval: 5,
                 majorGridLines: MajorGridLines(width: 0),
@@ -177,8 +177,8 @@ class _chartBuilderState extends State<chartBuilder> {
                   ), */
                   animationDuration: 1,
                   onRendererCreated: (ChartSeriesController controller) {
-                    _chartSeriesController:
-                    controller;
+                    // controller.updateDataSource(
+                    //     addedDataIndexes: <int>[priceTime.length - 1]);
                   },
                   color: Colors.grey,
                   enableTooltip: true,
