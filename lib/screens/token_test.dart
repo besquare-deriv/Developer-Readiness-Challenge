@@ -79,8 +79,8 @@ class _AddNoteState extends State<AddNote> {
                     context: context,
                     builder: (BuildContext ctxt) {
                       return AlertDialog(
-                        title:
-                            Text("Are you sure you want to change API Token ?"),
+                        title: Text(
+                            "Are you sure to proceed with provided API Token ?"),
                         actions: <Widget>[
                           TextButton(
                             child: Text("Cancel"),
@@ -160,7 +160,7 @@ class _AddNoteState extends State<AddNote> {
   bool validator(String value) {
     if (value.length > 20) {
       return false;
-    } else if (value.isNotEmpty) {
+    } else if (value.isNotEmpty && value.length > 11) {
       bool mobileValid = RegExp(r'^[a-zA-Z0-9]+$').hasMatch(value);
       return mobileValid;
     }
