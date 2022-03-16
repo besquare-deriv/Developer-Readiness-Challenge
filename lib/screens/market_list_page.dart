@@ -391,7 +391,7 @@ class _MarketScreenState extends State<MarketScreen> {
                                   decimalDigits: 5)
                               .format(price['active_symbols'][index]['spot']);
 
-                          RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
+                          RegExp regex = RegExp(r'([.]*0+)(?!.*\d)');
                           String ongoingPrice =
                               formatPrice.toString().replaceAll(regex, '');
 
