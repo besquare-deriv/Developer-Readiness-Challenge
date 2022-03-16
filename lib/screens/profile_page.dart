@@ -66,7 +66,6 @@ class _ProfilePageState extends State<ProfilePage> {
             field_Name = v['token'];
             ref = snapshot.data!.docs[0].reference;
 
-
             var hiddenToken = apiToken.replaceRange(0, 11, 'XXXXXXXXXXX');
 
             return Scaffold(
@@ -161,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         builder: (BuildContext ctxt) {
                                           return AlertDialog(
                                             title: Text(
-                                                "API Token must be alphanumeric with less than 20 characters and cannot be empty.",
+                                                "API Token must be alphanumeric within 12 to 20 characters and cannot be empty.",
                                                 style: TextStyle(
                                                   fontSize: 16,
                                                 )),
@@ -352,7 +351,7 @@ class _ProfilePageState extends State<ProfilePage> {
   bool validator(String value) {
     if (value.length > 20) {
       return false;
-    } else if (value.isNotEmpty) {
+    } else if (value.isNotEmpty && value.length > 11) {
       bool mobileValid = RegExp(r'^[a-zA-Z0-9]+$').hasMatch(value);
       return mobileValid;
     }

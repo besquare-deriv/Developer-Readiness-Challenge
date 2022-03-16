@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:drc/components/onGoingPrice.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:web_socket_channel/io.dart';
@@ -26,6 +27,7 @@ class _chartBuilderState extends State<chartBuilder> {
       this.symbol, this.symbolName, this.currency_symbol, this.channel2);
 
   List<tickHistory> priceTime = [];
+  ChartSeriesController? _chartSeriesController;
 
   WebSocketChannel channel2;
   String symbol, symbolName, currency_symbol;
@@ -62,41 +64,14 @@ class _chartBuilderState extends State<chartBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    var formatPrice =
-        NumberFormat.currency(customPattern: '##,##0.0####', decimalDigits: 5)
-            .format(currentPrice);
-    RegExp regex = RegExp(r"([.]*0+)(?!.*\d)");
-    String ongoingPrice = formatPrice.toString().replaceAll(regex, '');
     if (priceTime.isNotEmpty) {
       return Column(
         children: [
-          Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(10),
-              alignment: Alignment.centerLeft,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 120,
-                    child: Wrap(children: [
-                      Text(
-                        "$symbolName :",
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                    ]),
-                  ),
-                  Text(
-                    "$ongoingPrice $currency_symbol",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              )),
+          onGoingPrice(
+            symbol: symbol,
+            symbolName: symbolName,
+            currency_symbol: currency_symbol,
+          ),
           Container(
             color: Theme.of(context).colorScheme.onPrimaryContainer,
             width: double.infinity,
@@ -116,11 +91,12 @@ class _chartBuilderState extends State<chartBuilder> {
                   enablePinching: true,
                   maximumZoomLevel: 0.01),
               primaryXAxis: DateTimeAxis(
-                dateFormat: DateFormat('dd-MMM-yy hh:mm'),
+                dateFormat: DateFormat(
+                  'hh:mm:ss\ndd-MMM-yy',
+                ),
                 zoomPosition: 1,
                 zoomFactor: 0.01,
-                intervalType: DateTimeIntervalType.minutes,
-                interval: 5,
+                intervalType: DateTimeIntervalType.seconds,
                 majorGridLines: MajorGridLines(width: 0),
                 tickPosition: TickPosition.outside,
                 enableAutoIntervalOnZooming: true,
@@ -140,27 +116,19 @@ class _chartBuilderState extends State<chartBuilder> {
 
               // Chart title
               trackballBehavior: TrackballBehavior(
-                  enable: true,
-                  // activationMode: ActivationMode.longPress,
-                  tooltipSettings: InteractiveTooltip(
-                    color: Colors.red,
-                    format: 'point.y at point.x',
-                  ),
-                  lineColor: Colors.red,
-                  shouldAlwaysShow: true,
-                  lineWidth: 1,
-                  lineType: TrackballLineType.horizontal,
-                  tooltipAlignment: ChartAlignment.near,
-                  tooltipDisplayMode: TrackballDisplayMode.nearestPoint),
-              /* tooltipBehavior: TooltipBehavior(
-                tooltipPosition: TooltipPosition.auto,
-                color: Colors.red,
-                elevation: 10,
                 enable: true,
-                format: 'point.y at point.x',
-                shouldAlwaysShow: true,
-                canShowMarker: true,
-              ), */
+                activationMode: ActivationMode.longPress,
+                tooltipSettings: InteractiveTooltip(
+                  color: Colors.red,
+                  format: 'Price point.y',
+                ),
+                lineColor: Colors.red,
+                shouldAlwaysShow: false,
+                lineWidth: 1,
+                lineType: TrackballLineType.horizontal,
+                tooltipAlignment: ChartAlignment.near,
+              ),
+
               onZoomStart: (ZoomPanArgs args) {
                 args.currentZoomPosition = 20;
               },
@@ -169,16 +137,10 @@ class _chartBuilderState extends State<chartBuilder> {
                   opacity: 0.3,
                   borderWidth: 4,
                   borderColor: Color.fromRGBO(8, 217, 217, 1),
-                  /* borderGradient: LinearGradient(
-                    colors: <Color>[
-                      Color.fromRGBO(230, 0, 180, 1),
-                      Color.fromRGBO(8, 217, 217, 1)
-                    ],
-                  ), */
+
                   animationDuration: 1,
                   onRendererCreated: (ChartSeriesController controller) {
-                    _chartSeriesController:
-                    controller;
+                    _chartSeriesController = controller;
                   },
                   color: Colors.grey,
                   enableTooltip: true,
@@ -212,13 +174,14 @@ class _chartBuilderState extends State<chartBuilder> {
         // Converts epoch to DateTimestamp format
         timeConverted.add(DateTime.fromMillisecondsSinceEpoch(
             price['history']['times'][i] * 1000));
-
-        priceTime.add(
-          tickHistory(
-            time: timeConverted[i],
-            price: price['history']['prices'][i],
-          ),
-        );
+        setState(() {
+          priceTime.add(
+            tickHistory(
+              time: timeConverted[i],
+              price: price['history']['prices'][i],
+            ),
+          );
+        });
       }
       firstPrice = priceTime[0].price;
       calInterval();
@@ -228,26 +191,26 @@ class _chartBuilderState extends State<chartBuilder> {
   }
 
   void tickStream() {
-    // Sets the interval to call the ticks in seconds
+    dynamic timeConverted;
 
     channel2.stream.listen((data) {
       var tickStream = jsonDecode(data);
 
-      dynamic timeConverted;
-
       timeConverted = DateTime.fromMillisecondsSinceEpoch(
           tickStream['tick']['epoch'] * 1000);
-      //extractedTime = DateFormat.Hms().format(timeConverted);
       currentPrice = tickStream['tick']['quote'];
-      setState(() {
-        priceTime.add(
-          tickHistory(
-            time: timeConverted,
-            price: currentPrice,
-          ),
-        );
-        priceTime.removeAt(0);
-      });
+      priceTime.add(
+        tickHistory(
+          time: timeConverted,
+          price: tickStream['tick']['quote'],
+        ),
+      );
+      priceTime.removeAt(0);
+
+      _chartSeriesController?.updateDataSource(
+        addedDataIndexes: <int>[priceTime.length - 1],
+        removedDataIndexes: <int>[0],
+      );
     });
   }
 

@@ -1,8 +1,6 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables, camel_case_types
 
 import 'dart:convert';
-
-import 'package:drc/screens/token_test.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 
@@ -359,8 +357,8 @@ class _HomePageState extends State<HomePage> {
 
     channel.stream.listen((data) {
       var response = jsonDecode(data);
-
-      if (response['msg_type'] == 'authorize') {
+      // debugPrint(response.toString());
+      if (response['msg_type'] == 'authorize' && response['error'] == null) {
         getStatement();
         setState(() {
           balance = response['authorize']['balance'];
@@ -368,6 +366,25 @@ class _HomePageState extends State<HomePage> {
           username = response['authorize']['email']
               .substring(0, response['authorize']['email'].indexOf('@'));
         });
+      } else if (response['msg_type'] == 'authorize' &&
+          response['error']['code'] == 'InvalidToken') {
+        showDialog(
+          context: context,
+          builder: (BuildContext ctxt) {
+            return AlertDialog(
+              title: Text(
+                  "${response['error']['message']} Please go to Profile Page and change the API Token."),
+              actions: <Widget>[
+                TextButton(
+                  child: Text("OK"),
+                  onPressed: () {
+                    Navigator.of(ctxt).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
       }
 
       if (response['msg_type'] == 'statement') {
