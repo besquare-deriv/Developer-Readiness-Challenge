@@ -59,7 +59,6 @@ class _GraphScreenState extends State<GraphScreen> {
   int? _inputAmount;
   int? contractTime;
   String? contractType;
-  String? value1;
 
   void getPriceProposal() {
     String request =
@@ -74,7 +73,8 @@ class _GraphScreenState extends State<GraphScreen> {
   void listenWS() {
     authChannel.stream.listen((data) {
       var result = jsonDecode(data);
-      if (result['msg_type'] == 'proposal' && result['proposal'] != null) {
+      if (result['msg_type'] == 'proposal' ||
+          result['msg_type'] == 'buy' && result['error'] == null) {
         buy_id = result['proposal']['id'];
 
         showDialog(
@@ -108,9 +108,8 @@ class _GraphScreenState extends State<GraphScreen> {
             );
           },
         );
-      }
-
-      if (result['msg_type'] == 'proposal' && result['error'] != null) {
+      } else if (result['msg_type'] == 'proposal' ||
+          result['msg_type'] == 'buy' && result['error'] != null) {
         showDialog(
           context: context,
           builder: (BuildContext context) {

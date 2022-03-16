@@ -18,7 +18,7 @@ class AddNote extends StatefulWidget {
 class _AddNoteState extends State<AddNote> {
   _AddNoteState({this.apiToken, this.email});
 
-  String? title;
+  String field_Name = 'abcdefu';
   String? apiToken;
   String? email;
 
@@ -40,7 +40,7 @@ class _AddNoteState extends State<AddNote> {
             children: <Widget>[
               TextField(
                 onChanged: (_val) {
-                  title = _val;
+                  field_Name = _val;
                 },
                 style: TextStyle(color: Colors.black),
                 decoration: InputDecoration(
@@ -70,21 +70,72 @@ class _AddNoteState extends State<AddNote> {
           child: const Text("Cancel", style: TextStyle(fontSize: 17)),
         ),
         TextButton(
-          onPressed: () => add(),
+          onPressed: () {
+            String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+            RegExp regExp = new RegExp(pattern);
+            print(field_Name.length);
+            (validator(field_Name.toString()))
+                ? showDialog(
+                    context: context,
+                    builder: (BuildContext ctxt) {
+                      return AlertDialog(
+                        title: Text(
+                            "Are you sure to proceed with provided API Token ?"),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text("Cancel"),
+                            onPressed: () {
+                              Navigator.of(ctxt).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: Text("Confirm"),
+                            onPressed: () {
+                              saveAPI();
+                              Navigator.of(ctxt).pop();
+
+                              // Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  )
+                : showDialog(
+                    context: context,
+                    builder: (BuildContext ctxt) {
+                      return AlertDialog(
+                        title: Text(
+                            "API Token must be alphanumeric with less than 20 characters and cannot be empty.",
+                            style: TextStyle(
+                              fontSize: 16,
+                            )),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text("OK"),
+                            onPressed: () {
+                              Navigator.of(ctxt).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+          },
           child: const Text("Verify", style: TextStyle(fontSize: 17)),
         ),
       ],
     );
   }
 
-  void add() async {
+  void saveAPI() async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     db
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection('notes')
         .add({
-      'token': title,
+      'token': field_Name,
       'created': DateTime.now(),
     });
     // save to db
@@ -104,5 +155,16 @@ class _AddNoteState extends State<AddNote> {
         );
       },
     );
+  }
+
+  bool validator(String value) {
+    if (value.length > 20) {
+      return false;
+    } else if (value.isNotEmpty && value.length > 11) {
+      bool mobileValid = RegExp(r'^[a-zA-Z0-9]+$').hasMatch(value);
+      return mobileValid;
+    }
+
+    return false;
   }
 }
