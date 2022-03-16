@@ -19,7 +19,7 @@ class _ExplorePageState extends State<ExplorePage> {
 
   void coinList() async {
     var data = await http.get(Uri.parse(
-        'https://financialmodelingprep.com/api/v3/stock_market/gainers?apikey=34487577b4e7dcfe4b35aed0415b2f43'));
+        'http://192.168.100.144:3000/stats'));
     var result = json.decode(data.body);
     
     setState(() {
@@ -38,8 +38,6 @@ class _ExplorePageState extends State<ExplorePage> {
 
   @override
   Widget build(BuildContext context) {
-    print(toplist);
-    print(loserList);
     return Stack(
       children: [
         Container(
@@ -127,7 +125,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                       )),
                                   Text('\$ ${toplist[index]['price']}'),
                                   Text(
-                                    '${toplist[index]['changesPercentage']}%',
+                                    '${toplist[index]['change_percent']}%',
                                     style: TextStyle(
                                       color: Colors.green[900],
                                     ),
@@ -216,7 +214,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                       )),
                                   Text('\$ ${loserList[index]['price']}'),
                                   Text(
-                                    '${loserList[index]['changesPercentage']}%',
+                                    '${loserList[index]['change_percent']}%',
                                     style: TextStyle(
                                       color: Colors.red,
                                     ),
