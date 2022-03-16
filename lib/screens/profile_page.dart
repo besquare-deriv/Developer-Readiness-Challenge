@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drc/components/error_dialog.dart';
 import 'package:drc/screens/faq_page.dart';
 import 'package:drc/Authorization/auth_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:web_socket_channel/io.dart';
 import '../components/profile_widget.dart';
@@ -14,26 +16,21 @@ import 'settings_page.dart';
 
 class ProfilePage extends StatefulWidget {
   final String apiToken;
-
   const ProfilePage(this.apiToken, {Key? key}) : super(key: key);
-
   @override
   _ProfilePageState createState() => _ProfilePageState(apiToken);
 }
 
 class _ProfilePageState extends State<ProfilePage> {
   String? value;
-  String? field_Name;
+  String field_Name = 'ABCDEFGHIJKL';
   String apiToken;
   _ProfilePageState(this.apiToken, {Key? key});
   String username = "User";
   String email = "User@gmail.com";
-
   num balance = 0.0;
-
   final channel = IOWebSocketChannel.connect(
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
-
   void sendAuth() {
     channel.sink.add('{"authorize": "$apiToken"}');
   }
@@ -53,11 +50,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   DocumentReference? ref;
   GlobalKey<FormState> validkey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     const user = UserInformation.myUser;
-
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("users")
@@ -71,9 +66,11 @@ class _ProfilePageState extends State<ProfilePage> {
             field_Name = v['token'];
             ref = snapshot.data!.docs[0].reference;
 
+
+            var hiddenToken = apiToken.replaceRange(0, 11, 'XXXXXXXXXXX');
+
             return Scaffold(
               // backgroundColor: Colors.white,
-
               //appBar: buildAppBar(context),
               body: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
@@ -129,32 +126,56 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               //style: TextButton.styleFrom(),
                               onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext ctxt) {
-                                    return AlertDialog(
-                                      title: Text(
-                                          "Are you sure you want to change API Token ?"),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: Text("Cancel"),
-                                          onPressed: () {
-                                            Navigator.of(ctxt).pop();
-                                          },
-                                        ),
-                                        TextButton(
-                                          child: Text("Confirm"),
-                                          onPressed: () {
-                                            saveAPI();
-                                            Navigator.of(ctxt).pop();
+                                String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+                                RegExp regExp = new RegExp(pattern);
+                                print(field_Name.length);
+                                (validator(field_Name.toString()))
+                                    ? showDialog(
+                                        context: context,
+                                        builder: (BuildContext ctxt) {
+                                          return AlertDialog(
+                                            title: Text(
+                                                "Are you sure you want to change API Token ?"),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: Text("Cancel"),
+                                                onPressed: () {
+                                                  Navigator.of(ctxt).pop();
+                                                },
+                                              ),
+                                              TextButton(
+                                                child: Text("Confirm"),
+                                                onPressed: () {
+                                                  saveAPI();
+                                                  Navigator.of(ctxt).pop();
 
-                                            // Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
+                                                  // Navigator.of(context).pop();
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      )
+                                    : showDialog(
+                                        context: context,
+                                        builder: (BuildContext ctxt) {
+                                          return AlertDialog(
+                                            title: Text(
+                                                "API Token must be alphanumeric with less than 20 characters and cannot be empty.",
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                )),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: Text("OK"),
+                                                onPressed: () {
+                                                  Navigator.of(ctxt).pop();
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                               },
                             ),
                           ],
@@ -178,7 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               color: Colors.white,
                             ),
                             textAlign: TextAlign.center,
-                            initialValue: "${v['token']}",
+                            initialValue: "$hiddenToken",
                             onChanged: (_val) {
                               field_Name = _val;
                             },
@@ -188,7 +209,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             ])),
                       ),
                       const SizedBox(height: 25),
-
                       ElevatedButton(
                           child: Text(
                             'Settings',
@@ -212,7 +232,6 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             );
                           }),
-
                       const SizedBox(height: 25),
                       ElevatedButton(
                           child: Text(
@@ -275,7 +294,6 @@ class _ProfilePageState extends State<ProfilePage> {
           )
         ],
       );
-
   Widget buildBalanceAcc(Users users) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 48),
         child: Column(
@@ -298,19 +316,15 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
       );
-
   void getProfileInfo() {
     channel.stream.listen((data) {
       var response = jsonDecode(data);
-
       if (response['msg_type'] == 'authorize') {
         getStatement();
         setState(() {
           balance = response['authorize']['balance'];
-
           username = response['authorize']['email']
               .substring(0, response['authorize']['email'].indexOf('@'));
-
           email = response['authorize']['email'];
         });
       }
@@ -333,5 +347,16 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
     }
+  }
+
+  bool validator(String value) {
+    if (value.length > 20) {
+      return false;
+    } else if (value.isNotEmpty) {
+      bool mobileValid = RegExp(r'^[a-zA-Z0-9]+$').hasMatch(value);
+      return mobileValid;
+    }
+
+    return false;
   }
 }

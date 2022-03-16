@@ -121,8 +121,6 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                         child: TextFormField(
                             controller: email_Input,
                             decoration: InputDecoration(
-                              filled: true,
-                              //fillColor: Colors.amber,
                               border: OutlineInputBorder(),
                               hintText: 'Email Address',
                             ),
@@ -142,7 +140,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                             controller: password_Input,
                             decoration: InputDecoration(
                               filled: true,
-                              //fillColor: Colors.amber,
+                              fillColor: Colors.transparent,
                               border: OutlineInputBorder(),
                               hintText: 'Password',
                               suffixIcon: GestureDetector(
@@ -173,8 +171,6 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                         child: TextFormField(
                           controller: _confirmPasswordController,
                           decoration: InputDecoration(
-                            filled: true,
-                            //fillColor: Colors.amber,
                             border: OutlineInputBorder(),
                             hintText: 'Confirm Password',
                             suffixIcon: GestureDetector(
