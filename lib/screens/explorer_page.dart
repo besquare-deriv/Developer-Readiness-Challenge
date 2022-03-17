@@ -16,10 +16,10 @@ class _ExplorePageState extends State<ExplorePage> {
   var loserList = [];
 
   void coinList() async {
-    var data = await http.get(Uri.parse(
-        'http://192.168.100.144:3000/stats'));
+    var data =
+        await http.get(Uri.parse('https://berad-api.herokuapp.com/stats'));
     var result = json.decode(data.body);
-    
+
     setState(() {
       for (int i = 0; i <= result.length - 1; i++) {
         toplist.add(result[i]);
@@ -122,9 +122,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                         color: Colors.black,
                                       )),
                                   Text('\$ ${toplist[index]['price']}',
-                                      style: TextStyle(
-                                        color: Colors.black
-                                      )),
+                                      style: TextStyle(color: Colors.black)),
                                   Text(
                                     '${toplist[index]['change_percent']}%',
                                     style: TextStyle(
@@ -214,9 +212,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                         color: Colors.black,
                                       )),
                                   Text('\$ ${loserList[index]['price']}',
-                                      style: TextStyle(
-                                        color: Colors.black
-                                      )),
+                                      style: TextStyle(color: Colors.black)),
                                   Text(
                                     '${loserList[index]['change_percent']}%',
                                     style: TextStyle(

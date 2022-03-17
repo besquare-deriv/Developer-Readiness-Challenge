@@ -83,7 +83,14 @@ class _HomePageState extends State<HomePage> {
                               icon: Icon(Icons.settings,
                                   color: Theme.of(context).iconTheme.color),
                               iconSize: 40,
-                              onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage(value: value1),),);
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        SettingsPage(value: value1),
+                                  ),
+                                );
                               },
                             ),
                           ),
@@ -177,177 +184,184 @@ class _HomePageState extends State<HomePage> {
           height: 10,
         ),
         Expanded(
-            child: GridView.count(
-          primary: false,
-          padding: const EdgeInsets.all(20),
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 20,
-          crossAxisCount: 2,
-          children: <Widget>[
-            // Displays Balance for the user account
-            Container(
-              decoration: BoxDecoration(
-                color: Color(0xFF930077),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Account",
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "Balance",
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "$balance USD",
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Displays wins and losses
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: Container(
+          child: (loss != 0)
+              ? GridView.count(
+                  primary: false,
+                  padding: const EdgeInsets.all(20),
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 20,
+                  crossAxisCount: 2,
+                  children: <Widget>[
+                    // Displays Balance for the user account
+                    Container(
                       decoration: BoxDecoration(
-                        color: Color(0xFFFFBD39),
+                        color: Color(0xFF930077),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Center(
-                        child: ListTile(
-                          leading: Text(
-                            "Wins    ",
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Account\nBalance",
                             style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                                fontSize: 24,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "$balance USD",
+                            style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.white,
                             ),
                           ),
-                          subtitle: Text(
-                            "$winsCount",
-                            style: TextStyle(
-                              fontSize: 28,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
+                        ],
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Expanded(
-                    child: Container(
+
+                    // Displays wins and losses
+                    Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Color(0xFFFFBD39),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: ListTile(
+                                  leading: Text(
+                                    "Wins    ",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    "$winsCount",
+                                    style: TextStyle(
+                                      fontSize: 28,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Color(0xFF73B8C8),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: ListTile(
+                                  leading: Text(
+                                    "Losses",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ),
+                                  subtitle: Text(
+                                    "$lossCount",
+                                    style: TextStyle(
+                                      fontSize: 28,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Displays Total Profit
+                    Container(
                       decoration: BoxDecoration(
-                        color: Color(0xFF73B8C8),
+                        color: Color(0xFF36622B),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Center(
-                        child: ListTile(
-                          leading: Text(
-                            "Losses",
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Total Profit",
                             style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
+                                fontSize: 24,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
-                          subtitle: Text(
-                            "$lossCount",
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "+${profit.toStringAsFixed(2)}",
                             style: TextStyle(
-                              fontSize: 28,
-                              color: Colors.black,
+                              fontSize: 24,
+                              color: Colors.white,
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Displays Total Profit
-            Container(
-              decoration: BoxDecoration(
-                color: Color(0xFF36622B),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Total Profit",
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "+${profit.toStringAsFixed(2)}",
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.white,
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Color(0xFFE84545),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Total Loss",
+                            style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            loss.toStringAsFixed(2),
+                            style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Color(0xFFE84545),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Total Loss",
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    loss.toStringAsFixed(2),
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ))
+                  ],
+                )
+              : Center(
+                  child: Container(
+                      padding: const EdgeInsets.all(100),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          SizedBox(height: 10),
+                          Text('Loading...'),
+                        ],
+                      )),
+                ),
+        )
       ],
     );
   }
