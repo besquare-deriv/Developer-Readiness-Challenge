@@ -17,7 +17,7 @@ class newList extends StatefulWidget {
 
 class _newListState extends State<newList> {
   news() async {
-    var url = await http.get(Uri.parse("http://192.168.100.144:3000/news"));
+    var url = await http.get(Uri.parse("https://berad-api.herokuapp.com/news"));
     return json.decode(url.body);
   }
 
