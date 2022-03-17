@@ -165,25 +165,11 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                             obscureText: visible_text,
                             validator: MultiValidator([
                               RequiredValidator(errorText: "Required"),
-                              // PatternValidator(
-                              //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{10,}$',
-                              //     errorText: "Password should contain:"
-                              //         '\n'
-                              //         " \u25EF "
-                              //         "Uppers case"
-                              //         '\n'
-                              //         " \u25EF "
-                              //         "Lowercase"
-                              //         '\n'
-                              //         " \u25EF "
-                              //         "Numeric value"
-                              //         '\n'
-                              //         " \u25EF "
-                              //         "Special character"
-                              //         '\n'
-                              //         " \u25EF "
-                              //         "Minimum length 10"),
-                              
+
+                              PatternValidator(
+                                  r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[!@#\$&*~]).{10,}$',
+                                  errorText: "Required:"),
+
                               MaxLengthValidator(50,
                                   errorText:
                                       "Password should not be greater than 50 characters")
