@@ -44,7 +44,7 @@ class _chartBuilderState extends State<chartBuilder> {
 
   void getTickHistory() {
     String request1 =
-        '{"ticks_history": "$symbol" ,"count": 3600,"end": "latest"}';
+        '{"ticks_history": "$symbol" ,"count": 5000,"end": "latest"}';
     channel.sink.add(request1);
   }
 
@@ -92,7 +92,7 @@ class _chartBuilderState extends State<chartBuilder> {
                   maximumZoomLevel: 0.01),
               primaryXAxis: DateTimeAxis(
                 dateFormat: DateFormat(
-                  'hh:mm:ss\ndd-MMM-yy',
+                  'hh:mm\ndd-MMM-yy',
                 ),
                 zoomPosition: 1,
                 zoomFactor: 0.01,
@@ -120,7 +120,7 @@ class _chartBuilderState extends State<chartBuilder> {
                 activationMode: ActivationMode.longPress,
                 tooltipSettings: InteractiveTooltip(
                   color: Colors.red,
-                  format: 'Price point.y',
+                  format: '\$ point.y\npoint.x',
                 ),
                 lineColor: Colors.red,
                 shouldAlwaysShow: false,

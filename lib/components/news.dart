@@ -80,7 +80,11 @@ class _newListState extends State<newList> {
                                     const EdgeInsets.only(left: 8.0, top: 8.0),
                                 child: Text(
                                   dateFormater(
-                                      snapshot.data[index]['time_date']),
+                                    snapshot.data[index]['time_date'],
+                                  ),
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
                             ),
@@ -97,6 +101,7 @@ class _newListState extends State<newList> {
                                   textAlign: TextAlign.justify,
                                   style: TextStyle(
                                       fontSize: 12,
+                                      color: Colors.black,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
@@ -107,6 +112,9 @@ class _newListState extends State<newList> {
                                 padding: const EdgeInsets.only(right: 20.0),
                                 child: Text(
                                   "- ${snapshot.data[index]['author']}",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
                             ),
