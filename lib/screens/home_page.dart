@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
+import 'settings_page.dart';
 
 class HomePage extends StatefulWidget {
   final String? value1;
@@ -78,10 +79,12 @@ class _HomePageState extends State<HomePage> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Icon(
-                              Icons.settings,
-                              size: 50,
-                              color: Colors.black,
+                            child: IconButton(
+                              icon: Icon(Icons.settings,
+                                  color: Theme.of(context).iconTheme.color),
+                              iconSize: 40,
+                              onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage(value: value1),),);
+                              },
                             ),
                           ),
                         ],
