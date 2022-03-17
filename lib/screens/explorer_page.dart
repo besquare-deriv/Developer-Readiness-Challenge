@@ -1,9 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers, camel_case_types, prefer_const_constructors
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import '../components/news.dart';
 
 class ExplorePage extends StatefulWidget {

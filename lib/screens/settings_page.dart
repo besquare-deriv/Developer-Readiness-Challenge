@@ -1,21 +1,10 @@
 //import 'dart:html';
 
 import 'dart:convert';
-import 'package:country_pickers/country.dart';
-import 'package:country_pickers/country_picker_dropdown.dart';
-
-import 'package:country_pickers/utils/utils.dart';
 import 'package:drc/components/change_theme_button_widget.dart';
-import 'package:drc/screens/explorer_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:web_socket_channel/io.dart';
 import '../components/iconwidget.dart';
-import 'history_page.dart';
-import 'login_page.dart';
-import 'market_list_page.dart';
-import 'profile_page.dart';
-import 'package:intl/intl.dart';
 
 class SettingsPage extends StatefulWidget {
   final String? value;

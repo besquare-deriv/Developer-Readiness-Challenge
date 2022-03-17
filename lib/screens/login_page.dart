@@ -1,6 +1,4 @@
 // ignore_for_file: prefer_const_constructors
-
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:drc/Authorization/auth_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +7,6 @@ import 'package:form_field_validator/form_field_validator.dart';
 import '../constants.dart';
 import 'reset_password.dart';
 import 'signup_page.dart';
-import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
   @override

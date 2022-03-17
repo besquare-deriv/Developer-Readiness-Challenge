@@ -33,7 +33,6 @@ class _MyFAQsPage extends State<MyFAQsPage> {
                 ExpansionTile(
                   title: Text("What is Forex?",
                         style: TextStyle(
-                              //color: Colors.black,
                               fontSize: 18.0,
                               fontWeight: FontWeight.bold
                         )
@@ -54,7 +53,6 @@ class _MyFAQsPage extends State<MyFAQsPage> {
                 ExpansionTile(
                   title: Text("What is Cryptocurrency?",
                           style: TextStyle(
-                              //color: Colors.black,
                               fontSize: 18.0,
                               fontWeight: FontWeight.bold)
                   ),

@@ -1,12 +1,9 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:drc/components/error_dialog.dart';
 import 'package:drc/screens/faq_page.dart';
 import 'package:drc/Authorization/auth_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:web_socket_channel/io.dart';
 import '../components/profile_widget.dart';
@@ -69,8 +66,6 @@ class _ProfilePageState extends State<ProfilePage> {
             var hiddenToken = apiToken.replaceRange(0, 11, 'XXXXXXXXXXX');
 
             return Scaffold(
-              // backgroundColor: Colors.white,
-              //appBar: buildAppBar(context),
               body: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Form(

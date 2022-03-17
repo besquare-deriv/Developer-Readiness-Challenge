@@ -1,10 +1,4 @@
-import 'package:drc/screens/explorer_page.dart';
 import 'package:flutter/material.dart';
-import 'history_page.dart';
-import 'login_page.dart';
-import 'market_list_page.dart';
-import 'profile_page.dart';
-import 'package:intl/intl.dart';
 
 class ContractDetails extends StatefulWidget {
   final data;
