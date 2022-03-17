@@ -183,6 +183,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                               //         '\n'
                               //         " \u25EF "
                               //         "Minimum length 10"),
+                              
                               MaxLengthValidator(50,
                                   errorText:
                                       "Password should not be greater than 50 characters")
