@@ -168,6 +168,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                               PatternValidator(
                                   r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[!@#\$&*~]).{10,}$',
                                   errorText: "Required:"),
+
                               MaxLengthValidator(50,
                                   errorText:
                                       "Password should not be greater than 50 characters")
@@ -247,7 +248,27 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                               fontSize: 20),
                         ),
                         onPressed: () async {
-                          if (validkey.currentState!.validate()) {
+                          RegExp regex = RegExp(
+                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[!@#\$&*~]).{10,}$');
+                          if (!regex.hasMatch(password_Input!.text)) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: new Text(
+                                      "Please fill in the email and password field."),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: new Text("Ok"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else if (validkey.currentState!.validate()) {
                             try {
                               await AuthHelper.signupWithEmail(
                                   email: email_Input!.text,
