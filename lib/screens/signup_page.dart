@@ -165,24 +165,9 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                             obscureText: visible_text,
                             validator: MultiValidator([
                               RequiredValidator(errorText: "Required"),
-                              // PatternValidator(
-                              //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{10,}$',
-                              //     errorText: "Password should contain:"
-                              //         '\n'
-                              //         " \u25EF "
-                              //         "Uppers case"
-                              //         '\n'
-                              //         " \u25EF "
-                              //         "Lowercase"
-                              //         '\n'
-                              //         " \u25EF "
-                              //         "Numeric value"
-                              //         '\n'
-                              //         " \u25EF "
-                              //         "Special character"
-                              //         '\n'
-                              //         " \u25EF "
-                              //         "Minimum length 10"),
+                              PatternValidator(
+                                  r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[!@#\$&*~]).{10,}$',
+                                  errorText: "Required:"),
                               MaxLengthValidator(50,
                                   errorText:
                                       "Password should not be greater than 50 characters")
@@ -262,27 +247,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                               fontSize: 20),
                         ),
                         onPressed: () async {
-                          RegExp regex = RegExp(
-                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[!@#\$&*~]).{10,}$');
-                          if (!regex.hasMatch(password_Input!.text)) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: new Text(
-                                      "Please fill in the email and password field."),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: new Text("Ok"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          } else if (validkey.currentState!.validate()) {
+                          if (validkey.currentState!.validate()) {
                             try {
                               await AuthHelper.signupWithEmail(
                                   email: email_Input!.text,
