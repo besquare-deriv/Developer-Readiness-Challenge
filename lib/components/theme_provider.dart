@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemeMode themeMode = ThemeMode.system;
@@ -19,20 +18,6 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
-
-/* class ThemeManager implements IThemeModeManager{
-  @override
-  Future<String?> loadThemeMode() async {
-    final _prefs = await SharedPreferences.getInstance();
-    return _prefs.getString("THEME_PREF");
-  }
-
-  @override
-  Future<bool> saveThemeMode(String value) async {
-    final _prefs = await SharedPreferences.getInstance();
-    return _prefs.setString("THEME_PREF", value);
-  }
-} */
 
 class MyThemes {
   static final darkTheme = ThemeData(
@@ -55,10 +40,6 @@ class MyThemes {
     selectedRowColor: Color(0xFFFFC9C9C9), //FAQ selected card
     colorScheme: ColorScheme.dark(
         secondary: Colors.white, //theme title
-        //primary: Color.fromARGB(255, 50, 2, 52),     //settings button
-        //onPrimary: Colors.white,
-        //tertiary: Color(0xFFFF37721),         //index type selection
-        //onTertiary: Colors.teal,       //logout button
         primaryContainer: Color(0xFFFF252A34), //bottom navigation bar
         onPrimaryContainer: Colors.black,   //chart
         secondaryContainer: Colors.purple, //market_list:market_name
@@ -87,10 +68,6 @@ class MyThemes {
     selectedRowColor: Color(0xFFFFC4C4C4), //FAQ selected card
     colorScheme: ColorScheme.light(
         secondary: Colors.black, //Theme title
-        //primary: Color(0xFFF4F4F4),     //settings button
-        //onPrimary: Colors.black,
-        //tertiary: Colors.teal,
-        //onTertiary: Colors.teal,     //logout button
         primaryContainer: Colors.black, //bottom navigation bar
         onPrimaryContainer: Colors.black,   //chart
         secondaryContainer: Colors.amberAccent, //market_list:market_name

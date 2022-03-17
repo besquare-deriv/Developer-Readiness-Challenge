@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:drc/Authorization/auth_helper.dart';
 import 'package:drc/screens/login_page.dart';
 import 'package:flutter/material.dart';
