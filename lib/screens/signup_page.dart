@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:drc/Authorization/auth_helper.dart';
 import 'package:drc/screens/login_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import '../constants.dart';
@@ -22,44 +23,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
   TextEditingController? email_Input;
   TextEditingController? password_Input;
   TextEditingController? _confirmPasswordController;
-
-  Widget showAlert() {
-    if (_error != null) {
-      return Container(
-        color: Colors.red,
-        width: double.infinity,
-        padding: EdgeInsets.all(8.0),
-        child: Row(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Icon(Icons.error_outline),
-            ),
-            Expanded(
-              child: AutoSizeText(
-                _error!,
-                maxLines: 3,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: IconButton(
-                icon: Icon(Icons.close),
-                onPressed: () {
-                  setState(() {
-                    _error = null;
-                  });
-                },
-              ),
-            )
-          ],
-        ),
-      );
-    }
-    return SizedBox(
-      height: 0,
-    );
-  }
+  double _strength = 0;
 
   @override
   void initState() {
@@ -69,13 +33,46 @@ class _SignupScreenScreenState extends State<SignupScreen> {
     _confirmPasswordController = TextEditingController(text: "");
   }
 
-  //TextEditing controller
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  void onDispose() {
-    _emailController.clear();
-    _passwordController.clear();
-    super.dispose();
+  String _displayText = 'Please enter a password';
+  RegExp capital = RegExp(r"[A-Z]");
+  RegExp Lowercase = RegExp(r"[a-z]");
+  RegExp spcharacter = RegExp(r"[!@#\$&*~]");
+
+  // r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{10,}$',
+
+  void _checkPassword(String value) {
+    if (password_Input!.text.isEmpty) {
+      setState(() {
+        _strength = 0;
+        _displayText = 'Please enter you password';
+      });
+    } else if (!capital.hasMatch(password_Input!.text)) {
+      setState(() {
+        _strength = 1 / 5;
+        _displayText = 'Your password should consist capital letter';
+      });
+    } else if (!Lowercase.hasMatch(password_Input!.text)) {
+      setState(() {
+        _strength = 2 / 5;
+        _displayText = 'Your password should consist lowercase letter';
+      });
+    } else if (!spcharacter.hasMatch(password_Input!.text)) {
+      setState(() {
+        _strength = 3 / 5;
+        _displayText = 'Your password should consist special character';
+      });
+    } else if (password_Input!.text.length < 10) {
+      setState(() {
+        _strength = 4 / 5;
+        _displayText = 'Your password should atleast be 10 character';
+      });
+    } else if (password_Input!.text.length < 10 ||
+        password_Input!.text.length < 50) {
+      setState(() {
+        _strength = 1;
+        _displayText = 'Your password is great';
+      });
+    }
   }
 
   GlobalKey<FormState> validkey = GlobalKey<FormState>();
@@ -119,6 +116,9 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                             EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                         width: 300.0,
                         child: TextFormField(
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(50),
+                            ],
                             controller: email_Input,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
@@ -137,6 +137,10 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                             EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                         width: 300.0,
                         child: TextFormField(
+                            onChanged: (value) => _checkPassword(value),
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(50),
+                            ],
                             controller: password_Input,
                             decoration: InputDecoration(
                               filled: true,
@@ -161,7 +165,55 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                             obscureText: visible_text,
                             validator: MultiValidator([
                               RequiredValidator(errorText: "Required"),
+                              // PatternValidator(
+                              //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{10,}$',
+                              //     errorText: "Password should contain:"
+                              //         '\n'
+                              //         " \u25EF "
+                              //         "Uppers case"
+                              //         '\n'
+                              //         " \u25EF "
+                              //         "Lowercase"
+                              //         '\n'
+                              //         " \u25EF "
+                              //         "Numeric value"
+                              //         '\n'
+                              //         " \u25EF "
+                              //         "Special character"
+                              //         '\n'
+                              //         " \u25EF "
+                              //         "Minimum length 10"),
+                              MaxLengthValidator(50,
+                                  errorText:
+                                      "Password should not be greater than 50 characters")
                             ])),
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                        child: LinearProgressIndicator(
+                          value: _strength,
+                          backgroundColor: Colors.grey[300],
+                          color: _strength <= 1 / 5
+                              ? Colors.red
+                              : _strength == 2 / 5
+                                  ? Colors.yellow
+                                  : _strength == 3 / 5
+                                      ? Colors.blue
+                                      : _strength == 4 / 5
+                                          ? Color.fromARGB(255, 76, 147, 175)
+                                          : _strength == 1
+                                              ? Colors.green
+                                              : Colors.green,
+                          minHeight: 5,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 20, 0),
+                        child: Text(
+                          _displayText,
+                          style: const TextStyle(fontSize: 16),
+                          textAlign: TextAlign.start,
+                        ),
                       ),
                       Container(
                         margin: EdgeInsets.only(bottom: 5, top: 10),
@@ -210,7 +262,27 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                               fontSize: 20),
                         ),
                         onPressed: () async {
-                          if (validkey.currentState!.validate()) {
+                          RegExp regex = RegExp(
+                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[!@#\$&*~]).{10,}$');
+                          if (!regex.hasMatch(password_Input!.text)) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: new Text(
+                                      "Please fill in the email and password field."),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: new Text("Ok"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else if (validkey.currentState!.validate()) {
                             try {
                               await AuthHelper.signupWithEmail(
                                   email: email_Input!.text,

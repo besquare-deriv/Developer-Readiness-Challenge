@@ -3,11 +3,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:drc/Authorization/auth_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import '../constants.dart';
 import 'reset_password.dart';
 import 'signup_page.dart';
+import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -18,47 +20,11 @@ class _LoginScreenState extends State<LoginScreen> {
   var _error;
   bool visible_text = true;
 
-  Widget showAlert() {
-    if (_error != null) {
-      return Container(
-        color: Colors.red,
-        width: double.infinity,
-        padding: EdgeInsets.all(8.0),
-        child: Row(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Icon(Icons.error_outline),
-            ),
-            Expanded(
-              child: AutoSizeText(
-                _error,
-                maxLines: 3,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: IconButton(
-                icon: Icon(Icons.close),
-                onPressed: () {
-                  setState(() {
-                    _error = null;
-                  });
-                },
-              ),
-            )
-          ],
-        ),
-      );
-    }
-    return SizedBox(
-      height: 0,
-    );
-  }
-
   //TextEditing controller
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String _textString = 'Hello world';
+
   void onDispose() {
     _emailController.clear();
     _passwordController.clear();
@@ -101,6 +67,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                       width: 300.0,
                       child: TextFormField(
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(50),
+                          ],
                           controller: _emailController,
                           decoration: InputDecoration(
                             filled: true,
@@ -121,31 +90,38 @@ class _LoginScreenState extends State<LoginScreen> {
                           EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                       width: 300.0,
                       child: TextFormField(
-                          controller: _passwordController,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(),
-                            hintText: 'Password',
-                            suffixIcon: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  visible_text = !visible_text;
-                                });
-                              },
-                              child: Icon(
-                                visible_text
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                                color: Colors.black87,
-                                size: 24.0,
-                              ),
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(50),
+                        ],
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(),
+                          hintText: 'Password',
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                visible_text = !visible_text;
+                              });
+                            },
+                            child: Icon(
+                              visible_text
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.black87,
+                              size: 24.0,
                             ),
                           ),
-                          obscureText: visible_text,
-                          validator: MultiValidator([
-                            RequiredValidator(errorText: "Required"),
-                          ])),
+                        ),
+                        obscureText: visible_text,
+                        validator: MultiValidator([
+                          RequiredValidator(errorText: "Required"),
+                          MaxLengthValidator(50,
+                              errorText:
+                                  "Password should not be greater than 50 characters")
+                        ]),
+                      ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
