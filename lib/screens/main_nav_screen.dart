@@ -30,70 +30,74 @@ class _NavigationPageState extends State<NavigationPage> {
     ];
 
     value1 = widget.value1;
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
+    return GestureDetector(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
 
-      //BODY below here
-      body: Center(child: _pageScreens.elementAt(_selectedIndex)),
-      // BOTTOMNAVIGATIONBAR below here
+        //BODY below here
+        body: Center(child: _pageScreens.elementAt(_selectedIndex)),
+        // BOTTOMNAVIGATIONBAR below here
 
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        onTap: changePage,
-        iconSize: 20,
-        currentIndex: _selectedIndex,
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        // elevation: 10.0,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              size: 30,
-              color: Colors.white,
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/icons/explore.png',
-              height: 30,
-              width: 30,
-            ),
-            label: 'Explore',
-          ),
-          BottomNavigationBarItem(
-              icon: Image.asset(
-                'assets/icons/plus.png',
-                height: 55,
-                width: 55,
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          onTap: changePage,
+          iconSize: 20,
+          currentIndex: _selectedIndex,
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          // elevation: 10.0,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                size: 30,
+                color: Colors.white,
               ),
-              label: ""),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/icons/history.png',
-              height: 30,
-              width: 30,
+              label: 'Home',
             ),
-            label: 'History',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/icons/user.png',
-              height: 30,
-              width: 30,
+            BottomNavigationBarItem(
+              icon: Image.asset(
+                'assets/icons/explore.png',
+                height: 30,
+                width: 30,
+              ),
+              label: 'Explore',
             ),
-            label: 'Profile',
-          ),
-        ],
-        unselectedItemColor: Colors.white,
-        selectedItemColor: Colors.white,
-        showUnselectedLabels: true,
+            BottomNavigationBarItem(
+                icon: Image.asset(
+                  'assets/icons/plus.png',
+                  height: 55,
+                  width: 55,
+                ),
+                label: ""),
+            BottomNavigationBarItem(
+              icon: Image.asset(
+                'assets/icons/history.png',
+                height: 30,
+                width: 30,
+              ),
+              label: 'History',
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset(
+                'assets/icons/user.png',
+                height: 30,
+                width: 30,
+              ),
+              label: 'Profile',
+            ),
+          ],
+          unselectedItemColor: Colors.white,
+          selectedItemColor: Colors.white,
+          showUnselectedLabels: true,
+        ),
       ),
     ); // This trailing comma makes auto-formatting nicer for build methods.
     // ignore: dead_code
   }
 
   void changePage(index) {
+    FocusScope.of(context).requestFocus(new FocusNode());
+
     setState(() {
       _selectedIndex = index;
     });
