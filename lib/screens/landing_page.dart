@@ -70,7 +70,7 @@ class _LandingScreenState extends State<LandingScreen> {
                                       fontSize: 25),
                                   children: <TextSpan>[
                                     TextSpan(
-                                        text: 'Assertive',
+                                        text: 'Anticipated',
                                         style: TextStyle(
                                             color: Colors.redAccent,
                                             fontWeight: FontWeight.bold,
@@ -103,7 +103,7 @@ class _LandingScreenState extends State<LandingScreen> {
               ),
               const SizedBox(height: 80),
               const Text(
-                'Join us in this radical journey to \ntrack your trading portfolio',
+                'Be anticipated and make a radical \nmove with diversified strategy',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Colors.white,
