@@ -87,9 +87,11 @@ class _onGoingPriceState extends State<onGoingPrice> {
       var tickStream = jsonDecode(data);
       currentPrice = tickStream['tick']['quote'];
 
-      setState(() {
-        currentPrice = tickStream['tick']['quote'];
-      });
+      if (mounted) {
+        setState(() {
+          currentPrice = tickStream['tick']['quote'];
+        });
+      }
     });
   }
 }
