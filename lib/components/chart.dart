@@ -87,7 +87,6 @@ class _chartBuilderState extends State<chartBuilder> {
                   selectionRectColor: Colors.red,
                   zoomMode: ZoomMode.x,
                   enablePanning: true,
-                  enableDoubleTapZooming: true,
                   enablePinching: true,
                   maximumZoomLevel: 0.01),
               primaryXAxis: DateTimeAxis(
@@ -104,15 +103,15 @@ class _chartBuilderState extends State<chartBuilder> {
               ),
 
               primaryYAxis: NumericAxis(
-                  maximumLabels: 1,
-                  interval: interval,
-                  decimalPlaces: decimalPlace,
-                  desiredIntervals: 1,
-                  majorGridLines: MajorGridLines(width: 0),
-                  // labelPosition: ChartDataLabelPosition.inside,
-                  labelStyle: TextStyle(color: Colors.white),
-                  opposedPosition: true,
-                  enableAutoIntervalOnZooming: true),
+                interval: interval,
+                decimalPlaces: decimalPlace,
+                desiredIntervals: 5,
+                majorGridLines: MajorGridLines(width: 0),
+                // labelPosition: ChartDataLabelPosition.inside,
+                labelStyle: TextStyle(color: Colors.white),
+                opposedPosition: true,
+                enableAutoIntervalOnZooming: true,
+              ),
 
               // Chart title
               trackballBehavior: TrackballBehavior(

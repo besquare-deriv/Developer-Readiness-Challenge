@@ -71,11 +71,12 @@ class _GraphScreenState extends State<GraphScreen> {
   }
 
   void listenWS() {
-    authChannel.stream.listen((data) {
+    authChannel.stream.listen((data) async {
       var result = jsonDecode(data);
-      if (result['msg_type'] == 'proposal' ||
-          result['msg_type'] == 'buy' && result['error'] == null) {
-        buy_id = result['proposal']['id'];
+      debugPrint(result.toString());
+      if ((result['msg_type'] == 'proposal' && result['error'] == null) ||
+          (result['msg_type'] == 'buy') && result['error'] == null) {
+        buy_id = await result['proposal']['id'];
 
         showDialog(
           context: context,
@@ -108,8 +109,9 @@ class _GraphScreenState extends State<GraphScreen> {
             );
           },
         );
-      } else if (result['msg_type'] == 'proposal' ||
-          result['msg_type'] == 'buy' && result['error'] != null) {
+      } else if ((result['msg_type'] == 'proposal' &&
+              result['error'] != null) ||
+          (result['msg_type'] == 'buy') && result['error'] != null) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
