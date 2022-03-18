@@ -3,6 +3,7 @@ import 'package:drc/Authorization/auth_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AddNote extends StatefulWidget {
   AddNote({this.apiToken, this.email});
@@ -24,7 +25,7 @@ class _AddNoteState extends State<AddNote> {
   @override
   Widget build(BuildContext context) {
     return CupertinoAlertDialog(
-      title: Text("Add in token",
+      title: Text("Add Your Token",
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
       content: Center(
@@ -32,39 +33,38 @@ class _AddNoteState extends State<AddNote> {
         Text('Enter the BeRad app API token for "$email".',
             textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
         SizedBox(height: 8),
-        Card(
-          color: Colors.transparent,
-          elevation: 0.0,
-          child: Column(
-            children: <Widget>[
-              TextField(
-                onChanged: (_val) {
-                  field_Name = _val;
-                },
-                style: TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Enter token",
-                  filled: true,
-                  fillColor: Color(0xFFF4F4F4),
-                ),
-              ),
-            ],
+        TextField(
+          onChanged: (_val) {
+            field_Name = _val;
+          },
+          style: TextStyle(color: Colors.black),
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: "Enter token",
+            filled: true,
+            fillColor: Color(0xFFF4F4F4),
           ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Text(
+            'You can get your APIToken from',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 14),
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            launch('https://app.deriv.com/account/api-token');
+          },
+          child: Text("Deriv.com",
+              style: TextStyle(fontSize: 14, color: Colors.blue[900])),
         ),
       ])),
       actions: <Widget>[
         TextButton(
           onPressed: () {
             AuthHelper().logOut();
-
-            // FirebaseAuth.instance.signOut();
-            // Navigator.pushReplacement(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (_) => LoginScreen(),
-            //   ),
-            // );
           },
           child: const Text("Cancel", style: TextStyle(fontSize: 17)),
         ),

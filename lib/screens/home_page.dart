@@ -6,7 +6,7 @@ import 'package:web_socket_channel/io.dart';
 import 'settings_page.dart';
 
 class HomePage extends StatefulWidget {
-  final String? value1;
+  final String value1;
 
   const HomePage(this.value1, {Key? key}) : super(key: key);
 
@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? value1;
+  String value1;
   _HomePageState(this.value1, {Key? key});
 
   String username = "User";
@@ -377,12 +377,14 @@ class _HomePageState extends State<HomePage> {
       // debugPrint(response.toString());
       if (response['msg_type'] == 'authorize' && response['error'] == null) {
         getStatement();
-        setState(() {
-          balance = response['authorize']['balance'];
+        if (mounted) {
+          setState(() {
+            balance = response['authorize']['balance'];
 
-          username = response['authorize']['email']
-              .substring(0, response['authorize']['email'].indexOf('@'));
-        });
+            username = response['authorize']['email']
+                .substring(0, response['authorize']['email'].indexOf('@'));
+          });
+        }
       } else if (response['msg_type'] == 'authorize' &&
           response['error']['code'] == 'InvalidToken') {
         showDialog(
@@ -443,12 +445,14 @@ class _HomePageState extends State<HomePage> {
             }
           }
         }
-        setState(() {
-          winsCount = tempWins;
-          lossCount = tempLoss;
-          profit = tempProfit;
-          loss = tempLosses;
-        });
+        if (mounted) {
+          setState(() {
+            winsCount = tempWins;
+            lossCount = tempLoss;
+            profit = tempProfit;
+            loss = tempLosses;
+          });
+        }
       }
     });
   }

@@ -22,7 +22,7 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _pageScreens = <Widget>[
-      HomePage(widget.value1),
+      HomePage(widget.value1!),
       ExplorePage(),
       MarketScreen(widget.value1!),
       HistoryScreen(widget.value1!),
@@ -65,10 +65,10 @@ class _NavigationPageState extends State<NavigationPage> {
             BottomNavigationBarItem(
                 icon: Image.asset(
                   'assets/icons/plus.png',
-                  height: 55,
-                  width: 55,
+                  height: 35,
+                  width: 35,
                 ),
-                label: ""),
+                label: "Market"),
             BottomNavigationBarItem(
               icon: Image.asset(
                 'assets/icons/history.png',
