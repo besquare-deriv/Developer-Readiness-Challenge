@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:drc/components/active_card.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
@@ -69,7 +68,6 @@ class _activeOptionsState extends State<activeOptions> {
 
   @override
   Widget build(BuildContext context) {
-    // debugPrint('Mangus + $apiToken');
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).appBarTheme.color,

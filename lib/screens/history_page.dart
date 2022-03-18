@@ -96,9 +96,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
           currency.add(
               data['statement']['transactions'][i]['shortcode'].toString());
-          // print(currency[i]);
-          // print(currency[i].contains("R_"));
-          // print(currency[i].contains(RegExp(".*?_(R_.*?)_.*?")));
 
           if (currency[i].contains(RegExp(".*?_(R_.*?)_.*?"))) {
             String a = currency[i].split('_')[1];
@@ -161,11 +158,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       return null;
     }
     if (listData.length > 0) {
-      if (mounted) {
-        setState(() {
-          _isLoading = true;
-        });
-      }
+      _isLoading = true;
     }
   }
 
@@ -184,9 +177,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     getActiveSymbol();
     getAuthorize();
     timer();
-    setState(() {
-      _isLoading = false;
-    });
+    _isLoading = false;
   }
 
   @override
@@ -361,12 +352,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       ),
                                       child: Row(children: [
                                         Container(
-                                          height: 60,
-                                          width: 60,
+                                          height: 50,
+                                          width: 50,
                                           child: Image.asset(
-                                              'assets/icons/btc.png'),
+                                              'assets/icons/transaction.png'),
                                         ),
-                                        const SizedBox(width: 7),
+                                        const SizedBox(width: 12),
                                         Expanded(
                                           child: Row(
                                             children: [
@@ -439,7 +430,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       ),
                     ],
                   ))
-                : Center(child: CircularProgressIndicator())));
+                : Center(child: CircularProgressIndicator())
+        )
+    );
   }
 }
 
