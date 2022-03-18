@@ -3,6 +3,7 @@ import 'package:drc/Authorization/auth_helper.dart';
 import 'package:drc/Authorization/verif_email.dart';
 import 'package:drc/screens/landing_page.dart';
 import 'package:drc/screens/main_nav_screen.dart';
+import 'package:drc/screens/token_test.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
