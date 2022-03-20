@@ -248,6 +248,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                         onPressed: () async {
                           RegExp regex = RegExp(
                               r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[!@#\$&*~]).{10,}$');
+
                           if (validkey.currentState!.validate()) {
                             try {
                               await AuthHelper.signupWithEmail(
