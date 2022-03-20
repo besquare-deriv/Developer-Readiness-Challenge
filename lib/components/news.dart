@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:drc/components/monthString.dart';
 import 'package:flutter/material.dart';
-
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
