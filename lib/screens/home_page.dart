@@ -25,7 +25,8 @@ class _HomePageState extends State<HomePage> {
   int lossCount = 0;
   num profit = 0;
   num loss = 0;
-  var assetList = ['BTC/USD', 'EUR/USD', 'ETH/USD', 'Gold'];
+  var assetName = ['BTC/USD', 'EUR/USD', 'ETH/USD', 'Gold'];
+  var assetIcon = ['assets/icons/btc_usd.png', 'assets/icons/eur_usd.png', 'assets/icons/eth_usd.png', 'assets/icons/gold.png'];
 
   final channel = IOWebSocketChannel.connect(
       Uri.parse('wss://ws.binaryws.com/websockets/v3?app_id=1089'));
@@ -150,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                       child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
-                        itemCount: assetList.length,
+                        itemCount: assetName.length,
                         itemBuilder: ((context, index) {
                           return SizedBox(
                             height: 80,
@@ -161,10 +162,11 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   Expanded(
                                     child: Image.asset(
-                                        'assets/images/ethereum.png'),
+                                        assetIcon[index]),
+                                    // child: Image.network(assetIcon[index]),
                                   ),
                                   Text(
-                                    assetList[index],
+                                    assetName[index],
                                     style: TextStyle(
                                       color: Theme.of(context).primaryColor,
                                     ),
